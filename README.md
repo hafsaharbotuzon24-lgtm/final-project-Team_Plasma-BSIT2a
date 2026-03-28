@@ -121,6 +121,7 @@ Testing, debugging, UI/UX enhancements, deployment on Render, README writing, do
 * **Pixel Studio:** Creating the "Medieval-Tech" pixel art sprites and environmental assets used throughout the game.
 * **Ibis Paint:** Designing high-fidelity UI elements, custom icons, and atmospheric background illustrations.
 * **Lucid Chart:** Mapping out the system architecture, database schema, and the logic flow of the terminal interface.
+* **Render:** For the cloud hosting and deployment of the web service, ensuring the live application is accessible and synchronized with the GitHub repository.
 
 ---
 
