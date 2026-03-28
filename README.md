@@ -43,11 +43,11 @@
 
 | Role | Assigned Member | Responsibility |
 | :--- | :--- | :--- |
-| **Project Manager/Backend Developer** | [Sophia Mae Alodia J.Balmaceda] | personal declaration of role (paste here) |
-| **Frontend Developer** | [Dwayne Lester O. Diaz] | personal declaration of role (paste here) |
-| **Database Manager** | [Joshua Cedric B. Velitario] | personal declaration of role (paste here) |
-| **GithuB Manager** | [Hafsah A. Tuzon] | personal declaration of role (paste here) |
-| **Documentation Officer** | [Kian Carlo O. Matutina] | personal declaration of role (paste here) |
+| **Project Manager/Backend Developer** | Sophia Mae Alodia J.Balmaceda | personal declaration of role (paste here) |
+| **Frontend Developer** | Dwayne Lester O. Diaz | personal declaration of role (paste here) |
+| **Database Manager** | Joshua Cedric B. Velitario | personal declaration of role (paste here) |
+| **GithuB Manager** | Hafsah A. Tuzon | personal declaration of role (paste here) |
+| **Documentation Officer** | Kian Carlo O. Matutina | personal declaration of role (paste here) |
 
 ---
 
