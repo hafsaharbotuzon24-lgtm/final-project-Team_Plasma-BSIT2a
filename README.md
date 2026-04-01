@@ -60,31 +60,6 @@
 
 ---
 
-## Implementation Log
-
-### Phase 1 - Project Planning (Week 10)
-Proposal drafting, system architecture, feature list, database schema (ERD), GitHub repo setup, initial group coordination
-
-### Phase 2 - Backend & Game Engine Setup (Week 12)
-Server setup using Node.js and Express; API scaffolding; MongoDB/Mongoose schema creation based on Phase 1 planning
-
-### Phase 3 - Interface & Interaction Design (Week 12)
-Development of interface layouts using HTML, CSS, and Bootstrap based on Week 10 design; home, about, and basic navigation setup
-
-### Phase 4 - Submission & Syntax Validation (Week 13)
-Creating frontend forms and integrating them with backend APIs; validate and store data in MongoDB
-
-### Phase 5 - Problem Retrieval & Progress Display (Week 14)
-Fetching and displaying MongoDB data using JavaScript and Bootstrap UI; basic dashboards and listings
-
-### Phase 6 - Game Balancing & Resource Functionality (Week 15)
-Implement PUT and DELETE operations; integrate modals or pages for editing and removing data; final CRUD completion
-
-### Phase 7 - Project Polishing & Deployment (Week 16)
-Testing, debugging, UI/UX enhancements, deployment on Render, README writing, documentation and preparation for final defense
-
----
-
 ## Implementation Timeline
 
 ### Phase 1 - Project Planning (Week 10)
