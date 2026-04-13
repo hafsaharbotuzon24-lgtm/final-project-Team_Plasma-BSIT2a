@@ -1,0 +1,16 @@
+const Chest = require('../models/Chest');
+
+exports.createChest = async (req, res) => {
+  const chest = await Chest.create(req.body);
+  res.status(201).json(chest);
+};
+
+exports.getChestsByPath = async (req, res) => {
+  const chests = await Chest.find({ path_id: req.params.pathId });
+  res.json(chests);
+};
+
+exports.getChest = async (req, res) => {
+  const chest = await Chest.findById(req.params.id);
+  res.json(chest);
+};

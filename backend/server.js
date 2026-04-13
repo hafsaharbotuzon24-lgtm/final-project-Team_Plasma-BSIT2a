@@ -29,6 +29,8 @@ app.use('/api/progress', require('./routes/progressRoutes'));
 app.use('/api/leaderboard', require('./routes/leaderboardRoutes'));
 app.use('/api/hints', require('./routes/hintRoutes'));
 app.use('/api/hearts', require('./routes/heartRoutes'));
+app.use('/api/chests', require('./routes/chestRoutes'));
+app.use('/api/final-battle', require('./routes/finalBattleRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 
 // Start server
