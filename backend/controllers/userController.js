@@ -34,7 +34,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Update game progress (important for Combat Coders)
+// Update game progress 
 exports.updateUser = async (req, res) => {
   try {
     const { hearts, hints, level } = req.body;
