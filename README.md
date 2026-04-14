@@ -35,7 +35,10 @@
 
 **Project Brand Name:** Combat Coders  
 ### Brand Logo:
-![645485159_1698460021512917_1967947627182119174_n](https://github.com/user-attachments/assets/11c4d4de-27da-40cc-8b3a-cfeed01a34e4)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cad78808-049c-447f-a4f3-d21918007390" alt="combatcoders-logo" width="50%" height="auto" />
+</p>
+
 
 **Tagline:** Debug the World. Conquer the Code.
 
