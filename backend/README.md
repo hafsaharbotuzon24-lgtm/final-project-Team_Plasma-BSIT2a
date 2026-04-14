@@ -237,6 +237,10 @@ http://localhost:5000
 
 # TEAM PLASMA
 
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/cad78808-049c-447f-a4f3-d21918007390" alt="combatcoders-logo" width="20%" height="auto" />
+</p>
+
 Combat Coders Project (BSIT-2A)
 
 ---
