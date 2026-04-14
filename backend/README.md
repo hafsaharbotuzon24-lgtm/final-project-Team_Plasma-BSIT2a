@@ -16,6 +16,7 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 
 ## Folder Structure:
 
+```
 /backend 
 ├── /config 
 │   └── db.js 
@@ -68,6 +69,7 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 ├── package-lock.json 
 ├── package.json 
 └── server.js
+```
 
 ---
 
