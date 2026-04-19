@@ -4,6 +4,16 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 
 ---
 
+# TECH STACK
+
+* Node.js
+* Express.js
+* MongoDB + Mongoose
+* JWT Authentication
+* bcrypt (password hashing)
+
+---
+
 # Features:
 
 * JWT Authentication (Login/Register)
@@ -16,6 +26,7 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 
 ## Folder Structure:
 
+```
 /backend 
 ├── /config 
 │   └── db.js 
@@ -68,88 +79,115 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 ├── package-lock.json 
 ├── package.json 
 └── server.js
+```
 
 ---
 
 # API ROUTES
 
-## Authentication 
-| POST | /api/auth/register |
-| POST | /api/auth/login |
+## Authentication
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/auth/register           | Register user        |
+| POST   | /api/auth/login              | Login user           |
 
-## Player
+## Attempts
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/attempts                | Submit Attempt       |
 
-| GET    /api/players |
-| GET    /api/players/:id |
-| PUT    /api/players/:id |
+## Players
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/players                 | Create Player        |
+| GET    | /api/players                 | Get all Player       |
+| GET    | /api/players/me              | Get My Player        |
+| GET    | /api/players/:id             | Get a Player         |
+| PUT    | /api/players/:id             | Update Player        |
 
 ## Battles
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/battles                 | Create Battle        |
+| GET    | /api/players/:id             | Get Battles          |
 
-| POST   /api/battles |
-| GET    /api/battles/player/:playerId |
+## Bosses
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/bosses                  | Create Boss          |
+| GET    | /api/bosses/:id              | Get Boss             |
 
-## Attempts (Gameplay)
+## Chests
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/chests                  | Create Chest         |
+| GET    | /api/chests/path/:pathId     | Get Chest by Path    |
+| GET    | /api/chests/:id              | Get Chest            |
 
-| POST   /api/attempts |
+## Enemy
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/enemies                 | Create Enemy         |
+| GET    | /api/enemies/battle/:battleId| Get Enemies by Battle    |
 
-## Paths & Rooms
+## Final Battle
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/final-battle                | Create Final Battle         |
+| GET    | /api/final-battle/battle/:battleId| Get Final Battle    |
 
-| GET    /api/paths |
-| POST   /api/paths |
+## Hearts
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| GET   | /api/hearts/enemy/:enemyId          | Get Heart Rewards         |
 
-| GET    /api/rooms/path/:pathId |
-| POST   /api/rooms |
-
-## Enemies & Boss
-
-| POST   /api/enemies |
-| GET    /api/enemies/battle/:battleId |
-
-| POST   /api/bosses |
-| GET    /api/bosses/:id |
-
-## Progress
-
-| POST   /api/progress |
-| GET    /api/progress/player/:playerId |
+## Hints
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| GET   | /api/hints/chest/:chestId             | Get Hints by Chest         |
 
 ## Leaderboard
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| GET    | /api/leaderboard     | Get Leaderboard    |
 
-| GET    /api/leaderboard |
+## Paths
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/paths                  | Create Path         |
+| GET    | /api/paths    | Get Path    |
 
-## Hint System
-
-| GET    /api/hints/chest/:chestId |
-
-## Heart System
-
-| GET |   /api/hearts/enemy/:enemyId |
+## Progress
+| Method | Endpoint                     | Description          |
+|--------|------------------------------|----------------------|
+| POST   | /api/progress                  | Create Progress        |
+| GET    | /api/progress/player/:playerId     | Get Progress by Player    |
 
 ---
 
 # CURRENT MODELS
 
-* Player
-* Battle
-* Attempt
-* Path
-* Room
-* Enemy
-* Boss
-* FinalBattle
-* Chest
-* Progress
-* Leaderboard
-* Hint
-* Heart
+| Model        | Description                          |
+|--------------|--------------------------------------|
+| Player       | Stores player accounts and stats     |
+| Battle       | Game challenges or questions         |
+| Attempt      | Player answers per battle            |
+| Path         | Sequence of game rooms               |
+| Room         | Individual game stage                |
+| Enemy        | Basic opponents in rooms             |
+| Boss         | Strong enemy at level end            |
+| FinalBattle  | Main endgame challenge               |
+| Chest        | Rewards container                   |
+| Progress     | Player game advancement              |
+| Leaderboard  | Player rankings by score             |
+| Hint         | Clues for battles                   |
+| Heart        | Player life system                  |
 
 ---
 
 # DATABASE CONNECTION SETUP
 
 ## 📁 `/config/db.js`
-
-Handles MongoDB connection using Mongoose.
 
 ```js
 const mongoose = require('mongoose');
@@ -166,8 +204,6 @@ module.exports = connectDB;
 
 ## 📁 `.env`
 
-Create a `.env` file in `/backend`:
-
 ```
 MONGO_URI=mongodb_connection_string
 JWT_SECRET=secret_key
@@ -176,7 +212,7 @@ PORT=5000
 
 ---
 
-# ▶️ HOW TO RUN THE SERVER LOCALLY
+# HOW TO RUN THE SERVER LOCALLY
 
 ## 1. Install dependencies
 
@@ -189,16 +225,9 @@ npm install
 ```
 npm run dev
 ```
-
-or
-
-```
-node server.js
-```
-
 ---
 
-## 🌐 Server will run on:
+## Server will run on:
 
 ```
 http://localhost:5000
@@ -206,52 +235,12 @@ http://localhost:5000
 
 ---
 
-# ⚠️ NOTES
+# TEAM PLASMA
 
-* If you see `Cannot GET /`, it is normal (no root route defined)
-* Make sure MongoDB is connected before testing routes
-* Use Postman or frontend to test API endpoints
-* Protected routes require JWT token:
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/cad78808-049c-447f-a4f3-d21918007390" alt="combatcoders-logo" width="20%" height="auto" />
+</p>
 
-```
-Authorization: Bearer <token>
-```
-
----
-
-# 🎮 PROJECT FLOW
-
-```
-Frontend → Express API → MongoDB
-```
-
-* Frontend sends requests
-* Backend handles logic and authentication
-* MongoDB stores game data
-
----
-
-# 🛠️ TECH STACK
-
-* Node.js
-* Express.js
-* MongoDB + Mongoose
-* JWT Authentication
-* bcrypt (password hashing)
-
----
-
-# 🔥 FUTURE IMPROVEMENTS
-
-* Code execution engine (coding challenges)
-* Multiplayer battles
-* Real-time leaderboard
-* React frontend integration
-
----
-
-# 👨‍💻 AUTHOR
-
-Combat Coders Project (BSIT)
+Combat Coders Project (BSIT-2A)
 
 ---
