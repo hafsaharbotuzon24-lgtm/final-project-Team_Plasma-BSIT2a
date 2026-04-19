@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/e5b0f093-d17f-4d55-bb6e-69d476668552" style="height: 1em; vertical-align: middle;"> Team Plasma-FullStackWebApp
+# <img src="https://github.com/user-attachments/assets/e5b0f093-d17f-4d55-bb6e-69d476668552" alt="logo" style="height: 1.1em; vertical-align: middle;"> Team Plasma-FullStackWebApp
 
 ## Group Information
 **Group Name:** Team Plasma  
