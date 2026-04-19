@@ -6,11 +6,15 @@ exports.createChest = async (req, res) => {
 };
 
 exports.getChestsByPath = async (req, res) => {
-  const chests = await Chest.find({ path_id: req.params.pathId });
+  const chests = await Chest.find({ path_id: req.params.pathId })
+    .populate("path_id");
+
   res.json(chests);
 };
 
 exports.getChest = async (req, res) => {
-  const chest = await Chest.findById(req.params.id);
+  const chest = await Chest.findById(req.params.id)
+    .populate("path_id");
+
   res.json(chest);
 };

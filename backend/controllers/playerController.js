@@ -1,6 +1,5 @@
-const Player = require('../models/player');
+const Player = require('../models/Player');
 
-// Create player
 exports.createPlayer = async (req, res) => {
   try {
     const player = await Player.create(req.body);
@@ -10,30 +9,33 @@ exports.createPlayer = async (req, res) => {
   }
 };
 
-//Get my player
 exports.getMyPlayer = async (req, res) => {
-  const player = await Player.findById(req.player.id);
+  const player = await Player.findById(req.player.id)
+    .populate("currentPath");
+
   res.json(player);
 };
 
-// Get all players
 exports.getPlayers = async (req, res) => {
-  const players = await Player.find();
+  const players = await Player.find()
+    .populate("currentPath");
+
   res.json(players);
 };
 
-// Get player
 exports.getPlayer = async (req, res) => {
-  const player = await Player.findById(req.params.id);
+  const player = await Player.findById(req.params.id)
+    .populate("currentPath");
+
   res.json(player);
 };
 
-// Update player (level, hearts, etc.)
 exports.updatePlayer = async (req, res) => {
   const player = await Player.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
-  );
+  ).populate("currentPath");
+
   res.json(player);
 };

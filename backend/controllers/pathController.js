@@ -1,4 +1,4 @@
-const Path = require('../models/path');
+const Path = require('../models/Path');
 
 exports.createPath = async (req, res) => {
   const path = await Path.create(req.body);
@@ -6,6 +6,8 @@ exports.createPath = async (req, res) => {
 };
 
 exports.getPaths = async (req, res) => {
-  const paths = await Path.find();
+  const paths = await Path.find()
+    .populate("player_id");
+
   res.json(paths);
 };

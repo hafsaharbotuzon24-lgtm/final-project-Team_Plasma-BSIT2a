@@ -6,6 +6,8 @@ exports.createEnemy = async (req, res) => {
 };
 
 exports.getEnemiesByBattle = async (req, res) => {
-  const enemies = await Enemy.find({ battle_id: req.params.battleId });
+  const enemies = await Enemy.find({ battle_id: req.params.battleId })
+    .populate("battle_id");
+
   res.json(enemies);
 };

@@ -1,19 +1,16 @@
-const Player = require('../models/player');
+const Player = require('../models/Player');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// REGISTER
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // check if user exists
     const existingUser = await Player.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const player = await Player.create({
@@ -29,7 +26,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -40,22 +36,17 @@ exports.login = async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, player.password);
-
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    // create token
     const token = jwt.sign(
       { id: player._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    res.json({
-      token,
-      player
-    });
+    res.json({ token, player });
 
   } catch (err) {
     res.status(500).json({ message: err.message });

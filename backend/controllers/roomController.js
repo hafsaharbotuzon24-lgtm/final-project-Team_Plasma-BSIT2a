@@ -6,6 +6,8 @@ exports.createRoom = async (req, res) => {
 };
 
 exports.getRoomsByPath = async (req, res) => {
-  const rooms = await Room.find({ path_id: req.params.pathId });
+  const rooms = await Room.find({ path_id: req.params.pathId })
+    .populate("path_id");
+
   res.json(rooms);
 };
