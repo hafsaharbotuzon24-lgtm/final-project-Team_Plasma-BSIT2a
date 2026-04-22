@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Load Slot</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="lb-body settings-page">
+    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
+                <span class="plasma-title">Team Plasma</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+                <img src="img/icon-frame.png" alt="Profile" style="width: 80px; height: 80px;">
+               </button>
+            </div>
+        </div>
+    </nav>
+
+<div class="profile-trigger-container">
+    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+        <img src="img/.png" alt="Profile" class="pixel-icon-large">
+    </button>
+</div>
+
+<div id="accountOverlay" class="account-overlay">
+    <div class="account-container">
+        <div class="account-content">
+            <div class="account-details">
+                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
+                <button class="change-name-btn" onclick="changeName()">Change name</button>
+                
+                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
+                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
+            </div>
+            <div class="account-visual">
+                <div class="icon-prof-frame">
+                    <img src="img/.png" alt="Avatar" class="icon-prof">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="lb-wrapper settings-wrapper">
+        <div class="lb-title-box">
+            <h2 class="pixel-font">SETTINGS</h2>
+        </div>
+
+        <div class="lb-container settings-container">
+            <div class="settings-row d-flex align-items-center justify-content-center mb-4">
+                <div class="icon-container me-4">
+                    <button id="toggle-sfx" class="pixel-icon-btn" type="button">
+                        <img src="img/icon-soundfx.png" alt="SFX" class="pixel-icon">
+                    </button>
+                </div>
+                <div class="slider-wrapper">
+                    <label for="sfx-slider" class="pixel-label text-white">SOUND FX</label>
+                    <input type="range" class="form-range custom-pixel-slider" id="sfx-slider" min="0" max="100" step="1">
+                </div>
+            </div>
+
+            <div class="settings-row d-flex align-items-center justify-content-center mb-5">
+                <div class="icon-container me-4">
+                    <button id="toggle-music" class="pixel-icon-btn" type="button">
+                        <img src="img/icon-music.png" alt="Music" class="pixel-icon">
+                    </button>
+                </div>
+                <div class="slider-wrapper">
+                    <label for="music-slider" class="pixel-label text-white">MUSIC</label>
+                    <input type="range" class="form-range custom-pixel-slider" id="music-slider" min="0" max="100" step="1">
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn-pixel" type="button" onclick="handleLogout()">LOGOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/audio-manager.js"></script>
+</body>
+</html>

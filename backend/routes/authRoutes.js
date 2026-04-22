@@ -27,17 +27,21 @@ const validateRegister = [
 ];
 
 const validateLogin = [
-  body('email')
+  body('identifier')
     .trim()
-    .notEmpty().withMessage('Email is required')
-    .isEmail().withMessage('Please provide a valid email address')
-    .normalizeEmail(),
+    .notEmpty().withMessage('Username or email is required'),
   body('password')
     .notEmpty().withMessage('Password is required')
 ];
 
+const validateGoogle = [
+  body('credential')
+    .notEmpty().withMessage('Google credential is required')
+];
+
 router.post('/register', validateRegister, handleValidationErrors, authController.register);
 router.post('/login', validateLogin, handleValidationErrors, authController.login);
+router.post('/google', validateGoogle, handleValidationErrors, authController.googleLogin);
 
 // Protected route - requires valid JWT token
 router.get('/secure-data', protect, (req, res) => {

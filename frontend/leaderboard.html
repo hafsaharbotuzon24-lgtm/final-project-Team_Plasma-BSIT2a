@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Leaderboard</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="lb-body">
+    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
+                <span class="plasma-title">Team Plasma</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+                <img src="img/icon-frame.png" alt="" style="width: 80px; height: 80px;">
+               </button>
+            </div>
+        </div>
+    </nav>
+
+<div class="profile-trigger-container">
+    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+        <img src="img/.png" alt="Profile" class="pixel-icon-large">
+    </button>
+</div>
+
+<div id="accountOverlay" class="account-overlay">
+    <div class="account-container">
+        <div class="account-content">
+            <div class="account-details">
+                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
+                <button class="change-name-btn" onclick="changeName()">Change name</button>
+                
+                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
+                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
+            </div>
+            <div class="account-visual">
+                <div class="icon-prof-frame">
+                    <img src="img/.png" alt="Avatar" class="icon-prof">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="lb-wrapper">
+        <div class="lb-title-box">
+            <h2 class="pixel-font">LEADERBOARD</h2>
+        </div>
+
+        <div class="lb-container">
+            <div class="lb-row lb-header">
+                <span class="lb-col-rank">RANK</span>
+                <span class="lb-col-name">PLAYER NAME</span>
+                <span class="lb-col-score">SCORE</span>
+            </div>
+
+            <div id="leaderboard-content" class="lb-scroll-area">
+                </div>
+
+            <form id="leaderboardForm" action="#" method="POST" class="mt-4">
+                <div class="d-flex justify-content-center">
+                    <button type="button" onclick="window.location.href='index.html'" class="btn-pixel">BACK TO MENU</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+    <script src="js/api-connection.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/leaderboard-logic.js"></script>
+    <script src="js/audio-manager.js"></script>
+</body>
+</html>

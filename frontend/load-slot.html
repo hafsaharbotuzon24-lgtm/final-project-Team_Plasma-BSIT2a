@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Load Slot</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
+                <span class="plasma-title">Team Plasma</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+                <img src="img/icon-frame.png" alt="Profile" style="width: 80px; height: 80px;">
+               </button>
+            </div>
+        </div>
+    </nav>
+
+<div class="profile-trigger-container">
+    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+        <img src="img/.png" alt="Profile" class="pixel-icon-large">
+    </button>
+</div>
+
+<div id="accountOverlay" class="account-overlay">
+    <div class="account-container">
+        <div class="account-content">
+            <div class="account-details">
+                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
+                <button class="change-name-btn" onclick="changeName()">Change name</button>
+                
+                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
+                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
+            </div>
+            <div class="account-visual">
+                <div class="icon-prof-frame">
+                    <img src="img/.png" alt="Avatar" class="icon-prof">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="interface-container">
+        <div class="action-column">
+            <button class="new-game-box" onclick="goCharSelect()">
+                <h2 class="new-game-text">New Game</h2>       
+            </button>
+
+            
+        </div>
+
+        <div class="load-column slab-textfield">
+          <h1 class="load-text" style="font-family: 'Pixelify Sans', sans-serif; font-size: 2.5rem;">Load Game</h1>
+            <div class="slots-container">
+                <div class="slab-load-slot disabled" onclick="navigate('slot1')">
+                    <span class="slot-title">Slot 1</span>
+                    <span class="slot-status">Empty Slot</span>
+                </div>
+
+                <div class="slab-load-slot disabled">
+                    <span class="slot-title">Slot 2</span>
+                    <span class="slot-status">Empty Slot</span>
+                </div>
+
+                <div class="slab-load-slot disabled">
+                    <span class="slot-title">Slot 3</span>
+                    <span class="slot-status">Empty Slot</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/audio-manager.js"></script>
+</body>
+</html>

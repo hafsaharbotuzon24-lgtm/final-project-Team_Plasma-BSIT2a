@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - login</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Combat Coders - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="login-page-bg">
+
+    <div id="mainLoginWrapper" class="d-flex justify-content-center align-items-center vh-100">
+        <div class="login-box-container p-4 text-center">
+            <h2 class="pixel-font text-white mb-4">Welcome to Combat Coders!</h2>
+            <div class="d-grid gap-3">
+                <button class="btn login-option-btn" onclick="openRegModal()">CREATE NEW ACCOUNT</button>
+                <button class="btn login-option-btn" onclick="loginExisting()">LOGIN WITH EXISTING ACCOUNT</button>
+                
+                <div class="signin-container">
+                    <div id="g_id_onload"
+                        data-client_id="REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID"
+                        data-callback="handleCredentialResponse">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-width="320"></div>
+          </div>
+
+    <div id="regModal" class="custom-overlay d-none">
+        <div class="modal-box p-4 border-#2e5c44 border-4">
+            <h3 class="pixel-font mb-4">REGISTRATION</h3>
+            <form id="loginForm" action="#" method="POST">
+                <input type="text" id="regName" class="form-control mb-3 pixel-input" style="color: black;"placeholder="Username" required>
+                <input type="email" id="regEmail" class="form-control mb-3 pixel-input" style="color: black;" placeholder="Email" required>
+                <input type="password" id="regPass" class="form-control mb-1 pixel-input" style="color: black;"placeholder="Password" required>
+                <div class="text-start mb-4">
+                    <a href="#" class="text-decoration-none small pixel-font"></a>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn-white btn-white flex-grow-1 pixel-font fw-bold" onclick="saveNewAccount()">SAVE & START</button>
+                    <button type="button" class="btn btn-outline-light flex-grow-1 pixel-font" onclick="closeRegModal()">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="errorModal" class="custom-overlay d-none">
+        <div class="modal-box p-4 border border-4 border-#2e5c44 text-center">
+            <h3 class="pixel-font text-white">AUTHENTICATION ERROR</h3>
+            <p id="errorMsg" class="text-white pixel-font my-3"></p>
+            <button class="btn-white btn-white w-100 pixel-font" onclick="closeErrorModal()">RETRY</button>
+        </div>
+    </div>
+
+    <div id="loginExistingModal" class="custom-overlay d-none">
+    <div class="modal-box p-4 border-#2e5c44 border-4">
+        <h3 class="pixel-font mb-4 text-white text-center">LOGIN</h3>
+        <form id="loginForm" action="#" method="POST" onsubmit="event.preventDefault(); validateExistingLogin();">
+            <input type="text" id="loginName" class="form-control mb-3 pixel-input " style="color: black;" placeholder="Username" required>
+            <input type="password" id="loginPass" class="form-control mb-1 pixel-input" style="color: black;" placeholder="Password" required>
+            
+            <div class="text-start mb-4">
+                <a href="#" class="text-decoration-none small pixel-font" onclick="openForgotEmailModal()">Forgot password?</a>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn-white btn-white flex-grow-1 pixel-font fw-bold">LOGIN</button>
+                <button type="button" class="btn btn-outline-light flex-grow-1 pixel-font" onclick="closeModal('loginExistingModal')">CANCEL</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="forgotEmailModal" class="custom-overlay d-none">
+    <div class="modal-box p-4 border border-4 border-#2e5c44 text-center">
+        <h3 class="pixel-font text-white mb-4">ACCOUNT RECOVERY</h3>
+        <p class="text-white pixel-font small mb-3">Enter your Email to find your account</p>
+        <input type="email" id="forgotEmailInput" class="form-control mb-4 pixel-input" placeholder="Email Address" required>
+        <div class="d-flex gap-2">
+            <button class="btn-white btn-white flex-grow-1 pixel-font" onclick="processEmailRecovery()">SEND OTP</button>
+            <button class="btn btn-outline-light flex-grow-1 pixel-font" onclick="closeModal('forgotEmailModal')">CANCEL</button>
+        </div>
+    </div>
+</div>
+
+<div id="otpVerifyModal" class="custom-overlay d-none">
+    <div class="modal-box p-4 border border-4 border-#2e5c44 text-center">
+        <h3 class="pixel-font text-white mb-4">VERIFY OTP</h3>
+        <p class="text-white pixel-font small mb-3">An OTP was sent to your email</p>
+        <input type="text" id="otpCodeInput" class="form-control mb-4 pixel-input text-center" placeholder="000000" maxlength="6">
+        <div class="d-flex gap-2">
+            <button class="btn-white btn-white flex-grow-1 pixel-font" onclick="processOTPVerify()">VERIFY</button>
+            <button class="btn btn-outline-light flex-grow-1 pixel-font" onclick="closeModal('otpVerifyModal')">CANCEL</button>
+        </div>
+    </div>
+</div>
+
+<div id="renewPasswordModal" class="custom-overlay d-none">
+    <div class="modal-box p-4 border border-4 border-#2e5c44 text-center">
+        <h3 class="pixel-font text-white mb-4">NEW PASSWORD</h3>
+        <p class="text-white pixel-font small mb-3">Update password for account</p>
+        <input type="password" id="newPassInput" class="form-control mb-3 pixel-input" placeholder="New Password" required>
+        <input type="password" id="confirmNewPassInput" class="form-control mb-4 pixel-input" placeholder="Confirm Password" required>
+        <button class="btn-white btn-white w-100 pixel-font" onclick="processPasswordRenewal()">RENEW & START</button>
+    </div>
+</div>
+
+</body>
+</html>
+    
+
+    <footer class="login-footer">
+        <p>2026 All rights reserved</p>
+        <p>Team Plasma</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api-connection.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/audio-manager.js"></script>
+    
+</body>
+</html>

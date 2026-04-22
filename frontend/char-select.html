@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Character Select</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="char-select-page">
+    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
+                <span class="plasma-title">Team Plasma</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+                <img src="img/icon-frame.png" alt="Profile" style="width: 80px; height: 80px;">
+               </button>
+            </div>
+        </div>
+    </nav>
+
+<div class="profile-trigger-container">
+    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
+        <img src="img/.png" alt="Profile" class="pixel-icon-large">
+    </button>
+</div>
+
+<div id="accountOverlay" class="account-overlay">
+    <div class="account-container">
+        <div class="account-content">
+            <div class="account-details">
+                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
+                <button class="change-name-btn" onclick="changeName()">Change name</button>
+                
+                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
+                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
+            </div>
+            <div class="account-visual">
+                <div class="icon-prof-frame">
+                    <img src="img/.png" alt="Avatar" class="icon-prof">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="charCarousel" class="carousel slide h-100" data-bs-ride="false">
+    <div class="carousel-inner h-100">
+
+        <div class="carousel-item active h-100">
+            <div class="row h-100 align-items-center px-5">
+                
+                <div class="col-md-5 d-flex flex-column align-items-center gap-4">
+                    <div class="char-role">
+                        <img id="role-scroll" src="img/scroll-webdesigner.png" alt="Role">
+                    </div>
+                    <div class="char-model-container">
+                        <img id="char-sprite" src="img/witch-model.png" class="char-model" alt="">
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="info-container slab-textfield">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="bio-section">
+                                <h2 class="bioLabel">Bio:</h2>
+                                <p id="char-bio" class="bioText"></p>
+                            </div>
+                            <img id="char-icon" class="char-icon" alt="Icon">
+                        </div>
+                        
+                        <div class="stats-section mt-4">
+                            <h2 class="stats-label">Stats:</h2>
+                            <div id="stats-container">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+                <button class="scroll-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">
+    <button class="carousel-control-prev char-arrow" type="button" data-bs-target="#charCarousel" data-bs-slide="prev" onclick="playSFX('sound-fx/click.mp3');prevChar()">
+        <img src="img/arrow-prev.png" alt="Previous">
+    </button>
+    <button class="carousel-control-next char-arrow" type="button" data-bs-target="#charCarousel" data-bs-slide="next" onclick="playSFX('sound-fx/click.mp3');nextChar()">
+        <img src="img/arrow-next.png" alt="Next">
+    </button>
+</div>
+
+    <div class="bottom-nav">
+      
+        <button class="scroll-btn-enter" onclick="navigate('game')">
+            <img src="img/scrolls/scroll-enter.png" alt="Enter">
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+   <script src="js/audio-manager.js"></script>
+    <script src="js/char-catalogue.js"></script>
+</body>
+</html>
