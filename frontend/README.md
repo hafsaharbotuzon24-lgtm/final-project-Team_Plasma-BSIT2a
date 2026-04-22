@@ -86,6 +86,13 @@ The frontend implementation aligns with the game system use case by covering the
 - API host is configurable through `window.API_BASE_URL` (fallback: `http://localhost:5000`).
 
 ---
+## TOOLS/SOFTWARE USED (Pixelated Sprites)
+- piskel.com
+- Krita
+- Ibis Paint
+  
+---
+
 ### TEAM PLASMA
 
 <p align="left">
