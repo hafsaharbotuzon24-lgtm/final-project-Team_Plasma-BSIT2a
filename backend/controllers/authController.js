@@ -1,16 +1,23 @@
 const Player = require('../models/Player');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const xss = require('xss');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    let { username, email, password } = req.body;
 
+    // Sanitize inputs to prevent XSS
+    username = xss(username);
+    email = xss(email);
+
+    // Check if email already exists
     const existingUser = await Player.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+    // Hash password and create player
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const player = await Player.create({
@@ -19,7 +26,7 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
-    res.status(201).json(player);
+    res.status(201).json({ message: "User registered successfully", player });
 
   } catch (err) {
     res.status(500).json({ message: err.message });

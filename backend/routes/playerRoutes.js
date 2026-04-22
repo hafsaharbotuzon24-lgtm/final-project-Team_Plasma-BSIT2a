@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/playerController');
-const protect = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
 
 router.post('/', controller.createPlayer);
 router.get('/', protect, controller.getPlayers);
