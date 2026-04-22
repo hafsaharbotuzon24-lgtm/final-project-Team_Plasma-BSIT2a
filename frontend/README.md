@@ -1,6 +1,8 @@
-# Combat Coders Frontend
+# ⚔️ Combat Coders Frontend
 
 This document explains the implemented frontend features and how they map to the project use case and ERD.
+
+---
 
 ## Frontend Implementation
 
@@ -45,6 +47,8 @@ The frontend is built using static pages (`HTML`), styling (`CSS` + `Bootstrap`)
 - Audio preference controls (SFX/Music) are persisted in `localStorage`.
 - Profile overlay controls and quality-of-life interactions (scroll-to-top, transitions) are implemented.
 
+---
+
 ## Alignment With Use Case and ERD
 
 The frontend implementation aligns with the game system use case by covering the main user actions and by consuming backend APIs that correspond to ERD entities.
@@ -80,3 +84,6 @@ The frontend implementation aligns with the game system use case by covering the
 - Frontend currently includes end-to-end UI flow for auth, gameplay events, and leaderboard viewing.
 - Some account-recovery UI is present, but password reset API integration is marked as pending backend support.
 - API host is configurable through `window.API_BASE_URL` (fallback: `http://localhost:5000`).
+
+---
+### TEAM PLASMA
