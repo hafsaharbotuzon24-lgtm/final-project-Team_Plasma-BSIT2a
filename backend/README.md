@@ -77,7 +77,8 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 ├── .env
 ├── .gitignore
 ├── package-lock.json 
-├── package.json 
+├── package.json
+├── seed.js
 └── server.js
 ```
 
