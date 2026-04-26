@@ -67,7 +67,8 @@ window.addEventListener("load", () => {
     const logoWrapper = document.getElementById('logoWrapper');
     const logoImg = document.getElementById('logoImg');
 
-    const GIF_DURATION = 1000; 
+    const GIF_DURATION = 1000;
+    const FADE_DURATION = 300;
 
     const originalSrc = logoImg.getAttribute("src");
     logoImg.src = originalSrc + "?t=" + Date.now();

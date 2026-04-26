@@ -1,6 +1,19 @@
 /* --- GLOBAL BODY SETUP --- */
 body {
     padding-top: 70px; 
+    background-image: url('../img/bg-main.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-origin: content-box; 
+    background-position: center top;
+    image-rendering: pixelated;   
+    transition: cursor 0.1s;
+}
+
+/* Inde body */
+.index-body {
+    padding-top: 70px; 
     background-image: url('../img/bg-menu.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -393,7 +406,7 @@ input:active,
     margin-top: 10px;
     font-family: 'Jersey 10', sans-serif;
     font-size: 2.0rem;
-    color: #0c273d; 
+    color: white; 
     letter-spacing: 1px;
     flex-direction: column;
     left: -10px;
@@ -410,7 +423,7 @@ input:active,
     bottom: 20px;
     width: 100%;
     text-align: center;
-    color: #0e2e47; 
+    color: white; 
     font-size: 1.5rem;
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
 }
@@ -434,8 +447,9 @@ input:active,
     border: none;
     cursor: pointer;
     padding: 0;
-    right: -280px;
+    right: -560px;
     transition: transform 0.2s ease;
+    transform: (0.8);
 }
 
 .scroll-btn-play {
@@ -464,6 +478,25 @@ input:active,
 .scroll-btn-enter:active {
     transform: scale(0.95);
 }
+
+.scroll-btn-play img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.scroll-btn-enter img {
+    width: 30%;
+    height: auto;
+    display: block;
+    
+}
+
+.scroll-btn-play:hover,
+.scroll-btn-enter:hover {
+    transform: scale(1.05); 
+}
+
 
 /* Settings-Interface */
 :root {
@@ -683,7 +716,7 @@ body.settings-body {
 /* Main Container */
 /* Base Styles & Font */
 .lb-body {
-    background: url('../img/bg-menu.png') no-repeat center center fixed;
+    background: url('../img/bg-main.png') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Pixelify Sans', sans-serif;
     display: flex;
@@ -1038,6 +1071,9 @@ body.char-select-page {
     image-rendering: pixelated;
 }
 
+.char-role{
+    right: -160px;
+}
 
 
 
@@ -1081,7 +1117,7 @@ body.char-select-page {
 
 /* login */
  .login-page-bg {
-    background: url('../img/bg-menu.png') no-repeat center center fixed;
+    background: url('../img/bg-main.png') no-repeat center center fixed;
     background-size: cover;
     overflow: hidden;
     
@@ -1210,3 +1246,26 @@ body.char-select-page {
     pointer-events: auto !important;
 }
 
+/* Save */
+/* Transparent Save Button */
+.pixel-font {
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.play-page {
+    background-color: #0b0916; /* Fallback if background image fails */
+    min-height: 100vh;
+    color: white;
+}
+
+#saveActionContainer img {
+    transition: transform 0.1s;
+}
+
+#saveActionContainer:hover img {
+    transform: scale(1.1);
+}
+
+.stat-box img {
+    image-rendering: pixelated;
+}

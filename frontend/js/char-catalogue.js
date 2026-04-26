@@ -30,7 +30,7 @@ if (enterBtn) {
 }
 const characters = [
     {
-        roleScroll: "scroll-witch.png",
+        roleScroll: "img/banner-witch.png",
         sprite: "img/witch-model.png",
        
         bio: "The only daughter and mage in a family of knights, Cecily wields a rare ability to synergize elements. Caught between her father’s wish for a warrior and her mother’s desire for a reflection, she works to exhaustion to satisfy both. In her rare leisure, she paints on rags and crafts the kingdom's finest wine.",
@@ -38,14 +38,14 @@ const characters = [
         stats: { "Mana": 5, "Artistry": 4, "Spellcasting": 4 }
     },
     {
-        roleScroll: "scroll-knight.png",
+        roleScroll: "img/banner-knight.png",
         sprite: "img/knight-model.png",
         
         bio: "Born to a poor fenland family, Torben inherited both his father’s Viking strength and his mother’s kindness. He became a knight not for glory, but to lift his twelve siblings out of poverty and prove his family's worth to the kingdom. In his quiet moments, he enjoys gardening and a simple meal of barley bread.",
         stats: { "Tenacity": 5, "Strength": 4, "Gardening": 3 }
     },
     {
-        roleScroll: "scroll-rogue.png",
+        roleScroll: "img/banner-rogue.png",
         sprite: "img/rogue-model.png",
       
         bio: "The last ghost of a fallen kingdom, Wulfric's only memories are of fire, mud, and a stranger pulling him to safety. Now a haunted rogue, he survives through foraging and quiet adventuring, using coin to buy the solitude he craves. Driven by a burning need for answers, he wanders the land seeking the truth behind the flames: who was he, and why did his world burn?",      
