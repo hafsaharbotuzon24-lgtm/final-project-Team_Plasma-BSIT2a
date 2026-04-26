@@ -5,5 +5,6 @@ const hintSchema = new mongoose.Schema({
   hint_text: { type: String, required: true },
   cost: { type: Number, required: true }
 });
+hintSchema.index({ chest_id: 1 });
 
 module.exports = mongoose.model('Hint', hintSchema);

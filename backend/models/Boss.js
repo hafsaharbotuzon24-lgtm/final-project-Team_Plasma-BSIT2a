@@ -5,5 +5,6 @@ const bossSchema = new mongoose.Schema({
   boss_name: { type: String, required: true },
   boss_health: { type: Number, required: true }
 });
+bossSchema.index({ finalBattle_id: 1 });
 
 module.exports = mongoose.model('Boss', bossSchema);

@@ -7,5 +7,7 @@ const attemptSchema = new mongoose.Schema({
   is_correct: { type: Boolean },
   hearts_lost: { type: Number }
 });
+attemptSchema.index({ player_id: 1 });
+attemptSchema.index({ battle_id: 1 });
 
 module.exports = mongoose.model('Attempt', attemptSchema);

@@ -6,5 +6,8 @@ const finalBattleSchema = new mongoose.Schema({
     chest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Chest', required: true },
     score: { type: Number, default: 0 }
 });
+finalBattleSchema.index({ battle_id: 1 });
+finalBattleSchema.index({ room_id: 1 });
+finalBattleSchema.index({ chest_id: 1 });
 
 module.exports = mongoose.model('FinalBattle', finalBattleSchema);

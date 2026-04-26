@@ -9,9 +9,10 @@ exports.getFinalBattle = async (req, res) => {
   const fb = await FinalBattle.findOne({
     battle_id: req.params.battleId
   })
-    .populate("battle_id")
-    .populate("room_id")
-    .populate("chest_id");
+    .populate("battle_id", "description reward_hearts reward_hints")
+    .populate("room_id", "storyline")
+    .populate("chest_id")
+    .lean();
 
   res.json(fb);
 };

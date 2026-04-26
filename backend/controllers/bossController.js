@@ -17,11 +17,12 @@ exports.getBoss = async (req, res) => {
       .populate({
         path: "finalBattle_id",
         populate: [
-          { path: "battle_id" },
-          { path: "room_id" },
+          { path: "battle_id", select: "description reward_hearts reward_hints" },
+          { path: "room_id", select: "storyline" },
           { path: "chest_id" }
         ]
-      });
+      })
+      .lean();
 
     res.json(boss);
 

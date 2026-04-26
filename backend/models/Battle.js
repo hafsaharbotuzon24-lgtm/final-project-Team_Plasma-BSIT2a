@@ -7,5 +7,7 @@ const battleSchema = new mongoose.Schema({
     reward_hearts: { type: Number },
     reward_hints: { type: Number },
 });
+battleSchema.index({ player_id: 1 });
+battleSchema.index({ path_id: 1 });
 
 module.exports = mongoose.model('Battle', battleSchema);

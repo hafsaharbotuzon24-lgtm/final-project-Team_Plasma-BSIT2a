@@ -3,9 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
+const responseTime = require('response-time');
 const xss = require('xss');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
+const responseCache = require('./middleware/responseCache');
 
 const app = express();
 const { setServers } = require('dns');
@@ -18,6 +21,8 @@ if (process.env.NODE_ENV === 'production' || String(process.env.TRUST_PROXY || '
 }
 
 app.use(helmet());
+app.use(compression());
+app.use(responseTime());
 
 const allowedOrigins = (process.env.FRONTEND_URLS || '')
   .split(',')
@@ -66,6 +71,7 @@ app.use((err, req, res, next) => {
 
 
 app.use(express.json());
+app.use('/api', responseCache(Number(process.env.RESPONSE_CACHE_TTL || 30)));
 
 // Basic health routes (so opening http://127.0.0.1:5000 doesn't show "Cannot GET /")
 app.get('/', (req, res) => {

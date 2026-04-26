@@ -8,8 +8,9 @@ exports.createBattle = async (req, res) => {
 exports.getBattlesByPlayer = async (req, res) => {
   try {
     const battles = await Battle.find({ player_id: req.params.playerId })
-      .populate("player_id")
-      .populate("path_id");
+      .populate("player_id", "username email level")
+      .populate("path_id", "path_name difficulty_level")
+      .lean();
 
     res.json(battles);
   } catch (err) {

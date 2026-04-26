@@ -5,5 +5,7 @@ const leaderboardSchema = new mongoose.Schema({
     score: { type: Number, default: 0 },
     rank_number: { type: Number }
 });
+leaderboardSchema.index({ score: -1 });
+leaderboardSchema.index({ player_id: 1 });
 
 module.exports = mongoose.model('Leaderboard', leaderboardSchema);

@@ -23,6 +23,9 @@ This is the backend server for the **Combat Coders Game**, built using **Node.js
 * Progress tracking
 * Leaderboard system
 * Hint & Heart system
+* Response compression + response-time headers
+* Short-lived response caching for GET APIs
+* Query tuning with selective population and indexes
 
 ## Folder Structure:
 
@@ -226,6 +229,27 @@ npm install
 ```
 npm run dev
 ```
+---
+
+## 3. Measure API performance quickly
+
+Run a simple benchmark (warmup + repeated requests):
+
+```
+npm run benchmark
+```
+
+Optional environment variables:
+
+```
+BENCH_BASE_URL=http://127.0.0.1:5000
+BENCH_ENDPOINTS=/api,/api/leaderboard
+BENCH_ITERATIONS=40
+BENCH_WARMUP=8
+BENCH_BEARER_TOKEN=your_jwt_token
+```
+
+The benchmark prints average, p95, min/max latency, plus cache HIT/MISS counts.
 ---
 
 ## Server will run on:

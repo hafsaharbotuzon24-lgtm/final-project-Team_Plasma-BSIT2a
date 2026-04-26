@@ -7,7 +7,8 @@ exports.createPath = async (req, res) => {
 
 exports.getPaths = async (req, res) => {
   const paths = await Path.find()
-    .populate("player_id");
+    .populate("player_id", "username email level")
+    .lean();
 
   res.json(paths);
 };

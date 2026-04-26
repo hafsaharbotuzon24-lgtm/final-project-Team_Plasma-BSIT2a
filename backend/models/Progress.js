@@ -7,5 +7,7 @@ const progressSchema = new mongoose.Schema({
   earned_hearts: { type: Number, default: 0 },
   earned_hints: { type: Number, default: 1 }
 });
+progressSchema.index({ player_id: 1 });
+progressSchema.index({ attempt_id: 1 });
 
 module.exports = mongoose.model('Progress', progressSchema);

@@ -5,5 +5,6 @@ const enemySchema = new mongoose.Schema({
   enemy_name: { type: String, required: true },
   enemy_health: { type: Number, required: true }
 });
+enemySchema.index({ battle_id: 1 });
 
 module.exports = mongoose.model('Enemy', enemySchema);

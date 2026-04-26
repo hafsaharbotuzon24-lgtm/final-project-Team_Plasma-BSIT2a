@@ -11,21 +11,27 @@ exports.createPlayer = async (req, res) => {
 
 exports.getMyPlayer = async (req, res) => {
   const player = await Player.findById(req.player.id)
-    .populate("currentPath");
+    .select("-password")
+    .populate("currentPath", "path_name difficulty_level")
+    .lean();
 
   res.json(player);
 };
 
 exports.getPlayers = async (req, res) => {
   const players = await Player.find()
-    .populate("currentPath");
+    .select("-password")
+    .populate("currentPath", "path_name difficulty_level")
+    .lean();
 
   res.json(players);
 };
 
 exports.getPlayer = async (req, res) => {
   const player = await Player.findById(req.params.id)
-    .populate("currentPath");
+    .select("-password")
+    .populate("currentPath", "path_name difficulty_level")
+    .lean();
 
   res.json(player);
 };

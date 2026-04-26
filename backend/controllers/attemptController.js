@@ -8,7 +8,7 @@ exports.submitAttempt = async (req, res) => {
     const { player_id, battle_id, input_answer } = req.body;
 
     const player = await Player.findById(player_id);
-    const battle = await Battle.findById(battle_id);
+    const battle = await Battle.findById(battle_id).select('description');
 
     if (!player || !battle) {
       return res.status(404).json({ message: "Player or Battle not found" });
@@ -37,8 +37,9 @@ exports.submitAttempt = async (req, res) => {
     });
 
     const fullAttempt = await Attempt.findById(attempt._id)
-      .populate("player_id")
-      .populate("battle_id");
+      .populate("player_id", "username email level hearts")
+      .populate("battle_id", "description reward_hearts reward_hints")
+      .lean();
 
     res.json(fullAttempt);
 

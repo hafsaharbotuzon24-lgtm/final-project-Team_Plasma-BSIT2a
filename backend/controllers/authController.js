@@ -33,7 +33,9 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
-    res.status(201).json({ message: "User registered successfully", player });
+    const safePlayer = player.toObject();
+    delete safePlayer.password;
+    res.status(201).json({ message: "User registered successfully", player: safePlayer });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -60,7 +62,9 @@ exports.login = async (req, res) => {
 
     const token = signToken(player._id);
 
-    res.json({ token, player });
+    const safePlayer = player.toObject();
+    delete safePlayer.password;
+    res.json({ token, player: safePlayer });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -129,7 +133,9 @@ exports.googleLogin = async (req, res) => {
     }
 
     const token = signToken(player._id);
-    res.json({ token, player });
+    const safePlayer = player.toObject();
+    delete safePlayer.password;
+    res.json({ token, player: safePlayer });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
