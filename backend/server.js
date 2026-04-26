@@ -15,7 +15,6 @@ const { setServers } = require('dns');
 
 connectDB();
 
-// If deployed behind a proxy (Render/Heroku/Nginx), this makes req.ip accurate.
 if (process.env.NODE_ENV === 'production' || String(process.env.TRUST_PROXY || '').toLowerCase() === 'true') {
   app.set('trust proxy', 1);
 }
@@ -40,7 +39,7 @@ const corsOrigins = allowedOrigins.length ? allowedOrigins : defaultOrigins;
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests without browser origin header (Postman/cURL).
+
     if (!origin) return callback(null, true);
     try {
       const url = new URL(origin);
@@ -49,7 +48,6 @@ app.use(cors({
         url.hostname === '127.0.0.1' ||
         url.hostname === '[::1]';
 
-      // Dev-friendly: allow any local port. Production should use FRONTEND_URLS.
       if (isLocalhost) return callback(null, true);
     } catch (_) {
       // ignore parse errors and fall back to explicit allowlist
