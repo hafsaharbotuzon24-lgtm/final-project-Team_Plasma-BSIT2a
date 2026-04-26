@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('profTrigger');
     const overlay = document.getElementById('accountOverlay');
 
+    if (!trigger || !overlay) {
+        return;
+    }
+
     // Toggle window on click
     trigger.addEventListener('click', (e) => {
         overlay.style.display = 'flex';
@@ -86,7 +90,11 @@ function lbBackToTop() {
 document.addEventListener('DOMContentLoaded', () => {
     const sfxSlider = document.getElementById('sfx-slider');
     const musicSlider = document.getElementById('music-slider');
-    
+
+    if (!sfxSlider || !musicSlider) {
+        return;
+    }
+
     // 1. Load saved volumes or defaults
     const savedSfx = localStorage.getItem('sfxVolume') || 80;
     const savedMusic = localStorage.getItem('musicVolume') || 50;
@@ -114,6 +122,42 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('toggle-music').addEventListener('click', () => {
         musicSlider.value = 0;
         localStorage.setItem('musicVolume', 0);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const navToggles = document.querySelectorAll('.mobile-nav-toggle');
+
+    if (!navToggles.length) {
+        return;
+    }
+
+    navToggles.forEach((toggle) => {
+        const nav = toggle.closest('.plasma-navbar');
+        const menu = nav ? nav.querySelector('.nav-links-wrap') : null;
+        if (!menu) return;
+
+        toggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isOpen = menu.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        menu.querySelectorAll('button').forEach((button) => {
+            button.addEventListener('click', () => {
+                menu.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    });
+
+    window.addEventListener('click', () => {
+        document.querySelectorAll('.nav-links-wrap.is-open').forEach((menu) => {
+            menu.classList.remove('is-open');
+        });
+        document.querySelectorAll('.mobile-nav-toggle[aria-expanded="true"]').forEach((toggle) => {
+            toggle.setAttribute('aria-expanded', 'false');
+        });
     });
 });
 

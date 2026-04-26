@@ -1269,3 +1269,341 @@ body.char-select-page {
 .stat-box img {
     image-rendering: pixelated;
 }
+
+/* -------------------- Responsive Layout -------------------- */
+.mobile-nav-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #132a41;
+    background: #020722;
+    color: #ffffff;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.mobile-nav-toggle .brainrot-logo {
+    width: 30px;
+    height: 30px;
+}
+
+@media (max-width: 1200px) {
+    .learn-container {
+        width: min(95%, 1000px);
+        height: auto;
+        min-height: 600px;
+    }
+
+    .logo-png {
+        max-width: 420px;
+        margin-top: -80px;
+    }
+
+    .profile-trigger-container {
+        left: auto;
+        right: 20px;
+        top: 80px;
+    }
+}
+
+@media (max-width: 992px) {
+    body {
+        padding-top: 90px;
+    }
+
+    .plasma-navbar {
+        min-height: auto;
+        padding: 8px 0;
+    }
+
+    .plasma-navbar .container-fluid {
+        position: relative;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px !important;
+    }
+
+    .plasma-navbar .navbar-brand {
+        display: none !important;
+    }
+
+    .mobile-nav-toggle {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .nav-links-wrap {
+        display: none !important;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 12px;
+        width: min(88vw, 320px);
+        background: rgba(2, 7, 34, 0.97);
+        border: 2px solid #132a41;
+        border-radius: 10px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+        padding: 10px;
+        z-index: 3000;
+    }
+
+    .nav-links-wrap.is-open {
+        display: flex !important;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px !important;
+    }
+
+    .home-btn,
+    .play-btn,
+    .leaderboard-btn,
+    .learn-btn,
+    .settings-btn {
+        font-size: 1rem;
+        padding: 10px 12px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .main-menu-container {
+        padding-top: 140px;
+    }
+
+    .main-footer,
+    .login-footer {
+        position: static;
+        margin-top: 24px;
+        padding-bottom: 12px;
+    }
+
+    .learn-container {
+        margin-top: 140px;
+        padding: 14px;
+    }
+
+    .game-mechanics-title {
+        font-size: 1.7rem;
+    }
+
+    .section-subtitle {
+        font-size: 1.25rem;
+    }
+
+    .description-text,
+    .card-description1,
+    .card-description2,
+    .card-description3 {
+        font-size: 1rem;
+    }
+
+    .lb-wrapper {
+        width: 96%;
+    }
+
+    .lb-title-box h2 {
+        font-size: 1.7rem;
+    }
+
+    .lb-container {
+        padding: 50px 16px 18px 16px;
+    }
+
+    .lb-row {
+        grid-template-columns: 1fr 2fr 1fr;
+        font-size: 1rem;
+    }
+
+    .interface-container {
+        margin-top: 120px;
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .load-column {
+        width: 100%;
+        padding: 24px 16px;
+    }
+
+    .settings-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .slider-wrapper {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .character-display {
+        height: auto;
+        min-height: 75vh;
+        padding-top: 140px;
+    }
+
+    .char-model {
+        height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 100px;
+    }
+
+    .plasma-title {
+        font-size: 1.1rem;
+    }
+
+    .brainrot-logo {
+        width: 42px;
+    }
+
+    .profile-trigger-container {
+        display: none;
+    }
+
+    .logo-png {
+        max-width: 280px;
+        margin-top: -30px;
+    }
+
+    .motd-text {
+        font-size: 1.35rem;
+        padding: 0 12px;
+    }
+
+    .scroll-btn-play {
+        width: 180px;
+    }
+
+    .login-box-container,
+    .modal-box {
+        width: min(92vw, 380px);
+    }
+
+    .learn-container {
+        width: 95%;
+        margin-top: 130px;
+        border-width: 4px;
+    }
+
+    .lb-title-box {
+        top: -25px;
+        padding: 8px 20px;
+    }
+
+    .lb-title-box h2 {
+        font-size: 1.35rem;
+    }
+
+    .lb-header {
+        font-size: 1rem;
+    }
+
+    .lb-player-row {
+        font-size: 0.95rem;
+    }
+
+    .lb-scroll-area {
+        max-height: 300px;
+    }
+
+    .slot-title {
+        font-size: 1.1rem;
+    }
+
+    .slot-status {
+        font-size: 0.8rem;
+    }
+
+    .slab-textfield {
+        padding: 28px 20px;
+        min-height: auto;
+    }
+
+    .char-model {
+        height: 240px;
+    }
+
+    .bottom-nav {
+        width: 100%;
+        bottom: 12px;
+    }
+
+    .scroll-btn-enter {
+        right: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .mobile-nav-toggle {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+
+    .mobile-nav-toggle .brainrot-logo {
+        width: 24px;
+        height: 24px;
+    }
+
+    .home-btn,
+    .play-btn,
+    .leaderboard-btn,
+    .learn-btn,
+    .settings-btn {
+        font-size: 0.9rem;
+        padding: 6px 8px;
+    }
+
+    .main-menu-container {
+        padding-top: 160px;
+    }
+
+    .game-mechanics-title {
+        font-size: 1.4rem;
+    }
+
+    .section-subtitle {
+        font-size: 1.05rem;
+    }
+
+    .description-text,
+    .card-description1,
+    .card-description2,
+    .card-description3 {
+        font-size: 0.9rem;
+    }
+
+    .btn-pixel {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .lb-row {
+        grid-template-columns: 0.8fr 1.8fr 1fr;
+        gap: 6px;
+        padding: 10px 0;
+    }
+
+    .load-column {
+        padding: 18px 12px;
+    }
+
+    .slab-load-slot {
+        padding: 12px;
+    }
+
+    .char-model {
+        height: 200px;
+    }
+
+    .carousel-control-prev.char-arrow,
+    .carousel-control-next.char-arrow {
+        transform: scale(0.14);
+    }
+}
