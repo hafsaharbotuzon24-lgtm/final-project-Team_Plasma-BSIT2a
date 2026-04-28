@@ -11,13 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="load-body" style="background-image: url('../frontend/img/bg-main.png');">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
-                <span class="plasma-title">Team Plasma</span>
+                <span>Combat Coders</span>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -26,10 +25,20 @@
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
                 <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
-                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-                <img src="img/icon-frame.png" alt="Profile" style="width: 80px; height: 80px;">
-               </button>
             </div>
+
+            <!-- Only ONE profile trigger, inside the navbar -->
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
+                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+
             <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
                 <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
                 <span>Team Plasma</span>
@@ -37,62 +46,148 @@
         </div>
     </nav>
 
-<div class="profile-trigger-container">
-    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-        <img src="img/.png" alt="Profile" class="pixel-icon-large">
-    </button>
-</div>
-
-<div id="accountOverlay" class="account-overlay">
-    <div class="account-container">
-        <div class="account-content">
-            <div class="account-details">
-                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
-                <button class="change-name-btn" onclick="changeName()">Change name</button>
-                
-                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
-                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
+    <div class="load-slot-container">
+        <div class="container">
+            <div class="text-center mb-4">
+                <button class="new-game-btn" onclick="window.location.href='char-select.html'">
+                     NEW GAME 
+                </button>
             </div>
-            <div class="account-visual">
-                <div class="icon-prof-frame">
-                    <img src="img/.png" alt="Avatar" class="icon-prof">
+
+            <div class="slots-wrapper">
+                <!-- Slot 1 -->
+                <div class="load-slot-card" id="slot1Card">
+                    <div class="slot-header">
+                        <span class="slot-number">SLOT 01</span>
+                        <span class="slot-status" id="slot1Status">Empty Slot</span>
+                    </div>
+                    <div id="slot1Details" style="display: none;">
+                        <div class="slot-details">
+                            <div class="detail-item">
+                                <span class="detail-label">PLAYER</span>
+                                <span class="detail-value" id="slot1Name">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">TIME</span>
+                                <span class="detail-value" id="slot1Time">0:00</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">PROGRESS</span>
+                                <span class="detail-value" id="slot1Progress">Level 1 - Site 1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HEARTS</span>
+                                <span class="detail-value" id="slot1Hearts">❤️ 3</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HINTS</span>
+                                <span class="detail-value" id="slot1Hints">💡 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="load-btn" id="slot1LoadBtn" onclick="loadGameFromSlot(1)" disabled>EMPTY SLOT</button>
+                        <button class="delete-btn" id="slot1DeleteBtn" onclick="deleteSaveSlot(1)" style="display: none;">DELETE SAVE</button>
+                    </div>
+                </div>
+
+                <!-- Slot 2 -->
+                <div class="load-slot-card" id="slot2Card">
+                    <div class="slot-header">
+                        <span class="slot-number">SLOT 02</span>
+                        <span class="slot-status" id="slot2Status">Empty Slot</span>
+                    </div>
+                    <div id="slot2Details" style="display: none;">
+                        <div class="slot-details">
+                            <div class="detail-item">
+                                <span class="detail-label">PLAYER</span>
+                                <span class="detail-value" id="slot2Name">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">TIME</span>
+                                <span class="detail-value" id="slot2Time">0:00</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">PROGRESS</span>
+                                <span class="detail-value" id="slot2Progress">Level 1 - Site 1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HEARTS</span>
+                                <span class="detail-value" id="slot2Hearts">❤️ 3</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HINTS</span>
+                                <span class="detail-value" id="slot2Hints">💡 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="load-btn" id="slot2LoadBtn" onclick="loadGameFromSlot(2)" disabled>EMPTY SLOT</button>
+                        <button class="delete-btn" id="slot2DeleteBtn" onclick="deleteSaveSlot(2)" style="display: none;">DELETE SAVE</button>
+                    </div>
+                </div>
+
+                <!-- Slot 3 -->
+                <div class="load-slot-card" id="slot3Card">
+                    <div class="slot-header">
+                        <span class="slot-number">SLOT 03</span>
+                        <span class="slot-status" id="slot3Status">Empty Slot</span>
+                    </div>
+                    <div id="slot3Details" style="display: none;">
+                        <div class="slot-details">
+                            <div class="detail-item">
+                                <span class="detail-label">PLAYER</span>
+                                <span class="detail-value" id="slot3Name">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">TIME</span>
+                                <span class="detail-value" id="slot3Time">0:00</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">PROGRESS</span>
+                                <span class="detail-value" id="slot3Progress">Level 1 - Site 1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HEARTS</span>
+                                <span class="detail-value" id="slot3Hearts">❤️ 3</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">HINTS</span>
+                                <span class="detail-value" id="slot3Hints">💡 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="load-btn" id="slot3LoadBtn" onclick="loadGameFromSlot(3)" disabled>EMPTY SLOT</button>
+                        <button class="delete-btn" id="slot3DeleteBtn" onclick="deleteSaveSlot(3)" style="display: none;">DELETE SAVE</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    <div class="interface-container">
-        <div class="action-column">
-            <button class="new-game-box" onclick="goCharSelect()">
-                <h2 class="new-game-text">New Game</h2>       
-            </button>
-
-            
-        </div>
-
-        <div class="load-column slab-textfield">
-          <h1 class="load-text" style="font-family: 'Pixelify Sans', sans-serif; font-size: 2.5rem;">Load Game</h1>
-            <div class="slots-container">
-                <div class="slab-load-slot disabled" onclick="navigate('slot1')">
-                    <span class="slot-title">Slot 1</span>
-                    <span class="slot-status">Empty Slot</span>
-                </div>
-
-                <div class="slab-load-slot disabled">
-                    <span class="slot-title">Slot 2</span>
-                    <span class="slot-status">Empty Slot</span>
-                </div>
-
-                <div class="slab-load-slot disabled">
-                    <span class="slot-title">Slot 3</span>
-                    <span class="slot-status">Empty Slot</span>
+    <!-- Load Success Modal -->
+    <div class="modal fade" id="loadSuccessModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-4 border-success bg-black rounded-0">
+                <div class="modal-body text-center p-4">
+                    <h2 class="pixel-font text-success">GAME LOADED!</h2>
+                    <p class="text-white mt-2">Continuing your adventure...</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/save-load.js"></script>
+    <script>
+        // Initialize load slots on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllSlots();
+        });
+    </script>
 </body>
 </html>

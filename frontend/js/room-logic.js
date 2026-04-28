@@ -1,3 +1,24 @@
+const RESOURCE_API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+
+async function syncResourceDelta(heartsDelta, hintsDelta) {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+        await fetch(`${RESOURCE_API_BASE}/api/players/me/resources`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            credentials: 'include',
+            body: JSON.stringify({ heartsDelta, hintsDelta })
+        });
+    } catch (err) {
+        console.warn('Resource sync failed:', err.message);
+    }
+}
+
 function openChestModal() {
     const dialogues = [
         "You find a strange stone tablet that seems to be the missing piece to the puzzle ahead.",
@@ -7,6 +28,7 @@ function openChestModal() {
     ];
     const text = dialogues[Math.floor(Math.random() * dialogues.length)];
     gameState.hints++;
+    syncResourceDelta(0, 1);
     renderReward('chest', text, '+1 HINT', 'text-success');
 }
 
@@ -20,6 +42,7 @@ function openRoomModal() {
     ];
     const text = dialogues[Math.floor(Math.random() * dialogues.length)];
     gameState.hearts++;
+    syncResourceDelta(1, 0);
     renderReward('room', text, '+1 HEART', 'text-danger');
 }
 

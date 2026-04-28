@@ -1,3 +1,24 @@
+const HINT_API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+
+async function syncHintSpend() {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+        await fetch(`${HINT_API_BASE}/api/players/me/resources`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            credentials: 'include',
+            body: JSON.stringify({ hintsDelta: -1 })
+        });
+    } catch (err) {
+        console.warn('Hint spend sync failed:', err.message);
+    }
+}
+
 function triggerBattleHint() {
     // Hide save button while hint is shown
     if (typeof toggleSaveButton === "function") toggleSaveButton(false);
@@ -17,6 +38,7 @@ function triggerBattleHint() {
 
         // Spend the hint
         gameState.hints--;
+        syncHintSpend();
         
         // Sync UI
         updateUI(); 

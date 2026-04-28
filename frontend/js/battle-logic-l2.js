@@ -1,19 +1,43 @@
+function restartGame() {
+    // Reset hearts and hints but stay on current level
+    gameState.hearts = 3;
+    gameState.hints = 1;
+    gameState.currentSite = 1;
+    gameState.lastChoice = null;
+    gameState.currentQuestionIndex = 0;
+    updateUI();
+    
+    // DO NOT reset timer - just reload the page
+    const modalEl = document.getElementById('gameModal');
+    if (modalEl) {
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) {
+            modalEl.addEventListener('hidden.bs.modal', function handler() {
+                modalEl.removeEventListener('hidden.bs.modal', handler);
+                location.reload();
+            }, { once: true });
+            modalInstance.hide();
+            return;
+        }
+    }
+    location.reload();
+}
 // ============================================================
 // LEVEL 2 — Dungeon 
 // ============================================================
 
-const BG_NUM_L2 = ['img/bg-dungeon.png', 'img/bg-balcony.png'];
+const BG_NUM_L2 = ['img/bg-dungeon.png', 'img/bg-balcony.png', 'img/bg-torture_room.png'];
 const ENEMIES_L2 = ['enemy-mosquito.png', 'enemy-yellowmoth.png', 'enemy-beetle.png', 'enemy-dogfly.png'];
 const BOSSES_L2 = ['boss-kingfly.png'];
 
 const PLAYER_DIAL_L2 = ["YOU: You have eaten spellbooks worth more than your colony.", "YOU: You have claimed this castle long enough. Descend and face me.", "YOU: The villagers fled because of you. Your thirst ends now.", "YOU: I feel the cold radiating from you. Is that malice or just your nature?", "YOU: Your body looks fragile. Let me test that theory!"];
-const ENEMY_DIAL_L2 = ["ENEMY: These walls are ours. Turn back or be crushed.", "ENEMY: Innocents taste the sweetest. I will not leave.", "ENEMY: You bring warmth here. We will snuff it out.", "ENEMY: Your power will die before it touches my skin.", "ENEMY: Your bones will join the mineral deposits.", "ENEMY: We have waited an age for prey. You'll do just fine."];
+const ENEMY_DIAL_L2 = ["ENEMY: These walls are ours. Turn back or be crushed.", "ENEMY: Innocents taste the sweetest. I will not leave.", "ENEMY: You bring warmth here. We will snuff it out.", "ENEMY: Your power will die before it touches my skin.", "ENEMY: Your bones will join the mineral deposits.", "ENEMY: We have waited ages for prey. You'll do just fine."];
 
 const BOSS_DIAL_L2 = [
-    "LORD OF THE FLIES: FEED. DESTROY. AND DEVOUR",
-    "LORD OF THE FLIES: Every bone you see was once a trespasser like you.",
-    "LORD OF THE FLIES: I am older than your language. Your code means nothing here.",
-    "LORD OF THE FLIES: This hall was once peaceful. Your kind keeps on trespassing! Must I use my iron fist to finish all of you off?"
+    "LORD OF THE FLIES: FEED! DESTROY! AND DEVOUR",
+    "LORD OF THE FLIES: Every bone you see was once a trespasser like you, wanna be with them? ehuehuehuehue...",
+    "LORD OF THE FLIES: Children, swarm this peckish fool! Dinner is served! Main dish? YOU",
+    "LORD OF THE FLIES: This castle was once peaceful. Your kind keeps on trespassing! Must I use my iron fist to finish all of you off?"
 ];
 
 const QUESTIONS_L2 = {
@@ -107,7 +131,7 @@ const QUESTIONS_L2 = {
             h: "header>h1+nav(Home|About), main>section>h2+ul>li*3(Item1-3), footer>p(User: Guest)."
         },
         {
-            q: "Boss Q5. Create a webpage connecting to \"styles.css\" with title and heading \"Styled Page\" and paragraph \"This is a styled paragraph\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n    &lt;link rel=\"stylesheet\" href=\"<input type='text' id='fillBlank4' class='blank-input' style='width:100px;'>\"&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:50px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:50px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:120px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
+            q: "Boss Q5. Create a webpage connecting to \"styles.css\" with title and heading \"Styled Page\" and paragraph \"This is a styled paragraph.\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n    &lt;link rel=\"stylesheet\" href=\"<input type='text' id='fillBlank4' class='blank-input' style='width:100px;'>\"&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:50px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:50px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:120px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
             a: ["html", "title", "Styled Page", "styles.css", "head", "body", "h1", "Styled Page", "p", "This is a styled paragraph."],
             h: "html>head>title('Styled Page')+link(href='styles.css'), body>h1('Styled Page')+p('This is a styled paragraph.')."
         }
@@ -143,7 +167,9 @@ function openBattleModal_L2(isBoss) {
         </div>`;
 
     new bootstrap.Modal(document.getElementById('gameModal')).show();
-    setTimeout(() => { document.addEventListener('keydown', battleEnterHandler_L2); }, 100);
+    setTimeout(() => { 
+        document.addEventListener('keydown', battleEnterHandler_L2); 
+    }, 100);
     startSequence_L2(introDialogue, () => {
         document.getElementById('quizArea').classList.remove('d-none');
         loadQuestion_L2();
@@ -188,7 +214,10 @@ function checkBattleAnswer_L2(isBoss) {
         gameState.hearts--;
         updateUI();
         const lossBox = document.getElementById('heartLossBox');
-        if (lossBox) { lossBox.classList.remove('d-none'); setTimeout(() => lossBox.classList.add('d-none'), 1500); }
+        if (lossBox) { 
+            lossBox.classList.remove('d-none'); 
+            setTimeout(() => lossBox.classList.add('d-none'), 1500); 
+        }
         if (gameState.hearts <= 0) showBattleResult_L2(false, isBoss);
     }
 }
@@ -215,7 +244,7 @@ function showBattleResult_L2(won, isBoss) {
 }
 
 function renderVictoryModal_L2(isBoss) {
-    const VICTORY_DIAL = ["The crystals dim. Their guardian falls. The castle is quiet now.", "Cold stone, warm victory. I'll take it.", "Shards everywhere. My boots will never be the same. Worth it."];
+    const VICTORY_DIAL = ["The lights dim. Their guardian falls. The castle is quiet now.", "Cold stone, warm victory. I'll take it.", "Bones are everywhere, I shall avenge them."];
     document.getElementById('modalContentWrapper').innerHTML = `
         <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
             <h1 class="text-white mb-3">${isBoss ? 'BOSS DEFEATED!' : 'SUCCESS'}</h1>
@@ -225,7 +254,7 @@ function renderVictoryModal_L2(isBoss) {
 }
 
 function renderDefeatModal_L2() {
-    const DEFEAT_DIAL = ["The walls, they're talking... they got inside my head. I can't think...", "Cold. So cold. The castle swallowed me whole.", "I should have brought a torch. And maybe a better plan.", "The shards found every gap in my armor. Every single one.", "Even my screams froze in here. Nobody will hear me fall."];
+    const DEFEAT_DIAL = ["The walls, they're talking... they got inside my head. I can't think...", "Cold. So cold. The castle swallowed me whole.", "I should have brought a torch. And maybe a better plan.", "They laid eggs on me!!! EEEKKKKK!!!", "Even my screams froze in here. Nobody will hear me fall."];
     document.getElementById('modalContentWrapper').innerHTML = `
         <div class="bg-danger p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
             <h1 class="text-white mb-2">YOU DIED</h1><p class="text-white fs-5 mb-4">"${DEFEAT_DIAL[Math.floor(Math.random() * DEFEAT_DIAL.length)]}"</p>

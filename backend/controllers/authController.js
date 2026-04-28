@@ -33,9 +33,10 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
+    const token = signToken(player._id);
     const safePlayer = player.toObject();
     delete safePlayer.password;
-    res.status(201).json({ message: "User registered successfully", player: safePlayer });
+    res.status(201).json({ message: "User registered successfully", token, player: safePlayer });
 
   } catch (err) {
     res.status(500).json({ message: err.message });

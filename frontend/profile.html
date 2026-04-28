@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body.profile-body {
+            padding-top: 70px; 
+            background-image: url('../frontend/img/bg-main.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Pixelify Sans', sans-serif;
+            margin: 0;
+            padding-top: 80px;
+            min-height: 100vh;
+            color: #ffffff;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .profile-main-wrapper {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px;
+        }
+        
+        .profile-container {
+            background-color: #0d1b30;
+            border: 3px solid #1a3350;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 750px;
+        }
+        
+        .profile-header {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 35px;
+            letter-spacing: 2px;
+        }
+        
+        .profile-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            margin-bottom: 35px;
+        }
+        
+        .avatar-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .avatar-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #2a4a6e;
+            overflow: hidden;
+            background: #1a2d45;
+            margin-bottom: 14px;
+        }
+        
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        
+        .change-avatar-btn {
+            background: #1a2d45;
+            border: 2px solid #2a4a6e;
+            color: #c0d0e0;
+            padding: 8px 18px;
+            font-family: 'Pixelify Sans', sans-serif;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .change-avatar-btn:hover {
+            background: #2a4a6e;
+            color: #ffffff;
+        }
+        
+        .info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #1a2d45;
+            border-radius: 8px;
+            gap: 12px;
+        }
+        
+        .info-label {
+            color: #8aa0b8;
+            font-size: 1rem;
+            min-width: 55px;
+            font-weight: bold;
+        }
+        
+        .info-value {
+            color: #ffffff;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+        
+        .change-name-btn {
+            background: #0d1b30;
+            border: 1px solid #2a4a6e;
+            color: #8aa0b8;
+            padding: 5px 14px;
+            font-family: 'Pixelify Sans', sans-serif;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .change-name-btn:hover {
+            background: #2a4a6e;
+            color: #ffffff;
+        }
+        
+        .achievements-section {
+            padding-top: 25px;
+            border-top: 2px solid #1a3350;
+        }
+        
+        .achievements-title {
+            color: #8aa0b8;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .achievements-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1a2d45;
+            padding: 14px 18px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 230px;
+        }
+        
+        .medal-slot {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+        }
+        
+        .medal-slot img {
+            width: 44px;
+            height: 44px;
+            image-rendering: pixelated;
+        }
+        
+        .medal-placeholder {
+            width: 44px;
+            height: 44px;
+            border: 2px dashed #2a4a6e;
+            border-radius: 50%;
+        }
+        
+        .achievement-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .achievement-name {
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .achievement-desc {
+            color: #6a82a0;
+            font-size: 0.75rem;
+        }
+        
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .custom-modal-overlay.show {
+            display: flex;
+        }
+        
+        .custom-modal-box {
+            background: #0d1b30;
+            border: 3px solid #2a4a6e;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+        }
+        
+        .custom-modal-box h3 {
+            color: #ffffff;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+        
+        .custom-modal-box input {
+            width: 100%;
+            padding: 12px;
+            background: #1a2d45;
+            border: 2px solid #2a4a6e;
+            color: #ffffff;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1rem;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+        
+        .custom-modal-box input:focus {
+            border-color: #4a7aaa;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn-save {
+            background: #2a5a3a;
+            border: 2px solid #3a7a4a;
+            color: #ffffff;
+            padding: 10px 24px;
+            font-family: 'Pixelify Sans', sans-serif;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .modal-btn-save:hover {
+            background: #2ebe52;
+        }
+        
+        .modal-btn-cancel {
+            background: #c00000;
+            border: 2px solid #5a3a3a;
+            color: #ffffff;
+            padding: 10px 24px;
+            font-family: 'Pixelify Sans', sans-serif;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #b92c2c;
+        }
+        
+        @media (max-width: 768px) {
+            body.profile-body {
+                padding-top: 70px;
+            }
+            
+            .profile-container {
+                padding: 25px 18px;
+            }
+            
+            .profile-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+            }
+            
+            .avatar-section {
+                flex-direction: row;
+                gap: 18px;
+            }
+            
+            .avatar-circle {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .info-section {
+                width: 100%;
+            }
+            
+            .achievements-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .achievement-item {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="profile-body">
+    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo" onclick="navigate('home')">
+                <span>Combat Coders</span></button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 nav-links-wrap">
+                <button class="home-btn" onclick="navigate('home')">Home</button>
+                <button class="play-btn" onclick="navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="navigate('settings')">Settings</button>
+            </div>
+
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Profile</button>
+                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
+                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+
+            <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+                <span>MENU</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="profile-main-wrapper">
+        <div class="profile-container">
+            <h1 class="profile-header">PROFILE</h1>
+            
+            <div class="profile-content">
+                <div class="avatar-section">
+                    <div class="avatar-circle">
+                        <img id="profileAvatar" src="img/player-profile.png" alt="Avatar">
+                    </div>
+                    <button class="change-avatar-btn" onclick="triggerAvatarUpload()">Change Picture</button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-row">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value" id="displayUserName">CombatCoder_01</span>
+                        <button class="change-name-btn" onclick="openNameModal()">Change</button>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Level:</span>
+                        <span class="info-value" id="displayLevel">1</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievements-section">
+                <h3 class="achievements-title">ACHIEVEMENTS</h3>
+                
+                <div class="achievements-row">
+                    <div class="achievement-item">
+                        <div class="medal-slot" id="bronzeMedal">
+                            <div class="medal-placeholder"></div>
+                        </div>
+                        <div class="achievement-info">
+                            <span class="achievement-name">Forest Guardian</span>
+                            <span class="achievement-desc">Defeat Level 1 Boss</span>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <div class="medal-slot" id="silverMedal">
+                            <div class="medal-placeholder"></div>
+                        </div>
+                        <div class="achievement-info">
+                            <span class="achievement-name">Dungeon Conqueror</span>
+                            <span class="achievement-desc">Defeat Level 2 Boss</span>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <div class="medal-slot" id="goldMedal">
+                            <div class="medal-placeholder"></div>
+                        </div>
+                        <div class="achievement-info">
+                            <span class="achievement-name">Volcanic Champion</span>
+                            <span class="achievement-desc">Defeat Level 3 Boss</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Name Modal -->
+    <div class="custom-modal-overlay" id="nameModal">
+        <div class="custom-modal-box">
+            <h3>CHANGE USERNAME</h3>
+            <input type="text" id="newUsernameInput" placeholder="Enter new username..." maxlength="20">
+            <div class="modal-buttons">
+                <button class="modal-btn-save" onclick="saveNewUsername()">SAVE</button>
+                <button class="modal-btn-cancel" onclick="closeNameModal()">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/audio-manager.js"></script>
+    <script>
+        function loadProfileData() {
+            const storedName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
+            document.getElementById('displayUserName').innerText = storedName;
+            
+            const storedAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+            document.getElementById('profileAvatar').src = storedAvatar;
+            
+            const savedLevel = localStorage.getItem('currentLevel') || '1';
+            document.getElementById('displayLevel').innerText = savedLevel;
+            
+            const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
+            const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
+            const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
+            
+            if (boss1Defeated) {
+                document.getElementById('bronzeMedal').innerHTML = '<img src="img/bronze-medal.png" alt="Bronze">';
+            }
+            if (boss2Defeated) {
+                document.getElementById('silverMedal').innerHTML = '<img src="img/silver-medal.png" alt="Silver">';
+            }
+            if (boss3Defeated) {
+                document.getElementById('goldMedal').innerHTML = '<img src="img/gold-medal.png" alt="Gold">';
+            }
+        }
+        
+        function openNameModal() {
+            const currentName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
+            document.getElementById('newUsernameInput').value = currentName;
+            document.getElementById('nameModal').classList.add('show');
+            document.getElementById('newUsernameInput').focus();
+        }
+        
+        function closeNameModal() {
+            document.getElementById('nameModal').classList.remove('show');
+        }
+        
+        function saveNewUsername() {
+            const newName = document.getElementById('newUsernameInput').value.trim();
+            if (newName !== '') {
+                localStorage.setItem('playerUserName', newName);
+                document.getElementById('displayUserName').innerText = newName;
+                closeNameModal();
+            }
+        }
+        
+        // Close modal on Enter key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.getElementById('nameModal').classList.contains('show')) {
+                saveNewUsername();
+            }
+            if (e.key === 'Escape' && document.getElementById('nameModal').classList.contains('show')) {
+                closeNameModal();
+            }
+        });
+        
+        function triggerAvatarUpload() {
+            document.getElementById('avatarInput').click();
+        }
+        
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    localStorage.setItem('playerAvatar', base64Image);
+                    document.getElementById('profileAvatar').src = base64Image;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function navigate(destination) {
+            switch(destination) {
+                case 'home': window.location.href = 'index.html'; break;
+                case 'play': window.location.href = 'load-slot.html'; break;
+                case 'leaderboard': window.location.href = 'leaderboard.html'; break;
+                case 'learn': window.location.href = 'learn.html'; break;
+                case 'settings': window.location.href = 'settings.html'; break;
+            }
+        }
+        
+        window.markBossDefeated = function(level) {
+            localStorage.setItem('boss' + level + 'Defeated', 'true');
+        };
+        
+        document.addEventListener('DOMContentLoaded', loadProfileData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - About Us</title>
+    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+25&family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="about-body">
+          <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <span>Combat Coders</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 nav-links-wrap">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
+                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+            </div>
+
+            <!-- Only ONE profile trigger, inside the navbar -->
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
+                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+
+            <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+                <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
+                <span>Team Plasma</span>
+            </button>
+        </div>
+    </nav>
+
+    
+    <section class="about-section-a">
+    <div class="about-imgcontainer">
+        <img src="img/tamagotchi.png" alt="Tamagotchi" class="about-img">
+    </div>
+
+    <div class="about-textbox">
+        <h1 class="pixel-font-lead">Learn to code. Build strategies. Conquer challenges!</h1>
+        <p class="pixel-font-a">Combat Coders is an interactive, game-based way to level up your coding, strategy, and decision-making skills. Journey through a blend of adventure, card collecting, and path-based exploration by solving real coding challenges. Earn XP, unlock new abilities, and learn at your own pace.</p>
+    </div>
+    </section>
+
+
+    <section class="about-section-b">
+    <div class="about-textbox-team">
+        <p class="pixel-font-lead">Meet the Team!</p>
+        <p class="pixel-font-b">The GOATS behind Combat Coders are Information Technology scholars that study at Bicol University Polangui.</p>
+    </div>
+    </section>
+
+    <section class="about-section-c">
+    <div class="about-members-grid">
+        <div class="about-member-card">
+            <div class="member-pia">
+                <div class="card-holder">
+                    <img src="img/avatar-container.png" alt="Pia" class="card-img">
+                    <div class="member-image">
+                        <div class="member-image-pia">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="front">
+                                        <img src="img/avatar-pia.png" alt="Pia" class="member-img">
+                                    </div>
+                                    <div class="back">
+                                        <img src="img/avatar-sophia.png" alt="Pia" class="member-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="about-team-name">@Phia</p>
+                </div>
+                <p class="member-roles">Project Manager & Backend Dev</p>
+                <div class="members-socials">
+                    <a class="soc-icons" target="_blank" href="https://github.com/piapipp">
+                        <img src="img/github-logo.png" alt="GitHub">
+                    </a>
+                    <a class="soc-icons" target="_blank" href="https://www.instagram.com/nephe.lai/">
+                        <img src="img/ig-logo.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-member-card">
+            <div class="member-dwayne">
+                <div class="card-holder">
+                    <img src="img/avatar-container.png" alt="Dwayne" class="card-img">
+                    <div class="member-image">
+                        <div class="member-image-pia">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="front">
+                                        <img src="img/avatar-dwen.png" alt="Dwayne" class="member-img">
+                                    </div>
+                                    <div class="back">
+                                        <img src="img/avatar-dwayne.png" alt="Dwayne" class="member-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="about-team-name">@Dwayne</p>
+                </div>
+                <p class="member-roles">Frontend Developer</p>
+                <div class="members-socials">
+                    <a class="soc-icons" target="_blank" href="https://github.com/sledgehmmh">
+                        <img src="img/github-logo.png" alt="GitHub">
+                    </a>
+                    <a class="soc-icons" target="_blank" href="https://www.instagram.com/miasmortar">
+                        <img src="img/ig-logo.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-member-card">
+            <div class="member-sonny">
+                <div class="card-holder">
+                    <img src="img/avatar-container.png" alt="Kian" class="card-img">
+                    <div class="member-image">
+                        <div class="member-image-pia">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="front">
+                                        <img src="img/avatar-kyn.png" alt="Kian" class="member-img">
+                                    </div>
+                                    <div class="back">
+                                        <img src="img/avatar-kian.png" alt="Kian" class="member-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="about-team-name">@Kian</p>
+                </div>
+                <p class="member-roles">Documentation Officer</p>
+                <div class="members-socials">
+                    <a class="soc-icons" target="_blank" href="https://github.com/kyncrl">
+                        <img src="img/github-logo.png" alt="GitHub">
+                    </a>
+                    <a class="soc-icons" target="_blank" href="https://www.instagram.com/kyncrl/">
+                        <img src="img/ig-logo.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-member-card">
+            <div class="member-dharma">
+                <div class="card-holder">
+                    <img src="img/avatar-container.png" alt="Hafs" class="card-img">
+                    <div class="member-image">
+                        <div class="member-image-pia">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="front">
+                                        <img src="img/avatar-hafs.png" alt="Hafs" class="member-img">
+                                    </div>
+                                    <div class="back">
+                                        <img src="img/avatar-hafsah.png" alt="Hafs" class="member-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="about-team-name">@Hafs</p>
+                </div>
+                <p class="member-roles">GitHub Manager</p>
+                <div class="members-socials">
+                    <a class="soc-icons" target="_blank" href="https://github.com/hafsaharbotuzon24-lgtm">
+                        <img src="img/github-logo.png" alt="GitHub">
+                    </a>
+                    <a class="soc-icons" target="_blank" href="https://www.instagram.com/im_nothafs/">
+                        <img src="img/ig-logo.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-member-card">
+            <div class="member-plasma">
+                <div class="card-holder">
+                    <img src="img/avatar-container.png" alt="Joshua" class="card-img">
+                    <div class="member-image">
+                        <div class="member-image-pia">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="front">
+                                        <img src="img/avatar-josh.png" alt="Joshua" class="member-img">
+                                    </div>
+                                    <div class="back">
+                                        <img src="img/avatar-joshua.png" alt="Joshua" class="member-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="about-team-name">@Joshua</p>
+                </div>
+                <p class="member-roles">Database Manager</p>
+                <div class="members-socials">
+                    <a class="soc-icons" target="_blank" href="https://github.com/Joshyyy143">
+                        <img src="img/github-logo.png" alt="GitHub">
+                    </a>
+                    <a class="soc-icons" target="_blank" href="https://www.instagram.com/joshy_woshyhaha">
+                        <img src="img/ig-logo.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </section>
+
+    <section class="about-section-d">
+        <div class="about-tools">
+            <p class="pixel-font-lead tools-title">MAIN TOOLS</p>
+            <p class="tools-subtitle">Core technologies behind Combat Coders</p>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <img class="tool-label-html" src="img/html-logo.png" alt="HTML5">
+                </div>
+                <div class="tool-item">
+                    <img class="tool-label-css" src="img/css-logo.png" alt="CSS3">
+                </div>
+                <div class="tool-item">
+                    <img class="tool-label-js" src="img/js-logo.png" alt="JavaScript">
+                </div>
+                <div class="tool-item">
+                    <img class="tool-label-bs" src="img/bootstrap-logo.png" alt="Bootstrap 5">
+                </div>
+                <div class="tool-item">
+                    <img class="tool-label" src="img/nodejs-logo.png" alt="Node.js">
+                </div>
+                <div class="tool-item">
+                    <img class="tool-label" src="img/mongodb-logo.png" alt="MongoDB">
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+ <footer class="about-footer">
+        <div class="about-footer-top">
+            <div class="about-footer-brand">
+                <img class ="about-footer-logo" src ="img/Combat Coders Logo-2.png.png">
+            </div>
+        </div>
+
+        <div class="about-footer-links">
+            <div class="footer-column">
+                <p class="footer-heading">Game</p>
+                <a href="about.html">About</a>
+                <a href="learn.html">Learn</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="settings.html">Settings</a>
+            </div>
+
+            <div class="footer-column">
+                <p class="footer-heading">User</p>
+                <a href="play.html">Play</a>
+                <a href="learn.html">Profile</a>
+                <a href="leaderboard.html">Donate</a>
+            </div>
+
+            <div class="footer-column">
+                <p class="footer-heading">Main Tools</p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">HTML5</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">CSS3</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript</a>
+                <a href="https://nodejs.org/" target="_blank">Node.js</a>
+                <a href="https://www.mongodb.com/" target="_blank">MongoDB</a>
+            </div>
+
+            <div class="footer-column">
+                <p class="footer-heading">Stack</p>
+                <a href="https://getbootstrap.com/" target="_blank">Bootstrap 5</a>
+                <a href="https://fonts.google.com/" target="_blank">Google Fonts</a>
+                <a href="https://github.com/" target="_blank">GitHub</a>
+                <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
+            </div>
+        </div>
+
+        <div class="about-footer-bottom">
+            <p>© 2026 Team Plasma. All rights reserved.</p>
+            <div class="about-footer-socials">
+                <a href="https://www.instagram.com/combatcoders_official/" target="_blank" aria-label="Instagram">
+                    <img class="about-footer-social-link" src="img/ig-logo.png" alt="Instagram">
+                </a>
+                <a href="https://discord.gg/f7CxjvxK" target="_blank" aria-label="Discord">
+                    <img class="about-footer-social-link" src="img/dc-logo.png" alt="Discord">
+                </a>
+                <a href="https://github.com/hafsaharbotuzon24-lgtm/final-project-Team_Plasma-BSIT2a" target="_blank" aria-label="GitHub">
+                    <img class="about-footer-social-link" src="img/github-logo.png" alt="GitHub">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/audio-manager.js"></script>
+
+    <script>
+        // Initialize flip card functionality for team member cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                const content = this.querySelector('.content');
+                content.classList.toggle('flipped');
+            });
+        });
+    </script>
+
+</body>
+</html>

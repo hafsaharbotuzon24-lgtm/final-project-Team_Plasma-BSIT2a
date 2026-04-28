@@ -6,6 +6,7 @@ const { protect } = require('../middleware/authMiddleware');
 router.post('/', controller.createPlayer);
 router.get('/', protect, controller.getPlayers);
 router.get('/me', protect, controller.getMyPlayer);
+router.patch('/me/resources', protect, controller.updateMyResources);
 router.get('/:id', protect, controller.getPlayer);
 router.put('/:id', protect, controller.updatePlayer);
 

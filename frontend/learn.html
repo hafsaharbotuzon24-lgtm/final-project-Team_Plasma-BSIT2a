@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Combat Coders - Game Mechanics</title>
-    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+           
+  
 </head>
-<body class="learn-body">
+<body class="learn-body" style="background: url('../frontend/img/bg-main.png')">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
-                <span class="plasma-title">Team Plasma</span>
+                <span>Combat Coders</span>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -26,94 +27,98 @@
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
                 <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
-                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-                <img src="img/icon-frame.png" alt="Profile" style="width: 80px; height: 80px;">
-               </button>
             </div>
+
+            <!-- Only ONE profile trigger, inside the navbar -->
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
+                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+
             <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
                 <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
                 <span>Team Plasma</span>
             </button>
         </div>
     </nav>
-
-<div class="profile-trigger-container">
-    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-        <img src="img/.png" alt="Profile" class="pixel-icon-large">
-    </button>
-</div>
-
-<div id="accountOverlay" class="account-overlay">
-    <div class="account-container">
-        <div class="account-content">
-            <div class="account-details">
-                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
-                <button class="change-name-btn" onclick="changeName()">Change name</button>
-                
-                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
-                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
-            </div>
-            <div class="account-visual">
-                <div class="icon-prof-frame">
-                    <img src="img/.png" alt="Avatar" class="icon-prof">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="learn-container">
-            <h1 class="text-center game-mechanics-title">Game Mechanics</h1>
+    <div class="learn-main-wrapper">
+        <div class="learn-container-main">
+            <h1 class="learn-header-title">GAME MECHANICS</h1>
             
-            <div class="row mt-5">
-                <div class="col-md-4">
-                    <h3 class="section-subtitle">-- Choosing between cards --</h3>
-                    <div class="mechanic-item d-flex align-items-center">
-                        <p class="description-text">1. Battle - A code to solve.</p>
-                        <div class="icon-box-transparent"><img src="img/icon-battle.png" class="pixel-icon"></div>
-                    </div>
-                    <div class="mechanic-item d-flex align-items-center">
-                        <p class="description-text">2. Room - Will provide HP</p>
-                        <div class="icon-box-transparent"><img src="img/icon-room.png" class="pixel-icon"></div>
-                    </div>
-                    <div class="mechanic-item d-flex align-items-center">
-                        <p class="description-text">3. Chest - Will provide hints</p>
-                        <div class="icon-box-transparent"><img src="img/icon-chest.png" class="pixel-icon"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <h3 class="section-subtitle">-- Battle --</h3>
-                    <p class="description-text">If you win and still have maximum hearts, you will receive both a heart and a hint.</p>
-                    <div class="icon-box-transparent mx-auto mb-4"><img src="img/icon-heart.png" class="pixel-icon"></div>
+            <div class="learn-grid">
+                <div class="learn-card">
+                    <h3 class="card-subtitle">CHOOSING CARDS</h3>
+                    <div class="card-divider"></div>
                     
+                    <div class="mechanic-item">
+                        <div class="mechanic-info">
+                            <span class="label">BATTLE</span>
+                            <span class="value">A code to solve</span>
+                        </div>
+                        <img src="img/icon-battle.png" class="mini-pixel-icon">
+                    </div>
 
-                    <h3 class="section-subtitle">-- Room --</h3>
-                    <p class="description-text">A room will appear and provide you a heart.</p>
-                    <div class="icon-box-transparent mx-auto"><img src="img/icon-room.png" class="pixel-icon"></div>
+                    <div class="mechanic-item">
+                        <div class="mechanic-info">
+                            <span class="label">ROOM</span>
+                            <span class="value">Will provide HP</span>
+                        </div>
+                        <img src="img/icon-room.png" class="mini-pixel-icon">
+                    </div>
+
+                    <div class="mechanic-item">
+                        <div class="mechanic-info">
+                            <span class="label">CHEST</span>
+                            <span class="value">Will provide hints</span>
+                        </div>
+                        <img src="img/icon-chest.png" class="mini-pixel-icon">
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <h3 class="section-subtitle">-- Chest --</h3>
-                    <p class="description-text">A chest will appear and provide you with a hint. *Non-stackable*</p>
-                    <div class="icon-box-transparent mx-auto mb-4"><img src="img/icon-hint.png" class="pixel-icon"></div>
+                <div class="learn-card">
+                    <h3 class="card-subtitle">BATTLE MECHANICS</h3>
+                    <div class="card-divider"></div>
+                    
+                    <div class="mechanic-desc">
+                        <p>Hearts are the lifeline of the player, 0 hearts mean defeat.</p>
+                        <div class="icon-center"><img src="img/icon-heart.png" class="mid-pixel-icon"></div>
+                    </div>
 
-                    <h3 class="section-subtitle">-- Boss --</h3>
-                    <p class="description-text">After clearing a certain number of paths, you will reach the final task, the Boss room.</p>
-                    <div class="icon-box-transparent mx-auto"><img src="img/icon-boss.png" class="pixel-icon"></div>
+                    <div class="mechanic-desc">
+                        <p>Hints give the player a clue how to solve the problem..</p>
+                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon"></div>
+                    </div>
+                </div>
+
+                <div class="learn-card">
+                    <h3 class="card-subtitle">CHEST & BOSS</h3>
+                    <div class="card-divider"></div>
+
+                    <div class="mechanic-desc">
+                        <p>Chests provide non-stackable hints.</p>
+                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon"></div>
+                    </div>
+
+                    <div class="mechanic-desc">
+                        <p>Clear paths to reach the final Boss room.</p>
+                        <div class="icon-center"><img src="img/icon-boss.png" class="mid-pixel-icon"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="row mt-4 text-center">
-                <div class="col-12">
-                    <h3 class="section-subtitle">-- Battle --</h3>
-                    <p class="description-text">An insect monster will appear and give you a challenge</p>
-                    <div class="d-flex justify-content-center gap-4">
-                        <div class="icon-box-transparent"><img src="img/knight-model.png" class="pixel-icon"></div>
-                        <div class="icon-box-transparent"><img src="img/enemy-roach.png" class="pixel-icon"></div>
-                    </div>
+            <div class="learn-footer-card">
+                <h3 class="card-subtitle">BATTLE ENCOUNTER</h3>
+                <p>An insect monster will appear and give you a challenge</p>
+                <div class="battle-preview">
+                    <img src="img/knight-model.png" class="preview-sprite">
+                    <span class="vs-text">VS</span>
+                    <img src="img/enemy-roach.png" class="preview-sprite">
                 </div>
             </div>
         </div>

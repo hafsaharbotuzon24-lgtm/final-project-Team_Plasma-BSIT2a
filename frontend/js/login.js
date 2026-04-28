@@ -1,57 +1,116 @@
 const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
 
-function usernameToEmail(username) {
-    const safe = String(username || '').trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
-    return `${safe || 'player'}@combatcoders.local`;
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('d-none');
 }
-
-async function apiRequest(path, options = {}) {
-    let response;
-    try {
-        response = await fetch(`${API_BASE}${path}`, {
-            headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
-            credentials: 'include',
-            ...options
-        });
-    } catch (networkErr) {
-        throw new Error(networkErr?.message || 'Network error: unable to reach backend');
-    }
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-        const validation = Array.isArray(data?.errors)
-            ? data.errors.map((e) => e?.message).filter(Boolean).join('\n')
-            : '';
-        throw new Error(validation || data.message || `Request failed (HTTP ${response.status})`);
-    }
-    return data;
-}
-
-function openRegModal() { document.getElementById('regModal').classList.remove('d-none'); }
-function closeRegModal() { document.getElementById('regModal').classList.add('d-none'); }
-function closeErrorModal() { document.getElementById('errorModal').classList.add('d-none'); }
 
 function closeModal(id) {
-    document.getElementById(id).classList.add('d-none');
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add('d-none');
+}
+
+// Local storage keys
+const STORAGE_KEYS = {
+    CURRENT_USER: 'combatCoders_currentUser',
+    AUTH_TOKEN: 'authToken'
+};
+
+function normalizePlayer(player) {
+    if (!player || typeof player !== 'object') return null;
+    return {
+        id: player._id || player.id || '',
+        username: player.username || '',
+        email: player.email || ''
+    };
+}
+
+function setAuthSession(token, player) {
+    const safePlayer = normalizePlayer(player);
+    if (!token || !safePlayer) return;
+
+    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
+    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(safePlayer));
+
+    // Compatibility keys used in other frontend scripts.
+    localStorage.setItem('playerId', safePlayer.id);
+    localStorage.setItem('playerUserName', safePlayer.username);
+    localStorage.setItem('playerEmail', safePlayer.email);
+}
+
+// Get current user
+function getCurrentUser() {
+    const user = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    return user ? JSON.parse(user) : null;
+}
+
+// Logout
+function logout() {
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+    localStorage.removeItem('playerId');
+    localStorage.removeItem('playerUserName');
+    localStorage.removeItem('playerEmail');
+}
+
+// Modal functions
+function openRegModal() { 
+    openModal('regModal');
+}
+
+function closeRegModal() { 
+    closeModal('regModal');
+}
+
+function closeErrorModal() { 
+    closeModal('errorModal');
 }
 
 function showError(msg) {
-    document.getElementById('errorMsg').innerText = msg;
-    document.getElementById('errorModal').classList.remove('d-none');
+    const errorMsg = document.getElementById('errorMsg');
+    const errorModal = document.getElementById('errorModal');
+    
+    if (errorMsg && errorModal) {
+        errorMsg.innerText = msg;
+        errorModal.classList.remove('d-none');
+    }
 }
 
 function isValidEmail(email) {
-    // Basic pragmatic check; backend still enforces strict validation.
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
 }
 
+function isValidPassword(password) {
+    // Must match backend policy.
+    return (
+        typeof password === 'string' &&
+        password.length >= 8 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /[0-9]/.test(password) &&
+        /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    );
+}
+
+function isValidUsername(username) {
+    return username && username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username);
+}
+
+// =============================================
+// REGISTRATION
+// =============================================
 async function saveNewAccount() {
-    const username = document.getElementById('regName').value.trim();
+    const username = document.getElementById('regName')?.value.trim();
     const emailInput = document.getElementById('regEmail')?.value.trim();
-    const password = document.getElementById('regPass').value.trim();
+    const password = document.getElementById('regPass')?.value.trim();
 
     if (!username || !emailInput || !password) {
-        showError('Data required: Entry fields are empty.');
+        showError('All fields are required.');
+        return;
+    }
+
+    if (!isValidUsername(username)) {
+        showError('Username must be at least 3 characters and contain only letters, numbers, and underscores.');
         return;
     }
 
@@ -60,130 +119,221 @@ async function saveNewAccount() {
         return;
     }
 
-    // Prevent accidental double-click spamming the auth endpoints (can trigger 429).
-    const saveBtn = document.querySelector('#regModal button[onclick="saveNewAccount()"]');
-    if (saveBtn) {
-        saveBtn.disabled = true;
+    if (!isValidPassword(password)) {
+        showError('Password must be at least 8 chars with uppercase, lowercase, number, and special character.');
+        return;
     }
 
     try {
-        const registerPayload = { username, email: emailInput, password };
-
-        const registerData = await apiRequest('/api/auth/register', {
+        const response = await fetch(`${API_BASE}/api/auth/register`, {
             method: 'POST',
-            body: JSON.stringify(registerPayload)
-        });
-
-        const loginData = await apiRequest('/api/auth/login', {
-            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({
-                identifier: registerPayload.email,
+                username,
+                email: emailInput,
                 password
             })
         });
 
-        localStorage.setItem('authToken', loginData.token || '');
-        localStorage.setItem('userName', registerData.player?.username || username);
-        localStorage.setItem('userEmail', registerData.player?.email || registerPayload.email);
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(payload.message || 'Registration failed');
+        }
+
+        setAuthSession(payload.token, payload.player);
+
+        document.getElementById('regName').value = '';
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPass').value = '';
+
+        closeRegModal();
         window.location.href = 'index.html';
     } catch (err) {
-        showError(err.message || 'System failure: Database unreachable.');
-    } finally {
-        if (saveBtn) {
-            saveBtn.disabled = false;
-        }
+        showError(err.message || 'Unable to register right now.');
     }
 }
 
+// =============================================
+// LOGIN
+// =============================================
 function loginExisting() {
-    document.getElementById('loginExistingModal').classList.remove('d-none');
+    openModal('loginExistingModal');
 }
 
 async function validateExistingLogin() {
-    const nameOrEmail = document.getElementById('loginName').value.trim();
-    const password = document.getElementById('loginPass').value.trim();
+    const nameOrEmail = document.getElementById('loginName')?.value.trim();
+    const password = document.getElementById('loginPass')?.value.trim();
 
     if (!nameOrEmail || !password) {
-        showError('Please enter your credentials.');
+        showError('Please enter your username/email and password.');
         return;
     }
 
-    const email = nameOrEmail.includes('@') ? nameOrEmail : usernameToEmail(nameOrEmail);
-
     try {
-        const data = await apiRequest('/api/auth/login', {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
             method: 'POST',
-            body: JSON.stringify({ identifier: nameOrEmail.includes('@') ? email : nameOrEmail, password })
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+                identifier: nameOrEmail,
+                password
+            })
         });
 
-        localStorage.setItem('authToken', data.token || '');
-        localStorage.setItem('userName', data.player?.username || nameOrEmail);
-        localStorage.setItem('userEmail', data.player?.email || email);
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(payload.message || 'Login failed');
+        }
+
+        setAuthSession(payload.token, payload.player);
+
+        document.getElementById('loginName').value = '';
+        document.getElementById('loginPass').value = '';
+
         closeModal('loginExistingModal');
+        updateAccountDisplay();
         window.location.href = 'index.html';
     } catch (err) {
-        showError(err.message || 'Invalid credentials.');
+        showError(err.message || 'Unable to login right now.');
     }
 }
 
-function handleCredentialResponse(response) {
-    (async () => {
-        try {
-            const data = await apiRequest('/api/auth/google', {
-                method: 'POST',
-                body: JSON.stringify({ credential: response.credential })
-            });
+// =============================================
+// UPDATE ACCOUNT DISPLAY
+// =============================================
+function updateAccountDisplay() {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        const userNameEl = document.getElementById('userName');
+        const userEmailEl = document.getElementById('userEmail');
+        
+        if (userNameEl) userNameEl.textContent = currentUser.username;
+        if (userEmailEl) userEmailEl.textContent = currentUser.email;
+    }
+}
 
-            localStorage.setItem('authToken', data.token || '');
-            localStorage.setItem('userName', data.player?.username || 'Google User');
-            localStorage.setItem('userEmail', data.player?.email || '');
-            localStorage.setItem('isGoogleUser', 'true');
-            window.location.href = 'index.html';
-        } catch (e) {
-            showError(e.message || 'Google Access Failed.');
+// =============================================
+// CHANGE NAME
+// =============================================
+async function changeName() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+        showError('You must be logged in to change your name.');
+        return;
+    }
+
+    const newName = prompt('Enter new username (min 3 characters, letters/numbers/underscores only):', currentUser.username);
+    
+    if (!newName) return;
+    
+    if (!isValidUsername(newName)) {
+        showError('Invalid username. Must be at least 3 characters and contain only letters, numbers, and underscores.');
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+        if (!token || !currentUser.id) {
+            throw new Error('Session expired. Please login again.');
         }
-    })();
+
+        const response = await fetch(`${API_BASE}/api/players/${currentUser.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            credentials: 'include',
+            body: JSON.stringify({ username: newName })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(payload.message || 'Failed to update username');
+        }
+
+        setAuthSession(token, payload);
+        updateAccountDisplay();
+        alert('Username updated successfully!');
+    } catch (err) {
+        showError(err.message || 'Unable to update username.');
+    }
 }
 
-function decodeJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(window.atob(base64));
+// =============================================
+// GOOGLE LOGIN
+// =============================================
+async function handleCredentialResponse(response) {
+    try {
+        const credential = response?.credential;
+        if (!credential) {
+            throw new Error('Missing Google credential');
+        }
+
+        const req = await fetch(`${API_BASE}/api/auth/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ credential })
+        });
+
+        const payload = await req.json().catch(() => ({}));
+        if (!req.ok) {
+            throw new Error(payload.message || 'Google login failed');
+        }
+
+        setAuthSession(payload.token, payload.player);
+        window.location.href = 'index.html';
+    } catch (err) {
+        showError(err.message || 'Unable to continue with Google login.');
+    }
 }
 
+// =============================================
+// FORGOT PASSWORD FLOW
+// =============================================
 function openForgotEmailModal() {
     closeModal('loginExistingModal');
-    document.getElementById('forgotEmailModal').classList.remove('d-none');
+    openModal('forgotEmailModal');
 }
 
 function processEmailRecovery() {
-    const email = document.getElementById('forgotEmailInput').value.trim();
-    if (email.includes('@')) {
-        localStorage.setItem('recoveryEmail', email);
-        closeModal('forgotEmailModal');
-        document.getElementById('otpVerifyModal').classList.remove('d-none');
-    } else {
-        showError('Invalid email format.');
+    const email = document.getElementById('forgotEmailInput')?.value.trim();
+    if (!email || !email.includes('@')) {
+        showError('Please enter a valid email address.');
+        return;
     }
+
+    showError('Password recovery API is not connected yet. Please contact support/admin.');
 }
 
 function processOTPVerify() {
-    const otp = document.getElementById('otpCodeInput').value.trim();
-    if (otp.length === 6) {
-        closeModal('otpVerifyModal');
-        document.getElementById('renewPasswordModal').classList.remove('d-none');
-    } else {
-        showError('Please enter the 6-digit OTP.');
+    const otp = document.getElementById('otpCodeInput')?.value.trim();
+    
+    if (!otp || otp.length !== 6) {
+        showError('Please enter a valid 6-digit code.');
+        return;
     }
+
+    closeModal('otpVerifyModal');
+    openModal('renewPasswordModal');
 }
 
 function processPasswordRenewal() {
-    const newPass = document.getElementById('newPassInput').value;
-    const confirm = document.getElementById('confirmNewPassInput').value;
-    if (newPass && newPass === confirm) {
-        closeModal('renewPasswordModal');
-        showError('Password reset API is not implemented yet in backend.');
-    } else {
-        showError('Passwords do not match.');
-    }
+    showError('Password reset API is not connected yet.');
 }
+
+// =============================================
+// INITIALIZATION
+// =============================================
+document.addEventListener('DOMContentLoaded', function() {
+    updateAccountDisplay();
+    
+    const currentUser = getCurrentUser();
+    const authToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    
+    if (currentUser && authToken) {
+        console.log('Logged in as:', currentUser.username);
+    }
+});

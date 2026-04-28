@@ -33,6 +33,33 @@ function renderCards() {
     if (!row) return;
     row.innerHTML = "";
     
+    // Make the row responsive - flex column on mobile, row on desktop
+    row.style.display = "flex";
+    row.style.flexDirection = "column";
+    row.style.alignItems = "center";
+    row.style.justifyContent = "center";
+    row.style.gap = "20px";
+    row.style.flexWrap = "wrap";
+    
+    // Add media query for desktop via JS
+    function adjustLayout() {
+        const selectionRow = document.getElementById('selectionRow');
+        if (selectionRow) {
+            if (window.innerWidth >= 768) {
+                selectionRow.style.flexDirection = "row";
+            } else {
+                selectionRow.style.flexDirection = "column";
+            }
+        }
+    }
+    
+    // Initial adjustment
+    adjustLayout();
+    
+    // Listen for window resize to update layout
+    window.removeEventListener('resize', adjustLayout);
+    window.addEventListener('resize', adjustLayout);
+    
     let choices = [];
     const lvl = gameState.currentLevel;
     const site = gameState.currentSite;
@@ -87,7 +114,26 @@ function renderCards() {
     choices.forEach((type, index) => {
         const card = document.createElement('div');
         card.className = "card-option border border-4 border-white p-4 text-center";
-        card.style.cssText = "cursor: pointer; background: rgba(0,0,0,0.85); min-width: 180px; margin: 0 15px; border-radius: 10px; transition: all 0.2s; z-index: 10; position: relative;";
+        
+        // Responsive card styles
+        let cardWidth = 'auto';
+        if (window.innerWidth <= 480) {
+            cardWidth = '85%';
+        }
+        
+        card.style.cssText = `
+            cursor: pointer; 
+            background: rgba(0,0,0,0.85); 
+            min-width: 180px; 
+            width: ${cardWidth};
+            max-width: 250px;
+            margin: 0 15px; 
+            border-radius: 10px; 
+            transition: all 0.2s; 
+            z-index: 10; 
+            position: relative;
+        `;
+        
         card.setAttribute('data-type', type);
         card.setAttribute('data-index', index);
         
@@ -106,20 +152,28 @@ function renderCards() {
         img.src = `img/icon-${type}.png`;
         img.height = 100;
         img.alt = type;
-        img.style.cssText = "margin-bottom: 10px; pointer-events: none;";
+        img.style.cssText = "margin-bottom: 10px; pointer-events: none; max-width: 100%; height: auto;";
         
         const title = document.createElement('h4');
         title.className = "pixel-font mt-2 text-white";
         title.textContent = type.toUpperCase();
-        title.style.cssText = "text-shadow: 2px 2px 4px rgba(0,0,0,0.8); pointer-events: none;";
+        title.style.cssText = "text-shadow: 2px 2px 4px rgba(0,0,0,0.8); pointer-events: none; font-size: clamp(1rem, 5vw, 1.5rem);";
         
         card.appendChild(img);
         card.appendChild(title);
         
+        // Enhanced click handler for better mobile response
         card.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             const cardType = this.getAttribute('data-type');
+            
+            // Add visual feedback on mobile
+            this.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                this.style.transform = "scale(1)";
+            }, 150);
+            
             startEvent(cardType);
         });
         
@@ -244,6 +298,14 @@ function advanceToNextLevel() {
     }, 300);
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Re-bind all battle card clicks
+    document.querySelectorAll('[onclick*="openBattleModal_L2"], [onclick*="openBattleModal_L3"]').forEach(function(card) {
+        card.style.cursor = 'pointer';
+        card.style.pointerEvents = 'auto';
+    });
+});
+
 function restartGame() {
     const modalEl = document.getElementById('gameModal');
     if (modalEl) {
@@ -272,3 +334,119 @@ function restartGame() {
     gameState.lastChoice = null;
     setTimeout(() => updateUI(), 300);
 }
+// Force fix for heart and hint alignment
+function fixHeartHintAlignment() {
+    // Get the container that holds both heart and hint (the status-container)
+    const statusContainer = document.querySelector('.status-container');
+    
+    if (statusContainer) {
+        // Force horizontal layout
+        statusContainer.style.display = 'flex !important';
+        statusContainer.style.flexDirection = 'row !important';
+        statusContainer.style.justifyContent = 'center !important';
+        statusContainer.style.alignItems = 'center !important';
+        statusContainer.style.gap = '40px !important';
+        statusContainer.style.position = 'relative !important';
+        statusContainer.style.top = '0 !important';
+        statusContainer.style.left = '0 !important';
+        statusContainer.style.margin = '10px auto 0 auto !important';
+        statusContainer.style.padding = '10px 0 !important';
+        statusContainer.style.width = '100% !important';
+        statusContainer.style.backgroundColor = 'transparent !important';
+    }
+    
+    // Fix each individual stat box
+    const statBoxes = document.querySelectorAll('.stat-box');
+    statBoxes.forEach(box => {
+        box.style.display = 'flex !important';
+        box.style.flexDirection = 'row !important';
+        box.style.alignItems = 'center !important';
+        box.style.justifyContent = 'center !important';
+        box.style.gap = '8px !important';
+        box.style.margin = '0 !important';
+        box.style.padding = '0 !important';
+        box.style.backgroundColor = 'transparent !important';
+        box.style.border = 'none !important';
+    });
+    
+    // Fix the images
+    const images = document.querySelectorAll('.stat-box img');
+    images.forEach(img => {
+        img.style.display = 'inline-block !important';
+        img.style.verticalAlign = 'middle !important';
+    });
+    
+    // Fix the text spans
+    const spans = document.querySelectorAll('.stat-box span');
+    spans.forEach(span => {
+        span.style.display = 'inline-block !important';
+        span.style.verticalAlign = 'middle !important';
+        span.style.lineHeight = '1 !important';
+    });
+    
+    // Fix motivation quote spacing
+    const quote = document.querySelector('.motivation-quote');
+    if (quote) {
+        quote.style.margin = '0 !important';
+        quote.style.padding = '0 0 10px 0 !important';
+        quote.style.textAlign = 'center !important';
+        quote.style.display = 'block !important';
+        quote.style.width = '100% !important';
+    }
+    
+    // Fix the main container
+    const mainContainer = document.querySelector('.container.text-center');
+    if (mainContainer) {
+        mainContainer.style.marginTop = '5px !important';
+        mainContainer.style.paddingTop = '0 !important';
+    }
+    
+    // Fix the title
+    const title = document.querySelector('h1.pixel-font');
+    if (title) {
+        title.style.marginTop = '0 !important';
+        title.style.marginBottom = '20px !important';
+    }
+}
+
+// Apply fix immediately
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(fixHeartHintAlignment, 50);
+        setTimeout(fixHeartHintAlignment, 200);
+    });
+} else {
+    setTimeout(fixHeartHintAlignment, 50);
+    setTimeout(fixHeartHintAlignment, 200);
+}
+
+// Apply on resize
+window.addEventListener('resize', function() {
+    setTimeout(fixHeartHintAlignment, 50);
+});
+
+// Apply after any UI updates
+const originalRenderCards = renderCards;
+if (originalRenderCards) {
+    renderCards = function() {
+        originalRenderCards();
+        setTimeout(fixHeartHintAlignment, 50);
+    };
+}
+
+// Apply when updateUI is called
+const originalUpdateUIFunc = updateUI;
+if (originalUpdateUIFunc) {
+    updateUI = function() {
+        originalUpdateUIFunc();
+        setTimeout(fixHeartHintAlignment, 50);
+    };
+}
+
+// Also run after any modal closes
+document.addEventListener('hidden.bs.modal', function() {
+    setTimeout(fixHeartHintAlignment, 100);
+});
+
+// Run fix repeatedly to ensure it stays
+setInterval(fixHeartHintAlignment, 1000);

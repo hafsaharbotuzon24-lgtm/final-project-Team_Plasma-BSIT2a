@@ -141,6 +141,7 @@ app.use('/api/hints', apiLimiter, require('./routes/hintRoutes'));
 app.use('/api/hearts', apiLimiter, require('./routes/heartRoutes'));
 app.use('/api/chests', apiLimiter, require('./routes/chestRoutes'));
 app.use('/api/final-battle', apiLimiter, require('./routes/finalBattleRoutes'));
+app.use('/api/save-slots', apiLimiter, require('./routes/saveSlotRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 
 // Start server

@@ -1,39 +1,7 @@
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = 'css/style.css'; // Path relative to the HTML file using the JS
-document.head.appendChild(link);
+ 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.getElementById('profTrigger');
-    const overlay = document.getElementById('accountOverlay');
+ 
 
-    if (!trigger || !overlay) {
-        return;
-    }
-
-    // Toggle window on click
-    trigger.addEventListener('click', (e) => {
-        overlay.style.display = 'flex';
-        e.stopPropagation(); // Prevents immediate closing
-    });
-
-    // Close when clicking outside the account-container
-    window.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.style.display = 'none';
-        }
-    });
-});
-
-// Dynamic Name Change Function
-function changeName() {
-    const newName = prompt("Enter new player name:");
-    if (newName) {
-        document.getElementById('userName').innerText = newName;
-        // You could also save this to localStorage here
-        localStorage.setItem('playerName', newName);
-    }
-}
 
 // script.js
 function navigate(destination) {
@@ -66,26 +34,7 @@ function navigate(destination) {
     }, 150);
 }
 
-function snapToTop() {
-    // Selects the container with the scrollbar class
-    const container = document.querySelector('.scrollbar');
-    
-    container.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-function lbBackToTop() {
-    const scrollContainer = document.getElementById('lbScrollTarget');
-    if (scrollContainer) {
-        scrollContainer.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-}
-
+ 
 // For Volume Slider //
 document.addEventListener('DOMContentLoaded', () => {
     const sfxSlider = document.getElementById('sfx-slider');
@@ -168,105 +117,9 @@ function handleLogout() {
     }
 }
 
+ 
 
-document.addEventListener("DOMContentLoaded", () => {
-    const scrollContainer = document.getElementById('lb-content');
-    const backBtn = document.getElementById('scrollToTop');
-
-    // Sample Data to show off the scrollbar
-    const players = [
-        { rank: "1.", name: "RedGUillermo", score: "9999" },
-        { rank: "2.", name: "NIGGA", score: "8500" },
-        { rank: "3.", name: "KANTOT_KALIMOT", score: "7200" },
-        { rank: "4.", name: "LORD_PENIS", score: "5000" },
-        { rank: "5.", name: "HAHAHA", score: "4200" },
-        { rank: "6.", name: "BIT_CRUSHER", score: "3100" },
-        { rank: "7.", name: "DIWAta", score: "1500" }
-    ];
-
-    // Generate Rows
-    scrollContainer.innerHTML = players.map(player => `
-        <div class="lb-player-slot">
-            <span>${player.rank}</span>
-            <span>${player.name}</span>
-            <span>${player.score}</span>
-        </div>
-    `).join('');
-
-    // Functionable Scroll Back Button
-    backBtn.addEventListener('click', () => {
-        scrollContainer.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-});
-
-function handleSignup() {
-    console.log("Redirecting to registration portal...");
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        window.location.href = "signup.html"; 
-    }, 500);
-}
-
-function handleGithub() {
-    alert("Connecting to the Github...");
-}
-
-function handleGuest() {
-    console.log("Entering as an Anonymous Wanderer...");
-    window.location.href = "game.html";
-}
-
-function goBack() {
-    window.history.back();
-}
-
-function goToNameInterface() {
-    const user = document.getElementById('username').value;
-    
-    if (user === "") {
-        alert("Identify yourself, programmerr!");
-        return;
-    }
-
-    console.log("Validating password for: " + user);
-    
-    // Smooth transition to the Name Interface
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        window.location.href = "name-interface.html";
-    }, 500);
-}
-
-// script.js
-function handleMenu(destination) {
-    console.log("Navigating to: " + destination);
-
-    // Simple fade transition effect
-    document.body.style.opacity = '0.5';
-
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-        
-        switch(destination) {
-            case 'play':
-                window.location.href = "load-slot.html";
-                break;
-            case 'leaderboard':
-                alert("Rankings are currently locked by the Bug King!");
-                break;
-            case 'learn':
-                window.location.href = "learn.html";
-                break;
-            case 'settings':
-                alert("Opening Option Runes...");
-                break;
-        }
-    }, 200);
-}
-
+ 
 document.addEventListener('DOMContentLoaded', () => {
     const normalCursor = "url('assets/click-nonactive.png'), auto"; // Double check this path!
     const clickCursor = "url('assets/click-active.png'), pointer";
@@ -300,22 +153,7 @@ function goCharSelect() {
     , 500);
 }
 
-// Data for your characters
-const characterData = {
-    0: {
-        role: "Knight",
-        bio: "A brave defender of the source code, wielding the sword of Syntax.",
-        stats: { str: 3, def: 2, agi: 1 },
-        icon: "knight-icon.png"
-    },
-    1: {
-        role: "Mage",
-        bio: "Master of the Logic Runes. Can debug any curse with a single spell.",
-        stats: { str: 1, def: 1, agi: 3 },
-        icon: "mage-icon.png"
-    }
-    // Add more characters here as needed
-};
+
 
 // Initialize the Character Select logic
 document.addEventListener('DOMContentLoaded', function() {
@@ -328,32 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
-function updateCharacterInfo(index) {
-    const data = characterData[index];
-    if (!data) return;
-
-    // Update Bio and Icon
-    document.querySelector('.bio-text').innerText = data.bio;
-    document.querySelector('.char-icon').src = data.icon;
-
-    // Update Stats (Stars)
-    const statRows = document.querySelectorAll('.stat-row .stars');
-    
-    // Clear and redraw stars for Strength, Defense, Agility
-    updateStars(statRows[0], data.stats.str);
-    updateStars(statRows[1], data.stats.def);
-    updateStars(statRows[2], data.stats.agi);
-}
-
-function updateStars(container, count) {
-    container.innerHTML = ''; // Clear old stars
-    for (let i = 0; i < count; i++) {
-        const star = document.createElement('img');
-        star.src = 'star.png';
-        container.appendChild(star);
-    }
-}
+ 
+ 
 // keyboard-controls.js
 
 document.addEventListener('keydown', function(event) {
@@ -374,3 +188,136 @@ document.addEventListener('keydown', function(event) {
         carousel.next();
     }
 });
+
+
+    
+
+// Profile Dropdown
+(function() {
+    function setupProfileDropdown() {
+        const trigger = document.getElementById('profTrigger');
+        const dropdown = document.getElementById('profileDropdown');
+        
+        if (!trigger || !dropdown) {
+            console.error('Profile dropdown elements not found');
+            return;
+        }
+        
+        // Toggle dropdown on button click
+        trigger.addEventListener('click', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            dropdown.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking anywhere outside
+        document.addEventListener('click', function(event) {
+            if (!trigger.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        // Close dropdown on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        // Close dropdown when window is resized (mobile handling)
+        window.addEventListener('resize', function() {
+            dropdown.classList.remove('show');
+        });
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupProfileDropdown);
+    } else {
+        setupProfileDropdown();
+    }
+})();
+
+function openProfile() {
+    window.location.href = 'profile.html';
+    // Add your profile modal/page logic here
+}
+
+function switchTheme() {
+    console.log('Switch Theme');
+    // Add your theme switching logic here
+}
+
+function signOut() {
+    var dropdown = document.getElementById('profileDropdown');
+    if (dropdown) dropdown.classList.remove('show');
+    
+    // Create modal HTML
+    var modalHTML = `
+        <div class="cc-logout-overlay" id="ccLogoutModal">
+            <div class="cc-logout-modal-box">
+                <h3 style="font-family: 'Pixelify Sans', sans-serif; color: #ffffff; font-size: 1.8rem; margin-bottom: 8px;">LOG OUT</h3>
+                <p style="font-family: 'Pixelify Sans', sans-serif; color: #8aa0b8; font-size: 1.1rem; margin-bottom: 25px;">ARE YOU SURE?</p>
+                <div class="cc-logout-actions">
+                    <button class="cc-logout-btn cc-btn-no" onclick="closeCCLogout()">NO</button>
+                    <button class="cc-logout-btn cc-btn-yes" onclick="confirmCCLogout()">YES</button>
+                </div>
+            </div>
+        </div>`;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Close on overlay click
+    document.getElementById('ccLogoutModal').addEventListener('click', function(e) {
+        if (e.target === this) closeCCLogout();
+    });
+    
+    // Close on Escape
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+            closeCCLogout();
+            document.removeEventListener('keydown', escHandler);
+        }
+    });
+}
+
+function closeCCLogout() {
+    var modal = document.getElementById('ccLogoutModal');
+    if (modal) modal.remove();
+}
+
+function confirmCCLogout() {
+    localStorage.removeItem('combatCoders_currentUser');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('playerId');
+    localStorage.removeItem('playerUserName');
+    localStorage.removeItem('playerEmail');
+    window.location.href = 'login.html';
+}
+
+/**
+ * Combined Logic for settings.html
+ */
+
+function handleLogout() {
+    // 1. Play sound if the function exists from audio-manager.js
+    if (typeof playSFX === 'function') {
+        playSFX('sound-fx/click.mp3');
+    }
+    
+    // 2. Target the unique ID we created
+    const modal = document.getElementById('ccLogoutModal');
+    if (modal) {
+        modal.style.display = 'flex'; // This brings it to the front
+    } else {
+        console.error("Modal with ID 'ccLogoutModal' not found.");
+    }
+}
+
+function closeCcModal() {
+    const modal = document.getElementById('ccLogoutModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function confirmCcLogout() {
+    window.location.href = 'login.html';
+}

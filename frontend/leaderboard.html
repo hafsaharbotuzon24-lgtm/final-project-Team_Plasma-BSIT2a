@@ -14,8 +14,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <img src="img/plasma-logo.png" alt="Logo" class="brainrot-logo"onclick="playSFX('sound-fx/click.mp3'); navigate('home')"></button>
-                <span class="plasma-title">Team Plasma</span>
+                <span>Combat Coders</span>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -24,41 +23,26 @@
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
                 <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
-                <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-                <img src="img/icon-frame.png" alt="" style="width: 80px; height: 80px;">
-               </button>
             </div>
+
+            <!-- Only ONE profile trigger, inside the navbar -->
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
+                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+
             <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
                 <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
                 <span>Team Plasma</span>
             </button>
         </div>
     </nav>
-
-<div class="profile-trigger-container">
-    <button class="prof-icon" id="profTrigger" onclick="playSFX('sound-fx/click.mp3');">
-        <img src="img/.png" alt="Profile" class="pixel-icon-large">
-    </button>
-</div>
-
-<div id="accountOverlay" class="account-overlay">
-    <div class="account-container">
-        <div class="account-content">
-            <div class="account-details">
-                <p class="pixel-label">Name: <span id="userName">CombatCoder_01</span></p>
-                <button class="change-name-btn" onclick="changeName()">Change name</button>
-                
-                <p class="pixel-label">Email: <span id="userEmail">player@plasma.com</span></p>
-                <p class="pixel-label">Level: <span id="userLevel">99</span></p>
-            </div>
-            <div class="account-visual">
-                <div class="icon-prof-frame">
-                    <img src="img/.png" alt="Avatar" class="icon-prof">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
     <div class="lb-wrapper">
         <div class="lb-title-box">
@@ -87,6 +71,8 @@
     <script src="js/api-connection.js"></script>
     <script src="js/login.js"></script>
     <script src="js/leaderboard-logic.js"></script>
+    <script src="js/game-timer.js"></script>
+    <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
 </body>
 </html>
