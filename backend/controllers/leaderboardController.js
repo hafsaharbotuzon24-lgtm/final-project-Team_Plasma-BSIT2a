@@ -30,7 +30,7 @@ exports.submitLeaderboardEntry = async (req, res) => {
     const entry = await Leaderboard.findOneAndUpdate(
       { player_id: playerId },
       { player_id: playerId, time_seconds: rawTime, score },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
+      { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
     )
       .populate('player_id', 'username email level')
       .lean();

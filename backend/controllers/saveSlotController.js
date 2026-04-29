@@ -35,7 +35,7 @@ exports.upsertSaveSlot = async (req, res) => {
     const saveSlot = await SaveSlot.findOneAndUpdate(
       { player_id: playerId, slot },
       payload,
-      { new: true, upsert: true, setDefaultsOnInsert: true }
+      { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
     ).lean();
 
     return res.status(200).json({ message: 'Save slot synced', saveSlot });
