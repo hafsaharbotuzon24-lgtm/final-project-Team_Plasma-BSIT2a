@@ -16,12 +16,18 @@ exports.register = async (req, res) => {
 
     // Sanitize inputs to prevent XSS
     username = xss(username);
-    email = xss(email);
+    email = xss(email).toLowerCase();
 
     // Check if email already exists
     const existingUser = await Player.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
+    }
+
+    // Check if username already exists
+    const existingUsername = await Player.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already exists" });
     }
 
     // Hash password and create player
@@ -39,6 +45,16 @@ exports.register = async (req, res) => {
     res.status(201).json({ message: "User registered successfully", token, player: safePlayer });
 
   } catch (err) {
+    if (err?.code === 11000) {
+      const duplicateField = Object.keys(err.keyPattern || {})[0];
+      if (duplicateField === 'email') {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
+      if (duplicateField === 'username') {
+        return res.status(400).json({ message: 'Username already exists' });
+      }
+      return res.status(400).json({ message: 'Account already exists' });
+    }
     res.status(500).json({ message: err.message });
   }
 };
@@ -68,6 +84,9 @@ exports.login = async (req, res) => {
     res.json({ token, player: safePlayer });
 
   } catch (err) {
+    if (err?.code === 11000) {
+      return res.status(400).json({ message: 'Account already exists' });
+    }
     res.status(500).json({ message: err.message });
   }
 };
