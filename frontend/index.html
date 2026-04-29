@@ -11,9 +11,62 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background-color: #020617;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .intro-logo-wrapper {
+            position: relative;
+            width: 550px;
+            height: 550px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
+            animation: introGlow 2s ease-in-out infinite;
+            opacity: 1;
+            transition: opacity 0.3s ease-out;
+        }
+
+        @keyframes introGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(100, 200, 255, 0.6));
+            }
+        }
+
+        .intro-logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .intro-logo-wrapper {
+                width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 
 <body class="index-body">
+    <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+        <div class="intro-logo-wrapper" id="introLogoWrapper">
+            <img src="img/LOGO ANIM.gif" alt="Team Plasma Logo" id="introLogoImg">
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
@@ -175,6 +228,35 @@
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
+window.addEventListener("load", () => {
+    const introOverlay = document.getElementById('introOverlay');
+    const introLogoWrapper = document.getElementById('introLogoWrapper');
+    const introLogoImg = document.getElementById('introLogoImg');
+
+    if (!introOverlay || !introLogoWrapper || !introLogoImg) return;
+    const authToken = localStorage.getItem('authToken');
+
+    // If user is already authenticated, skip intro redirect and show home page.
+    if (authToken) {
+        introOverlay.style.display = 'none';
+        return;
+    }
+
+    const GIF_DURATION = 1000;
+    const FADE_DURATION = 300;
+
+    const originalSrc = introLogoImg.getAttribute("src");
+    introLogoImg.src = originalSrc + "?t=" + Date.now();
+
+    setTimeout(() => {
+        introLogoWrapper.style.opacity = "0";
+    }, GIF_DURATION);
+
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, GIF_DURATION + FADE_DURATION);
+});
+
 // Fade in/out combat preview section on scroll
 document.addEventListener('DOMContentLoaded', function() {
     const combatSection = document.querySelector('.combat-preview-section');
