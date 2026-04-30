@@ -2,15 +2,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Combat Coders - Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-     <link rel="stylesheet" href="css/profile.css">
- 
+    <link rel="stylesheet" href="css/profile.css">
+    <style>
+        /* =============================================
+           SETTINGS PANEL STYLES - Same size as profile container
+           ============================================= */
+        
+        .settings-panel {
+            background-color: #0d1b30;
+            border: 3px solid #1a3350;
+            border-radius: 16px;
+            padding: 22px 24px;
+            width: 100%;
+            max-width: 750px;
+            position: relative;
+            transition: none !important;
+        }
+        
+        .settings-header {
+            text-align: center;
+            color: #ffd966;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            font-family: 'Pixelify Sans', sans-serif;
+        }
+        
+        .settings-row {
+            background: #1a2d45;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .icon-container {
+            flex-shrink: 0;
+        }
+        
+        .pixel-icon-btn {
+            background: #0d1b30;
+            border: 2px solid #2a4a6e;
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pixel-icon-btn:hover {
+            background: #2a4a6e;
+            transform: scale(1.05);
+        }
+        
+        .pixel-icon {
+            width: 40px;
+            height: 40px;
+            image-rendering: pixelated;
+        }
+        
+        .slider-wrapper {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .pixel-label {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1.1rem;
+            color: #8aa0b8;
+            margin-bottom: 8px;
+            display: block;
+            letter-spacing: 1px;
+        }
+        
+        .custom-pixel-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #0d1b30;
+            border-radius: 10px;
+            outline: none;
+            border: 1px solid #2a4a6e;
+        }
+        
+        .custom-pixel-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ffd966;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #ffaa33;
+        }
+        
+        .custom-pixel-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #ffaa33;
+        }
+        
+        /* Hide profile container when showing settings */
+        .profile-container.hidden {
+            display: none;
+        }
+        
+        .settings-panel.hidden {
+            display: none;
+        }
+        
+        /* Uniform sidebar button colors */
+        .settings-btn,
+        .change-password-btn,
+        .delete-btn {
+            background: #2a4a6e;
+            border-color: #3a6a8e;
+            color: #c0d0e0;
+        }
+        
+        .settings-btn:hover,
+        .change-password-btn:hover {
+            background: #3a6a8e;
+            color: #ffffff;
+        }
+        
+        .delete-btn:hover {
+            background: #5a2a2a;
+            color: #ff4444;
+        }
+        
+        /* Responsive adjustments for settings panel */
+        @media (max-width: 768px) {
+            .settings-panel {
+                padding: 18px 15px;
+            }
+            .settings-header {
+                font-size: 1.6rem;
+            }
+            .settings-row {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .slider-wrapper {
+                width: 100%;
+            }
+            .pixel-icon {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .settings-panel {
+                padding: 15px 12px;
+            }
+            .settings-header {
+                font-size: 1.4rem;
+            }
+            .settings-row {
+                padding: 12px;
+            }
+        }
+        
+        /* Desktop edit mode button sizes - no layout shift */
+        @media (min-width: 769px) {
+            .change-avatar-btn.visible {
+                padding: 4px 12px;
+                font-size: 0.75rem;
+            }
+            .change-name-btn.visible {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            .edit-name-input.visible {
+                max-width: 180px;
+                min-width: 120px;
+                padding: 4px 8px;
+                font-size: 0.95rem;
+            }
+            .edit-profile-btn.updating {
+                font-size: 0.85rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
 </head>
 <body class="profile-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
@@ -25,7 +212,6 @@
                 <button class="play-btn" onclick="navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="navigate('learn')">Learn</button>
-                
             </div>
 
             <div class="profile-trigger-container" id="profileContainer">
@@ -47,17 +233,17 @@
 
     <div class="profile-main-wrapper">
         <!-- Main Profile Container -->
-        <div class="profile-container">
+        <div class="profile-container" id="profileContainerPanel">
             <button class="edit-profile-btn" id="editProfileBtn" onclick="toggleEditMode()">Edit Profile</button>
             <h1 class="profile-header">PROFILE</h1>
             
             <div class="profile-content">
                 <div class="avatar-section">
                     <div class="avatar-circle" id="avatarCircle">
-                        <img id="profileAvatar" src="img/player-profile.png" alt=" ">
+                        <img id="profileAvatar" src="img/player-profile.png" alt="avatar">
                     </div>
                     <button class="change-avatar-btn" id="changeAvatarBtn" onclick="triggerAvatarUpload()">Change Picture</button>
-                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
+                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatarTemp(event)">
                 </div>
                 
                 <div class="info-section">
@@ -65,7 +251,7 @@
                         <span class="info-label">Name:</span>
                         <span class="info-value" id="displayUserName">CombatCoder_01</span>
                         <input type="text" class="edit-name-input" id="editNameInput" maxlength="20">
-                        <button class="change-name-btn" id="changeNameBtn" onclick="openNameModal()">Change</button>
+                        <button class="change-name-btn" id="changeNameBtn" onclick="openCustomNameModal()">Change</button>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Level:</span>
@@ -115,15 +301,57 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
+        <!-- Settings Panel (hidden by default, same size as profile container) -->
+        <div class="settings-panel hidden" id="settingsPanel">
+            <h1 class="settings-header">SETTINGS</h1>
+            
+            <div class="settings-row">
+                <div class="icon-container">
+                    <button id="toggle-sfx" class="pixel-icon-btn" type="button">
+                        <img src="img/icon-soundfx.png" alt="SFX" class="pixel-icon">
+                    </button>
+                </div>
+                <div class="slider-wrapper">
+                    <label for="sfx-slider" class="pixel-label">SOUND FX</label>
+                    <input type="range" class="custom-pixel-slider" id="sfx-slider" min="0" max="100" step="1" value="80">
+                </div>
+            </div>
+
+            <div class="settings-row">
+                <div class="icon-container">
+                    <button id="toggle-music" class="pixel-icon-btn" type="button">
+                        <img src="img/icon-music.png" alt="Music" class="pixel-icon">
+                    </button>
+                </div>
+                <div class="slider-wrapper">
+                    <label for="music-slider" class="pixel-label">MUSIC</label>
+                    <input type="range" class="custom-pixel-slider" id="music-slider" min="0" max="100" step="1" value="50">
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar - Profile and Settings buttons (uniform color) -->
         <div class="profile-sidebar">
-            <h2 class="sidebar-title">PROFILE SETTINGS</h2>
-            <button class="sidebar-btn" onclick="openChangePasswordModal()" style="background: #4a4a4a; color: #fff; margin-bottom: 10px;">Change Password</button>
-            <button class="sidebar-btn delete-btn" onclick="openDeleteModal()">Delete Account</button>
+            <button class="settings-btn" onclick="closeSettingsPanel()">Profile</button>
+            <button class="settings-btn" onclick="openSettingsPanel()">Settings</button>
+            <button class="settings-btn change-password-btn" onclick="openChangePasswordModal()">Change Password</button>
+            <button class="settings-btn delete-btn" onclick="openDeleteModal()">Delete Account</button>
         </div>
     </div>
 
-    <!-- Change Password Modal -->
+    <!-- Custom Change Name Modal (replaces browser prompt) -->
+    <div class="custom-modal-overlay" id="customNameModal">
+        <div class="custom-modal-box">
+            <h3>CHANGE USERNAME</h3>
+            <input type="text" id="customNameInput" placeholder="Enter new username" maxlength="20">
+            <div class="custom-modal-buttons">
+                <button class="custom-modal-btn-confirm" onclick="confirmNameChange()">Update</button>
+                <button class="custom-modal-btn-cancel" onclick="closeCustomNameModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal (existing backend) -->
     <div class="delete-modal-overlay" id="changePasswordModal">
         <div class="delete-modal-box">
             <h3>CHANGE PASSWORD</h3>
@@ -156,7 +384,89 @@
     <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
+        // =============================================
+        // PROFILE PAGE SCRIPT - PRESERVES ALL BACKEND
+        // Avatar saves ONLY on Update Profile click
+        // Settings panel integration
+        // =============================================
+        
         let isEditing = false;
+        let tempAvatarPreview = null;
+        
+        // Settings Panel Functions
+        function openSettingsPanel() {
+            // Exit edit mode if active
+            if (isEditing) {
+                saveProfileUpdates();
+            }
+            // Hide profile container, show settings panel
+            document.getElementById('profileContainerPanel').classList.add('hidden');
+            document.getElementById('settingsPanel').classList.remove('hidden');
+        }
+        
+        function closeSettingsPanel() {
+            // Hide settings panel, show profile container
+            document.getElementById('settingsPanel').classList.add('hidden');
+            document.getElementById('profileContainerPanel').classList.remove('hidden');
+            // Reload profile data to ensure it's up to date
+            loadProfileData();
+        }
+        
+        // Audio Settings Initialization (from audio-manager.js)
+        function initAudioSettings() {
+            const sfxSlider = document.getElementById('sfx-slider');
+            const musicSlider = document.getElementById('music-slider');
+            const sfxBtn = document.getElementById('toggle-sfx');
+            const musicBtn = document.getElementById('toggle-music');
+            
+            // Load saved volumes from localStorage
+            const savedSfx = localStorage.getItem('sfxVolume') || '80';
+            const savedMusic = localStorage.getItem('musicVolume') || '50';
+            
+            if (sfxSlider) {
+                sfxSlider.value = savedSfx;
+                sfxSlider.addEventListener('input', (e) => {
+                    localStorage.setItem('sfxVolume', e.target.value);
+                });
+            }
+            
+            if (musicSlider) {
+                musicSlider.value = savedMusic;
+                musicSlider.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    localStorage.setItem('musicVolume', val);
+                    // Update BGM volume if playing
+                    if (window.bgm) {
+                        window.bgm.volume = val / 100;
+                    }
+                });
+            }
+            
+            // Mute/Toggle for SFX
+            if (sfxBtn) {
+                sfxBtn.addEventListener('click', () => {
+                    const current = localStorage.getItem('sfxVolume') || '80';
+                    const target = current > '0' ? '0' : '80';
+                    localStorage.setItem('sfxVolume', target);
+                    if (sfxSlider) sfxSlider.value = target;
+                    // Play a test sound to confirm SFX works
+                    const testAudio = new Audio('sound-fx/click.mp3');
+                    testAudio.volume = 0.5;
+                    testAudio.play().catch(() => {});
+                });
+            }
+            
+            // Mute/Toggle for Music
+            if (musicBtn) {
+                musicBtn.addEventListener('click', () => {
+                    const current = localStorage.getItem('musicVolume') || '50';
+                    const target = current > '0' ? '0' : '50';
+                    localStorage.setItem('musicVolume', target);
+                    if (musicSlider) musicSlider.value = target;
+                    if (window.bgm) window.bgm.volume = target / 100;
+                });
+            }
+        }
         
         function loadProfileData() {
             const storedName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
@@ -165,16 +475,14 @@
             const storedEmail = localStorage.getItem('playerEmail') || 'player@plasma.com';
             document.getElementById('displayUserEmail').innerText = storedEmail;
             
-            const storedAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
-            document.getElementById('profileAvatar').src = storedAvatar;
+            const finalAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+            document.getElementById('profileAvatar').src = finalAvatar;
             
-            // Update navbar profile icon
-            updateNavbarProfileIcon(storedAvatar);
+            updateNavbarProfileIcon(finalAvatar);
             
             const savedLevel = localStorage.getItem('currentLevel') || '1';
             document.getElementById('displayLevel').innerText = savedLevel;
             
-            // Load medals based on level completion
             loadMedals();
         }
         
@@ -194,7 +502,6 @@
             const level1Completed = localStorage.getItem('level1Completed') === 'true';
             const level2Completed = localStorage.getItem('level2Completed') === 'true';
             const level3Completed = localStorage.getItem('level3Completed') === 'true';
-            
             const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
             const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
             const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
@@ -202,18 +509,59 @@
             if (level1Completed || boss1Defeated) {
                 document.getElementById('medal1').innerHTML = '<img src="img/medal-1.png" alt="Medal 1" onerror="this.src=\'img/bronze-medal.png\'">';
             }
-            
             if (level2Completed || boss2Defeated) {
                 document.getElementById('medal2').innerHTML = '<img src="img/medal-2.png" alt="Medal 2" onerror="this.src=\'img/silver-medal.png\'">';
             }
-            
             if (level3Completed || boss3Defeated) {
                 document.getElementById('medal3').innerHTML = '<img src="img/medal-3.png" alt="Medal 3" onerror="this.src=\'img/gold-medal.png\'">';
             }
         }
         
-        function toggleEditMode() {
-            isEditing = !isEditing;
+        function previewAvatarTemp(event) {
+            const file = event.target.files[0];
+            if (file && isEditing) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempAvatarPreview = e.target.result;
+                    document.getElementById('profileAvatar').src = tempAvatarPreview;
+                    document.getElementById('avatarCircle').classList.add('temp-preview');
+                };
+                reader.readAsDataURL(file);
+            } else if (file && !isEditing) {
+                alert("Please click 'Edit Profile' first to change picture.");
+                event.target.value = '';
+            }
+        }
+        
+        function triggerAvatarUpload() {
+            if (!isEditing) {
+                alert("Enter Edit Mode first (click Edit Profile).");
+                return;
+            }
+            document.getElementById('avatarInput').click();
+        }
+        
+        function saveProfileUpdates() {
+            const editInput = document.getElementById('editNameInput');
+            const newName = editInput.value.trim();
+            if (newName) {
+                localStorage.setItem('playerUserName', newName);
+                document.getElementById('displayUserName').innerText = newName;
+            }
+            
+            if (tempAvatarPreview) {
+                localStorage.setItem('playerAvatar', tempAvatarPreview);
+                updateNavbarProfileIcon(tempAvatarPreview);
+                document.getElementById('profileAvatar').src = tempAvatarPreview;
+                tempAvatarPreview = null;
+                document.getElementById('avatarCircle').classList.remove('temp-preview');
+            }
+            
+            exitEditMode();
+        }
+        
+        function exitEditMode() {
+            isEditing = false;
             const editBtn = document.getElementById('editProfileBtn');
             const changeAvatarBtn = document.getElementById('changeAvatarBtn');
             const changeNameBtn = document.getElementById('changeNameBtn');
@@ -221,7 +569,33 @@
             const displayName = document.getElementById('displayUserName');
             const avatarCircle = document.getElementById('avatarCircle');
             
-            if (isEditing) {
+            editBtn.textContent = 'Edit Profile';
+            editBtn.classList.remove('updating');
+            changeAvatarBtn.classList.remove('visible');
+            changeNameBtn.classList.remove('visible');
+            avatarCircle.classList.remove('editing');
+            avatarCircle.classList.remove('temp-preview');
+            
+            displayName.style.display = '';
+            editNameInput.classList.remove('visible');
+            avatarCircle.onclick = null;
+            
+            const savedAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+            document.getElementById('profileAvatar').src = savedAvatar;
+            tempAvatarPreview = null;
+            document.getElementById('avatarInput').value = '';
+        }
+        
+        function toggleEditMode() {
+            if (!isEditing) {
+                isEditing = true;
+                const editBtn = document.getElementById('editProfileBtn');
+                const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+                const changeNameBtn = document.getElementById('changeNameBtn');
+                const editNameInput = document.getElementById('editNameInput');
+                const displayName = document.getElementById('displayUserName');
+                const avatarCircle = document.getElementById('avatarCircle');
+                
                 editBtn.textContent = 'Update Profile';
                 editBtn.classList.add('updating');
                 changeAvatarBtn.classList.add('visible');
@@ -234,51 +608,37 @@
                 editNameInput.focus();
                 
                 avatarCircle.onclick = function() { triggerAvatarUpload(); };
+                
+                const currentStored = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+                document.getElementById('profileAvatar').src = currentStored;
+                tempAvatarPreview = null;
             } else {
-                const newName = editNameInput.value.trim();
-                if (newName) {
-                    localStorage.setItem('playerUserName', newName);
-                    displayName.innerText = newName;
-                }
-                
-                editBtn.textContent = 'Edit Profile';
-                editBtn.classList.remove('updating');
-                changeAvatarBtn.classList.remove('visible');
-                changeNameBtn.classList.remove('visible');
-                avatarCircle.classList.remove('editing');
-                
-                displayName.style.display = '';
-                editNameInput.classList.remove('visible');
-                
-                avatarCircle.onclick = null;
+                saveProfileUpdates();
             }
         }
         
-        function triggerAvatarUpload() {
-            document.getElementById('avatarInput').click();
-        }
-        
-        function previewAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Image = e.target.result;
-                    localStorage.setItem('playerAvatar', base64Image);
-                    document.getElementById('profileAvatar').src = base64Image;
-                    // Update navbar profile icon immediately
-                    updateNavbarProfileIcon(base64Image);
-                };
-                reader.readAsDataURL(file);
+        function openCustomNameModal() {
+            if (!isEditing) {
+                alert("Enter edit mode to change name.");
+                return;
             }
+            const currentName = document.getElementById('editNameInput').value || localStorage.getItem('playerUserName') || 'CombatCoder_01';
+            document.getElementById('customNameInput').value = currentName;
+            document.getElementById('customNameModal').classList.add('show');
         }
         
-        function openNameModal() {
-            const currentName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
-            const newName = prompt("Enter new username:", currentName);
-            if (newName && newName.trim() !== "") {
-                localStorage.setItem('playerUserName', newName.trim());
-                document.getElementById('displayUserName').innerText = newName.trim();
+        function closeCustomNameModal() {
+            document.getElementById('customNameModal').classList.remove('show');
+            document.getElementById('customNameInput').value = '';
+        }
+        
+        function confirmNameChange() {
+            const newName = document.getElementById('customNameInput').value.trim();
+            if (newName && newName !== "") {
+                document.getElementById('editNameInput').value = newName;
+                closeCustomNameModal();
+            } else {
+                alert("Please enter a valid username.");
             }
         }
         
@@ -298,12 +658,9 @@
                 try {
                     const response = await fetch(`${API_BASE}/api/players/me`, {
                         method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        },
+                        headers: { 'Authorization': `Bearer ${token}` },
                         credentials: 'include'
                     });
-                    
                     if (!response.ok) {
                         const data = await response.json();
                         alert(data.message || 'Failed to delete account');
@@ -314,7 +671,6 @@
                     alert('Network error. Account deleted locally only.');
                 }
             }
-            
             localStorage.clear();
             window.location.href = 'login.html';
         }
@@ -347,12 +703,10 @@
                 alert('Please fill in all password fields');
                 return;
             }
-            
             if (newPassword !== confirmPassword) {
                 alert('New passwords do not match');
                 return;
             }
-            
             if (newPassword.length < 8) {
                 alert('New password must be at least 8 characters');
                 return;
@@ -369,13 +723,11 @@
                     body: JSON.stringify({ oldPassword, newPassword })
                 });
                 
-                const data = await response.json();
-                
                 if (!response.ok) {
+                    const data = await response.json();
                     alert(data.message || 'Failed to change password');
                     return;
                 }
-                
                 alert('Password changed successfully!');
                 closeChangePasswordModal();
             } catch (err) {
@@ -394,6 +746,14 @@
             }
         }
         
+        function switchTheme() {
+            alert("Theme switching coming soon.");
+        }
+        
+        function signOut() {
+            window.location.href = 'login.html';
+        }
+        
         window.markLevelCompleted = function(level) {
             localStorage.setItem('level' + level + 'Completed', 'true');
             localStorage.setItem('boss' + level + 'Defeated', 'true');
@@ -404,20 +764,29 @@
             localStorage.setItem('level' + level + 'Completed', 'true');
         };
         
+        // Event listeners
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('show')) {
-                closeDeleteModal();
+            if (e.key === 'Escape') {
+                if (document.getElementById('deleteModal').classList.contains('show')) closeDeleteModal();
+                if (document.getElementById('changePasswordModal').classList.contains('show')) closeChangePasswordModal();
+                if (document.getElementById('customNameModal').classList.contains('show')) closeCustomNameModal();
             }
         });
         
         document.getElementById('deleteModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeDeleteModal();
-            }
+            if (e.target === this) closeDeleteModal();
+        });
+        document.getElementById('changePasswordModal').addEventListener('click', function(e) {
+            if (e.target === this) closeChangePasswordModal();
+        });
+        document.getElementById('customNameModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCustomNameModal();
         });
         
-        document.addEventListener('DOMContentLoaded', loadProfileData);
-        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+            initAudioSettings();
+        });
         setInterval(loadMedals, 5000);
     </script>
 </body>

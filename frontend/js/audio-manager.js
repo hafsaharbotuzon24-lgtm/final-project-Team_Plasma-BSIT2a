@@ -138,3 +138,30 @@ window.addEventListener('beforeunload', () => {
         localStorage.setItem('currentTrack', currentTrackPath);
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sfxSlider = document.getElementById('sfx-slider');
+    const musicSlider = document.getElementById('music-slider');
+
+    if (!sfxSlider || !musicSlider) {
+        return;
+    }
+
+    // 1. Load saved volumes or defaults
+    const savedSfx = localStorage.getItem('sfxVolume') || 80;
+    const savedMusic = localStorage.getItem('musicVolume') || 50;
+    
+    sfxSlider.value = savedSfx;
+    musicSlider.value = savedMusic;
+
+    // 2. Slider Change Listeners
+    sfxSlider.addEventListener('input', (e) => {
+        localStorage.setItem('sfxVolume', e.target.value);
+        console.log(`SFX Volume: ${e.target.value}%`);
+    });
+
+    musicSlider.addEventListener('input', (e) => {
+        localStorage.setItem('musicVolume', e.target.value);
+        console.log(`Music Volume: ${e.target.value}%`);
+    });
+});

@@ -26,8 +26,7 @@
                 <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
-                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button> 
             </div>
 
             <!-- Profile trigger with circular avatar -->
@@ -105,12 +104,44 @@
     <script src="js/audio-manager.js"></script>
     <script src="js/char-catalogue.js"></script>
     <script>
-        // Update navbar avatar on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof updateNavbarAvatar === 'function') {
-                updateNavbarAvatar();
-            }
-        });
-    </script>
+    
+    function updateNavbarAvatar() {
+        const savedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
+        const navProfileIcon = document.getElementById('navProfileIcon');
+        
+        if (navProfileIcon) {
+            navProfileIcon.src = savedAvatar;
+            navProfileIcon.style.width = '40px';
+            navProfileIcon.style.height = '40px';
+            navProfileIcon.style.borderRadius = '50%';
+            navProfileIcon.style.objectFit = 'cover';
+            navProfileIcon.style.border = '2px solid #FFD700';
+            navProfileIcon.style.imageRendering = 'auto';
+        }
+        
+        
+        const profTriggerImg = document.querySelector('#profTrigger img');
+        if (profTriggerImg && profTriggerImg.id !== 'navProfileIcon') {
+            profTriggerImg.src = savedAvatar;
+            profTriggerImg.style.width = '40px';
+            profTriggerImg.style.height = '40px';
+            profTriggerImg.style.borderRadius = '50%';
+            profTriggerImg.style.objectFit = 'cover';
+            profTriggerImg.style.border = '2px solid #FFD700';
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateNavbarAvatar);
+    } else {
+        updateNavbarAvatar();
+    }
+    
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'playerAvatar') {
+            updateNavbarAvatar();
+        }
+    });
+</script>
 </body>
 </html>
