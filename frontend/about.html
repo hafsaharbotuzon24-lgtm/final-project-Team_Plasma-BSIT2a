@@ -11,10 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+25&family=Pixelify+Sans:wght@400..700&family=Silkscreen:wght@400;700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/about.css">
 </head>
 
 <body class="about-body">
-          <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
@@ -29,13 +30,12 @@
                 <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
             </div>
 
-            <!-- Only ONE profile trigger, inside the navbar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
@@ -264,7 +264,7 @@
  <footer class="about-footer">
         <div class="about-footer-top">
             <div class="about-footer-brand">
-                <img class ="about-footer-logo" src ="img/Combat Coders Logo-2.png.png">
+                <img class ="about-footer-logo" src ="img/logo-cc.png">
             </div>
         </div>
 
@@ -318,10 +318,18 @@
         </div>
     </footer>
 
+    <script src="js/account.js"></script>
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
 
     <script>
+        // Update navbar avatar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof updateNavbarAvatar === 'function') {
+                updateNavbarAvatar();
+            }
+        });
+
         // Initialize flip card functionality for team member cards
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', function() {

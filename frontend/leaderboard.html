@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
 </head>
 <body class="lb-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
@@ -15,6 +16,7 @@
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
                 <span>Combat Coders</span>
+                </button>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -22,16 +24,16 @@
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                
             </div>
 
-            <!-- Only ONE profile trigger, inside the navbar -->
+            <!-- Profile trigger with circular avatar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
@@ -67,12 +69,20 @@
         </div>
     </div>
     
+    <script src="js/account.js"></script>
     <script src="js/script.js"></script>
     <script src="js/api-connection.js"></script>
     <script src="js/login.js"></script>
     <script src="js/leaderboard-logic.js"></script>
     <script src="js/game-timer.js"></script>
-    <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script>
+        // Update navbar avatar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof updateNavbarAvatar === 'function') {
+                updateNavbarAvatar();
+            }
+        });
+    </script>
 </body>
 </html>

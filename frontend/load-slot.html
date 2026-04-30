@@ -10,13 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/load-slot.css">
+     
 </head>
-<body class="load-body" style="background-image: url('../frontend/img/bg-main.png');">
+<body class="load-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
                 <span>Combat Coders</span>
+                </button>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -24,16 +27,16 @@
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                
             </div>
 
-            <!-- Only ONE profile trigger, inside the navbar -->
+            <!-- Profile trigger with circular avatar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
@@ -179,15 +182,45 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api-connection.js"></script>
+    <script src="js/account.js"></script>
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
-    <script src="js/account.js"></script>
     <script src="js/save-load.js"></script>
     <script>
-        // Initialize load slots on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllSlots();
-        });
-    </script>
+    // Navbar Avatar Update Script
+    function updateNavbarAvatar() {
+        const storedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
+        
+        // Update the navbar profile icon
+        const navProfileIcon = document.getElementById('navProfileIcon');
+        if (navProfileIcon) {
+            navProfileIcon.src = storedAvatar;
+            navProfileIcon.style.width = '40px';
+            navProfileIcon.style.height = '40px';
+            navProfileIcon.style.borderRadius = '50%';
+            navProfileIcon.style.objectFit = 'cover';
+            navProfileIcon.style.imageRendering = 'auto';
+            navProfileIcon.style.border = '2px solid #FFD700';
+        }
+        
+        // Also update any other profile trigger images
+        const profTriggerImg = document.querySelector('#profTrigger img');
+        if (profTriggerImg && profTriggerImg.id !== 'navProfileIcon') {
+            profTriggerImg.src = storedAvatar;
+            profTriggerImg.style.width = '40px';
+            profTriggerImg.style.height = '40px';
+            profTriggerImg.style.borderRadius = '50%';
+            profTriggerImg.style.objectFit = 'cover';
+            profTriggerImg.style.imageRendering = 'auto';
+            profTriggerImg.style.border = '2px solid #FFD700';
+        }
+    }
+    
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNavbarAvatar();
+    });
+</script>
 </body>
 </html>

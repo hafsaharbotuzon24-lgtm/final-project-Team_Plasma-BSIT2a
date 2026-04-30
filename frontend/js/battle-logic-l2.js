@@ -34,10 +34,10 @@ const PLAYER_DIAL_L2 = ["YOU: You have eaten spellbooks worth more than your col
 const ENEMY_DIAL_L2 = ["ENEMY: These walls are ours. Turn back or be crushed.", "ENEMY: Innocents taste the sweetest. I will not leave.", "ENEMY: You bring warmth here. We will snuff it out.", "ENEMY: Your power will die before it touches my skin.", "ENEMY: Your bones will join the mineral deposits.", "ENEMY: We have waited ages for prey. You'll do just fine."];
 
 const BOSS_DIAL_L2 = [
-    "LORD OF THE FLIES: FEED! DESTROY! AND DEVOUR",
-    "LORD OF THE FLIES: Every bone you see was once a trespasser like you, wanna be with them? ehuehuehuehue...",
-    "LORD OF THE FLIES: Children, swarm this peckish fool! Dinner is served! Main dish? YOU",
-    "LORD OF THE FLIES: This castle was once peaceful. Your kind keeps on trespassing! Must I use my iron fist to finish all of you off?"
+    "LORD OF THE FLIES: FEED! DESTROY! AND DEVOUR!",
+    "LORD OF THE FLIES: Every bone you see was once a trespasser like you. Want to join them? Ehuehuehuehue...",
+    "LORD OF THE FLIES: Children, swarm this peckish fool! Dinner is served! Main dish? YOU!",
+    "LORD OF THE FLIES: This castle was once peaceful. Your kind keeps trespassing! Must I use my iron fist to finish all of you off?"
 ];
 
 const QUESTIONS_L2 = {
@@ -60,13 +60,13 @@ const QUESTIONS_L2 = {
     ],
     2: [
         {
-            q: "Update the &lt;footer&gt; and change the text inside the &lt;small&gt; tag. Currently it says \"User: Admin|Status: Offline\". Change it so the user is \"Guest\" and the status is \"Online\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;footer&gt;\n  &lt;p&gt;&lt;small&gt;User: Admin | Status: Offline&lt;/small&gt;&lt;/p&gt;\n&lt;/footer&gt;</pre><br>Type the NEW text that should go inside the &lt;small&gt; tag:<br><input type='text' id='fillBlank' class='blank-input' style='width:280px;'>",
-            a: "User: Guest|Status: Online",
+            q: "Update the &lt;footer&gt; and change the text inside the &lt;small&gt; tag. Currently it says \"User: Admin | Status: Offline\". Change it so the user is \"Guest\" and the status is \"Online\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;footer&gt;\n  &lt;p&gt;&lt;small&gt;User: Admin | Status: Offline&lt;/small&gt;&lt;/p&gt;\n&lt;/footer&gt;</pre><br>Type the NEW text that should go inside the &lt;small&gt; tag:<br><input type='text' id='fillBlank' class='blank-input' style='width:280px;'>",
+            a: "User: Guest | Status: Online",
             h: "Change 'Admin' to 'Guest' and 'Offline' to 'Online'. Keep the format: User: ___ | Status: ___"
         },
         {
             q: "Fix the two tags with errors in this code. The closing tags for &lt;h3&gt; and &lt;label&gt; are misspelled:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;section&gt;\n  &lt;h3&gt;Quick Entry&lt;/s2&gt;\n  &lt;label for=\"task\"&gt;New Task:&lt;/lapel&gt;\n  &lt;input type=\"text\" id=\"task\" value=\"Type here...\"&gt;\n  &lt;br&gt;&lt;br&gt;\n  &lt;button&gt;Add Task&lt;/button&gt;\n&lt;/section&gt;</pre><br>Type ONLY the 2 corrected lines (one per line):<br><input type='text' id='fillBlank' class='blank-input' style='width:100%;'>",
-            a: "</h3>\n<label for=\"task\">New Task:</label>",
+            a: "<h3>Quick Entry</h3>\n<label for=\"task\">New Task:</label>",
             h: "Line 1: &lt;/s2&gt; must be &lt;/h3&gt;. Line 2: &lt;/lapel&gt; must be &lt;/label&gt;. Type both corrected lines."
         },
         {
@@ -121,19 +121,19 @@ const QUESTIONS_L2 = {
             h: "Standard page: html>head>title, then body>h1+ul>li*3. Title is 'My List', heading is 'My Favorite Colors'."
         },
         {
-            q: "Boss Q3. Create a webpage with heading \"My Tasks\", an unordered list (Task 1, Task 2, Task 3), and a footer displaying \"Status: Active\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n&lt;body&gt;\n\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/h1&gt;\n    &lt;ul&gt;\n      &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:70px;'>&lt;/li&gt;\n      &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:70px;'>&lt;/li&gt;\n      &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:70px;'>&lt;/li&gt;\n    &lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:40px;'>&gt;\n  &lt;/body&gt;\n\n  &lt;footer&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:130px;'>&lt;/p&gt;\n  &lt;/<input type='text' id='fillBlank13' class='blank-input' style='width:60px;'>&gt;\n\n&lt;/body&gt;\n&lt;/html&gt;</pre>",
+            q: "Boss Q3. Create a webpage with heading \"My Tasks\", an unordered list (Task 1, Task 2, Task 3), and a footer displaying \"Status: Active\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/h1&gt;\n    &lt;ul&gt;\n      &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:70px;'>&lt;/li&gt;\n      &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:70px;'>&lt;/li&gt;\n      &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:70px;'>&lt;/li&gt;\n    &lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:40px;'>&gt;\n  &lt;/body&gt;\n  &lt;footer&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:130px;'>&lt;/p&gt;\n  &lt;/<input type='text' id='fillBlank13' class='blank-input' style='width:60px;'>&gt;\n&lt;/html&gt;</pre>",
             a: ["html", "h1", "My Tasks", "li", "Task 1", "li", "Task 2", "li", "Task 3", "ul", "p", "Status: Active", "footer"],
             h: "Structure: html, body, h1 heading, ul with three li items, footer with p containing 'Status: Active'."
         },
         {
-            q: "Boss Q4. Create a webpage with header \"My Page\", nav (Home | About), section with heading \"Items\" and list (Item 1, Item 2, Item 3), footer \"User: Guest\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n&lt;body&gt;\n\n  &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;\n    &lt;h1&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:80px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:70px;'> | <input type='text' id='fillBlank6' class='blank-input' style='width:60px;'>&lt;/nav&gt;\n  &lt;/header&gt;\n\n  &lt;main&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:70px;'>&gt;\n      &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:60px;'>&lt;/h2&gt;\n      &lt;<input type='text' id='fillBlank10' class='blank-input' style='width:40px;'>&gt;\n        &lt;li&gt;<input type='text' id='fillBlank11' class='blank-input' style='width:60px;'>&lt;/li&gt;\n        &lt;<input type='text' id='fillBlank12' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:60px;'>&lt;/li&gt;\n        &lt;<input type='text' id='fillBlank14' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank15' class='blank-input' style='width:60px;'>&lt;/li&gt;\n      &lt;/ul&gt;\n    &lt;/section&gt;\n  &lt;/<input type='text' id='fillBlank16' class='blank-input' style='width:50px;'>&gt;\n\n  &lt;<input type='text' id='fillBlank17' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank18' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank19' class='blank-input' style='width:110px;'>&lt;/p&gt;\n  &lt;/footer&gt;\n\n&lt;/body&gt;\n&lt;/html&gt;</pre>",
+            q: "Boss Q4. Create a webpage with header \"My Page\", nav (Home | About), section with heading \"Items\" and list (Item 1, Item 2, Item 3), footer \"User: Guest\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;\n      &lt;h1&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:80px;'>&lt;/h1&gt;\n      &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:70px;'> | <input type='text' id='fillBlank6' class='blank-input' style='width:60px;'>&lt;/nav&gt;\n    &lt;/header&gt;\n    &lt;main&gt;\n      &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:70px;'>&gt;\n        &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:60px;'>&lt;/h2&gt;\n        &lt;<input type='text' id='fillBlank10' class='blank-input' style='width:40px;'>&gt;\n          &lt;li&gt;<input type='text' id='fillBlank11' class='blank-input' style='width:60px;'>&lt;/li&gt;\n          &lt;<input type='text' id='fillBlank12' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:60px;'>&lt;/li&gt;\n          &lt;<input type='text' id='fillBlank14' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank15' class='blank-input' style='width:60px;'>&lt;/li&gt;\n        &lt;/ul&gt;\n      &lt;/section&gt;\n    &lt;/<input type='text' id='fillBlank16' class='blank-input' style='width:50px;'>&gt;\n    &lt;<input type='text' id='fillBlank17' class='blank-input' style='width:60px;'>&gt;\n      &lt;<input type='text' id='fillBlank18' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank19' class='blank-input' style='width:110px;'>&lt;/p&gt;\n    &lt;/footer&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
             a: ["html", "header", "My Page", "nav", "Home", "About", "section", "h2", "Items", "ul", "Item 1", "li", "Item 2", "li", "Item 3", "main", "footer", "p", "User: Guest"],
             h: "header>h1+nav(Home|About), main>section>h2+ul>li*3(Item1-3), footer>p(User: Guest)."
         },
         {
-            q: "Boss Q5. Create a webpage connecting to \"styles.css\" with title and heading \"Styled Page\" and paragraph \"This is a styled paragraph.\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n    &lt;link rel=\"stylesheet\" href=\"<input type='text' id='fillBlank4' class='blank-input' style='width:100px;'>\"&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:50px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:50px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:120px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
-            a: ["html", "title", "Styled Page", "styles.css", "head", "body", "h1", "Styled Page", "p", "This is a styled paragraph."],
-            h: "html>head>title('Styled Page')+link(href='styles.css'), body>h1('Styled Page')+p('This is a styled paragraph.')."
+            q: "Boss Q5. Create a webpage connecting to \"styles.css\" with title and heading \"Styled Page\" and paragraph \"This is a styled paragraph\":<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:50px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:50px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n    &lt;link rel=\"stylesheet\" href=\"<input type='text' id='fillBlank4' class='blank-input' style='width:100px;'>\"&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:50px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:50px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:120px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
+            a: ["html", "title", "Styled Page", "styles.css", "head", "body", "h1", "Styled Page", "p", "This is a styled paragraph"],
+            h: "html>head>title('Styled Page')+link(href='styles.css'), body>h1('Styled Page')+p('This is a styled paragraph')."
         }
     ]
 };
@@ -154,6 +154,7 @@ function openBattleModal_L2(isBoss) {
                 .blank-input:focus { outline: none; background: #333; border-bottom: 2px solid #00ff00; }
             </style>
             <div id="heartLossBox" class="position-absolute top-0 start-50 translate-middle-x mt-2 d-none" style="z-index: 6000;"><div class="bg-danger border border-white p-3 text-white pixel-font shadow-lg"><h3 class="mb-0 text-uppercase">-1 Heart: System Corruption!</h3></div></div>
+            <div id="errorFeedbackBox" class="position-absolute top-50 start-50 translate-middle mt-2 d-none" style="z-index: 6000; width: 90%;"><div class="bg-warning border border-white p-3 text-dark pixel-font shadow-lg"><p id="errorFeedbackText" class="mb-0"></p></div></div>
             <div class="hint-trigger position-absolute p-3" onclick="event.stopPropagation(); triggerBattleHint();" style="z-index: 5000; cursor:pointer; top:0; left:0;"><img src="img/icon-hint.png" width="50" style="filter: drop-shadow(0 0 5px gold);"><span id="modalHintCount" class="text-white fs-4">${gameState.hints}</span></div>
             <div class="battle-screen d-flex justify-content-around align-items-end p-4" style="height:350px; background: url('${randomBG}') center/cover no-repeat;">
                 <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model" style="height:260px; object-fit:contain;">
@@ -197,28 +198,103 @@ function checkBattleAnswer_L2(isBoss) {
     const qData = QUESTIONS_L2[gameState.currentSite][battleQIndex_L2];
     const inputs = document.querySelectorAll('.blank-input');
     let isCorrect = true;
+    let errorMessages = [];
 
     if (Array.isArray(qData.a)) {
         inputs.forEach((input, index) => {
-            if (input.value.trim().toLowerCase() !== qData.a[index].toLowerCase()) isCorrect = false;
+            const userAnswer = input.value.trim();
+            const correctAnswer = qData.a[index];
+            
+            if (userAnswer === '') {
+                isCorrect = false;
+                errorMessages.push(`Field ${index + 1}: You left this blank. Make sure to fill in all fields.`);
+            } else if (userAnswer.toLowerCase() !== correctAnswer.toLowerCase()) {
+                isCorrect = false;
+                if (correctAnswer.startsWith('<') && correctAnswer.endsWith('>')) {
+                    errorMessages.push(`Field ${index + 1}: "${userAnswer}" is not the right HTML tag. Remember HTML tags use angle brackets like &lt; and &gt;.`);
+                } else if (correctAnswer.includes(' ')) {
+                    errorMessages.push(`Field ${index + 1}: "${userAnswer}" doesn't match the required text. Check your spelling and capitalization.`);
+                } else {
+                    errorMessages.push(`Field ${index + 1}: "${userAnswer}" is incorrect. Double-check what should go in this field.`);
+                }
+            }
         });
     } else {
-        if (inputs[0].value.trim().toLowerCase() !== qData.a.toLowerCase()) isCorrect = false;
+        const userAnswer = inputs[0].value.trim();
+        const correctAnswer = qData.a;
+        
+        if (userAnswer === '') {
+            isCorrect = false;
+            errorMessages.push(`You left the field empty. Try typing your answer.`);
+        } else if (userAnswer.toLowerCase() !== correctAnswer.toLowerCase()) {
+            isCorrect = false;
+            if (correctAnswer.startsWith('<') && correctAnswer.endsWith('>')) {
+                errorMessages.push(`"${userAnswer}" is not the correct HTML tag. Remember to use proper HTML syntax with angle brackets.`);
+            } else if (correctAnswer.includes(' ')) {
+                errorMessages.push(`"${userAnswer}" doesn't match the expected text. Review the instructions and try again.`);
+            } else {
+                errorMessages.push(`"${userAnswer}" is not quite right. Think about what element belongs here.`);
+            }
+        }
     }
 
     if (isCorrect) {
+        const errorBox = document.getElementById('errorFeedbackBox');
+        if (errorBox) errorBox.classList.add('d-none');
+        
         battleQIndex_L2++;
-        if (battleQIndex_L2 >= (isBoss ? 5 : 3)) showBattleResult_L2(true, isBoss);
-        else loadQuestion_L2();
+        if (battleQIndex_L2 >= (isBoss ? 5 : 3)) {
+            showBattleResult_L2(true, isBoss);
+        } else {
+            loadQuestion_L2();
+        }
     } else {
         gameState.hearts--;
         updateUI();
+        
         const lossBox = document.getElementById('heartLossBox');
         if (lossBox) { 
             lossBox.classList.remove('d-none'); 
             setTimeout(() => lossBox.classList.add('d-none'), 1500); 
         }
-        if (gameState.hearts <= 0) showBattleResult_L2(false, isBoss);
+        
+        const errorBox = document.getElementById('errorFeedbackBox');
+        const errorText = document.getElementById('errorFeedbackText');
+        if (errorBox && errorText) {
+            errorText.innerHTML = errorMessages.join('<br>');
+            errorBox.classList.remove('d-none');
+            setTimeout(() => errorBox.classList.add('d-none'), 5000);
+        }
+        
+        if (Array.isArray(qData.a)) {
+            inputs.forEach((input, index) => {
+                const userAnswer = input.value.trim();
+                if (userAnswer === '' || userAnswer.toLowerCase() !== qData.a[index].toLowerCase()) {
+                    input.style.borderBottom = '2px solid #ff0000';
+                    input.style.backgroundColor = '#330000';
+                    setTimeout(() => {
+                        input.style.borderBottom = '2px solid #fff';
+                        input.style.backgroundColor = '#222';
+                    }, 2500);
+                }
+            });
+        } else {
+            const userAnswer = inputs[0].value.trim();
+            if (userAnswer === '' || userAnswer.toLowerCase() !== qData.a.toLowerCase()) {
+                inputs[0].style.borderBottom = '2px solid #ff0000';
+                inputs[0].style.backgroundColor = '#330000';
+                setTimeout(() => {
+                    inputs[0].style.borderBottom = '2px solid #fff';
+                    inputs[0].style.backgroundColor = '#222';
+                }, 2500);
+            }
+        }
+        
+        if (gameState.hearts <= 0) {
+            if (errorBox) errorBox.classList.add('d-none');
+            if (lossBox) lossBox.classList.add('d-none');
+            showBattleResult_L2(false, isBoss);
+        }
     }
 }
 
@@ -238,21 +314,66 @@ function showBattleResult_L2(won, isBoss) {
     document.removeEventListener('keydown', battleEnterHandler_L2);
     const quizArea = document.getElementById('quizArea');
     if (quizArea) quizArea.classList.add('d-none');
+    
+    // Add rewards BEFORE showing result
+    if (won && isBoss) {
+        gameState.hearts = Math.min(gameState.hearts + 1, 3);
+        gameState.hints += 1;
+        
+        const heartCountEl = document.getElementById('heartCount');
+        const hintCountEl = document.getElementById('hintCount');
+        if (heartCountEl) heartCountEl.innerText = gameState.hearts;
+        if (hintCountEl) hintCountEl.innerText = gameState.hints;
+        
+        console.log('BOSS REWARD GIVEN - Hearts:', gameState.hearts, 'Hints:', gameState.hints);
+    }
+    
     runTypewriter(won ? "VICTORY! System integrity restored." : "DEFEAT... Connection lost.", 'battleText', () => {
         setTimeout(() => { if (won) renderVictoryModal_L2(isBoss); else renderDefeatModal_L2(); }, 1200);
     });
 }
-
 function renderVictoryModal_L2(isBoss) {
     const VICTORY_DIAL = ["The lights dim. Their guardian falls. The castle is quiet now.", "Cold stone, warm victory. I'll take it.", "Bones are everywhere, I shall avenge them."];
-    document.getElementById('modalContentWrapper').innerHTML = `
-        <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
-            <h1 class="text-white mb-3">${isBoss ? 'BOSS DEFEATED!' : 'SUCCESS'}</h1>
-            <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
-            <button class="btn btn-light pixel-font fs-4 px-4" onclick="proceed()">CONTINUE</button>
-        </div>`;
+    
+    if (isBoss) {
+        // Give rewards for Level 2 boss
+        if (gameState.hearts < 3) gameState.hearts += 1;
+        gameState.hints += 1;
+        
+        // Force update the UI counters
+        const heartCountEl = document.getElementById('heartCount');
+        const hintCountEl = document.getElementById('hintCount');
+        if (heartCountEl) heartCountEl.innerText = gameState.hearts;
+        if (hintCountEl) hintCountEl.innerText = gameState.hints;
+        
+        document.getElementById('modalContentWrapper').innerHTML = `
+            <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
+                <h1 class="text-white mb-3">BOSS DEFEATED!</h1>
+                <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
+                <div class="bg-dark d-inline-block px-4 py-3 rounded mb-4" style="border: 3px solid #FFD700;">
+                    <h3 class="text-warning mb-2">REWARDS EARNED!</h3>
+                    <div class="d-flex justify-content-center gap-4">
+                        <div class="text-center">
+                            <span class="text-white fs-5">❤️ +1 Heart</span><br>
+                            <small class="text-white">Total: ${gameState.hearts}</small>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-warning fs-5">💡 +1 Hint</span><br>
+                            <small class="text-white">Total: ${gameState.hints}</small>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-light pixel-font fs-4 px-4" onclick="advanceToNextLevel()">CONTINUE TO LEVEL 3</button>
+            </div>`;
+    } else {
+        document.getElementById('modalContentWrapper').innerHTML = `
+            <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
+                <h1 class="text-white mb-3">SUCCESS</h1>
+                <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
+                <button class="btn btn-light pixel-font fs-4 px-4" onclick="proceed()">CONTINUE</button>
+            </div>`;
+    }
 }
-
 function renderDefeatModal_L2() {
     const DEFEAT_DIAL = ["The walls, they're talking... they got inside my head. I can't think...", "Cold. So cold. The castle swallowed me whole.", "I should have brought a torch. And maybe a better plan.", "They laid eggs on me!!! EEEKKKKK!!!", "Even my screams froze in here. Nobody will hear me fall."];
     document.getElementById('modalContentWrapper').innerHTML = `
@@ -261,3 +382,94 @@ function renderDefeatModal_L2() {
             <div class="d-flex flex-column gap-2"><button class="btn btn-warning pixel-font fw-bold fs-4" onclick="restartGame()">RETRY LEVEL</button><button class="btn btn-dark border-white pixel-font" onclick="location.href='index.html'">MAIN MENU</button></div>
         </div>`;
 }
+console.log('battle-logic-l2.js loaded - renderVictoryModal_L2 defined');
+
+// Direct binding to dialogue box events
+(function() {
+    const NONACTIVE = 'url("../img/click-nonactive.png"), pointer';
+    const ACTIVE = 'url("../img/click-active.png"), auto';
+    
+    function setCursor(element, state) {
+        if (!element) return;
+        const cursor = state === 'active' ? ACTIVE : NONACTIVE;
+        element.style.cursor = cursor;
+        element.style.setProperty('cursor', cursor, 'important');
+    }
+    
+    // Hook into the existing dialogue box click handler
+    const originalStartSequence = window.startSequence;
+    if (originalStartSequence) {
+        window.startSequence = function(lines, callback) {
+            setTimeout(() => {
+                const dialogueBox = document.getElementById('dialogueBox');
+                if (dialogueBox) {
+                    setCursor(dialogueBox, 'inactive');
+                    
+                    // Override the onclick that the game sets
+                    const originalOnClick = dialogueBox.onclick;
+                    dialogueBox.addEventListener('mousedown', () => setCursor(dialogueBox, 'active'));
+                    dialogueBox.addEventListener('mouseup', () => setCursor(dialogueBox, 'inactive'));
+                    dialogueBox.addEventListener('mouseleave', () => setCursor(dialogueBox, 'inactive'));
+                }
+            }, 50);
+            return originalStartSequence.call(this, lines, callback);
+        };
+    }
+    
+    // Monitor for battle modal opening
+    const originalOpenBattleModal = window.openBattleModal;
+    if (originalOpenBattleModal) {
+        window.openBattleModal = function(isBoss) {
+            const result = originalOpenBattleModal.call(this, isBoss);
+            setTimeout(() => {
+                const dialogueBox = document.getElementById('dialogueBox');
+                if (dialogueBox) {
+                    setCursor(dialogueBox, 'inactive');
+                    dialogueBox.addEventListener('mousedown', () => setCursor(dialogueBox, 'active'));
+                    dialogueBox.addEventListener('mouseup', () => setCursor(dialogueBox, 'inactive'));
+                }
+            }, 100);
+            return result;
+        };
+    }
+    
+    // Also for Level 2 and 3
+    if (window.openBattleModal_L2) {
+        const originalL2 = window.openBattleModal_L2;
+        window.openBattleModal_L2 = function(isBoss) {
+            const result = originalL2.call(this, isBoss);
+            setTimeout(() => {
+                const dialogueBox = document.getElementById('dialogueBox');
+                if (dialogueBox) setCursor(dialogueBox, 'inactive');
+            }, 100);
+            return result;
+        };
+    }
+    
+    if (window.openBattleModal_L3) {
+        const originalL3 = window.openBattleModal_L3;
+        window.openBattleModal_L3 = function(isBoss) {
+            const result = originalL3.call(this, isBoss);
+            setTimeout(() => {
+                const dialogueBox = document.getElementById('dialogueBox');
+                if (dialogueBox) setCursor(dialogueBox, 'inactive');
+            }, 100);
+            return result;
+        };
+    }
+    
+    // Force cursor on card clicks
+    document.body.addEventListener('click', function(e) {
+        const card = e.target.closest('.card-option');
+        if (card) {
+            setCursor(card, 'active');
+            setTimeout(() => setCursor(card, 'inactive'), 150);
+        }
+        
+        const dialogueBox = e.target.closest('#dialogueBox');
+        if (dialogueBox) {
+            setCursor(dialogueBox, 'active');
+            setTimeout(() => setCursor(dialogueBox, 'inactive'), 150);
+        }
+    }, true);
+})();

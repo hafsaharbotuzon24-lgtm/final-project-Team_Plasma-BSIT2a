@@ -1,0 +1,657 @@
+body.profile-body {
+    padding-top: 70px; 
+    background-image: url('../img/bg-main.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Pixelify Sans', sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    min-height: 100vh;
+    color: #ffffff;
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-main-wrapper {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+.profile-container {
+    background-color: #0d1b30;
+    border: 3px solid #1a3350;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+}
+
+.profile-sidebar {
+    background-color: #0d1b30;
+    border: 3px solid #1a3350;
+    border-radius: 16px;
+    padding: 20px;
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-btn {
+    width: 100%;
+    background: #1a2d45;
+    border: 2px solid #2a4a6e;
+    color: #c0d0e0;
+    padding: 12px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.sidebar-btn:hover {
+    background: #2a4a6e;
+    color: #ffffff;
+    transform: scale(1.02);
+}
+
+.sidebar-btn.settings-btn-side {
+    background: #1a2d45;
+    border-color: #2a4a6e;
+    color: #c0d0e0;
+}
+
+.sidebar-btn.settings-btn-side:hover {
+    background: #2a4a6e;
+    color: #ffffff;
+}
+
+.sidebar-btn.delete-btn {
+    background: #3a1a1a;
+    border-color: #5a2a2a;
+    color: #ff8888;
+}
+
+.sidebar-btn.delete-btn:hover {
+    background: #5a2a2a;
+    color: #ff4444;
+}
+
+.edit-profile-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #2a5a3a;
+    border: 2px solid #3a7a4a;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.edit-profile-btn:hover {
+    background: #2ebe52;
+    transform: scale(1.05);
+}
+
+.edit-profile-btn.updating {
+    background: #2a4a8a;
+    border-color: #3a6aaa;
+}
+
+.edit-profile-btn.updating:hover {
+    background: #3a6aca;
+}
+
+.profile-header {
+    text-align: center;
+    color: #ffffff;
+    font-size: 2.4rem;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.profile-content {
+    display: flex;
+    gap: 35px;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.avatar-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid #2a4a6e;
+    overflow: hidden;
+    background: #1a2d45;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+}
+
+.avatar-circle.editing {
+    cursor: pointer;
+    border-color: #4a7aaa;
+}
+
+.avatar-circle.editing:hover {
+    border-color: #6a9aca;
+    transform: scale(1.05);
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.change-avatar-btn {
+    background: #1a2d45;
+    border: 2px solid #2a4a6e;
+    color: #c0d0e0;
+    padding: 8px 18px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: none;
+}
+
+.change-avatar-btn.visible {
+    display: block;
+}
+
+.change-avatar-btn:hover {
+    background: #2a4a6e;
+    color: #ffffff;
+}
+
+.info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #1a2d45;
+    border-radius: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.info-label {
+    color: #8aa0b8;
+    font-size: 1.1rem;
+    min-width: 60px;
+    font-weight: bold;
+}
+
+.info-value {
+    color: #ffffff;
+    font-size: 1.2rem;
+    flex: 1;
+}
+
+.change-name-btn {
+    background: #0d1b30;
+    border: 1px solid #2a4a6e;
+    color: #8aa0b8;
+    padding: 6px 14px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.change-name-btn.visible {
+    display: block;
+}
+
+.change-name-btn:hover {
+    background: #2a4a6e;
+    color: #ffffff;
+}
+
+.edit-name-input {
+    background: #0d1b30;
+    border: 2px solid #4a7aaa;
+    color: #ffffff;
+    padding: 6px 10px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    flex: 1;
+    display: none;
+    min-width: 0;
+}
+
+.edit-name-input.visible {
+    display: block;
+}
+
+.achievements-section {
+    padding-top: 20px;
+    border-top: 2px solid #1a3350;
+}
+
+.achievements-title {
+    color: #8aa0b8;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.achievements-row {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a2d45;
+    padding: 14px 18px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 230px;
+}
+
+.medal-slot {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.medal-slot img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+
+.medal-placeholder {
+    width: 48px;
+    height: 48px;
+    border: 2px dashed #2a4a6e;
+    border-radius: 50%;
+}
+
+.achievement-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-name {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.achievement-desc {
+    color: #6a82a0;
+    font-size: 0.85rem;
+}
+
+/* Navbar profile icon - circular with YELLOW border */
+#profTrigger img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    image-rendering: auto !important;
+    border: 2px solid #FFD700 !important;
+    transition: border-color 0.3s ease;
+}
+
+#profTrigger img:hover {
+    border-color: #FFD700 !important;
+}
+
+/* Delete Account Modal */
+.delete-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal-overlay.show {
+    display: flex;
+}
+
+.delete-modal-box {
+    background: #0d1b30;
+    border: 3px solid #5a2a2a;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.delete-modal-box h3 {
+    color: #ff6666;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+}
+
+.delete-modal-box p {
+    color: #c0d0e0;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn-delete {
+    background: #8b0000;
+    border: 2px solid #cc0000;
+    color: #ffffff;
+    padding: 10px 24px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.modal-btn-delete:hover {
+    background: #cc0000;
+    transform: scale(1.05);
+}
+
+.modal-btn-cancel {
+    background: #2a4a3a;
+    border: 2px solid #3a6a4a;
+    color: #ffffff;
+    padding: 10px 24px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.modal-btn-cancel:hover {
+    background: #3a6a4a;
+    transform: scale(1.05);
+}
+
+/* =============================================
+   TABLET / SMALL DESKTOP - 769px to 1024px
+   ============================================= */
+@media (max-width: 1024px) {
+    .profile-main-wrapper {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+    
+    .profile-container {
+        max-width: 100%;
+        padding: 25px 20px;
+    }
+    
+    .profile-sidebar {
+        width: 100%;
+        max-width: 750px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+    
+    .sidebar-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .profile-content {
+        gap: 25px;
+    }
+    
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .achievement-item {
+        max-width: 100%;
+    }
+    
+    .profile-header {
+        font-size: 2rem;
+    }
+}
+
+/* =============================================
+   MOBILE - 768px and below
+   ============================================= */
+@media (max-width: 768px) {
+    body.profile-body {
+        padding-top: 70px;
+    }
+    
+    .profile-main-wrapper {
+        flex-direction: column;
+        padding: 10px;
+        gap: 15px;
+    }
+    
+    .profile-container {
+        padding: 20px 15px;
+    }
+    
+    .profile-header {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .profile-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .avatar-section {
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .info-section {
+        width: 100%;
+    }
+    
+    .achievements-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .achievement-item {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .edit-profile-btn {
+        top: 8px;
+        right: 8px;
+        padding: 8px 14px;
+        font-size: 0.85rem;
+    }
+    
+    .profile-sidebar {
+        width: 100%;
+        max-width: 100%;
+        flex-direction: column;
+        padding: 15px;
+        gap: 8px;
+    }
+    
+    .sidebar-btn {
+        width: 100%;
+    }
+
+    .info-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .change-name-btn {
+        width: 100%;
+        margin-top: 5px;
+    }
+    
+    .edit-name-input {
+        width: 100%;
+        flex: auto;
+    }
+    
+    .achievements-title {
+        font-size: 1.3rem;
+    }
+    
+    .achievement-name {
+        font-size: 0.9rem;
+    }
+    
+    .achievement-desc {
+        font-size: 0.8rem;
+    }
+    
+    #profTrigger img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+
+/* =============================================
+   EXTRA SMALL MOBILE - 480px and below
+   ============================================= */
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 15px 12px;
+    }
+    
+    .profile-header {
+        font-size: 1.4rem;
+    }
+    
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .avatar-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .info-row {
+        padding: 10px 12px;
+    }
+    
+    .info-label {
+        font-size: 0.95rem;
+        min-width: 50px;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+    }
+    
+    .achievement-item {
+        padding: 10px 12px;
+        min-width: auto;
+    }
+    
+    .medal-slot {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .medal-slot img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .medal-placeholder {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .edit-profile-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        top: 6px;
+        right: 6px;
+    }
+    
+    .delete-modal-box {
+        padding: 20px;
+    }
+    
+    .delete-modal-box h3 {
+        font-size: 1.3rem;
+    }
+    
+    .delete-modal-box p {
+        font-size: 0.95rem;
+    }
+    
+    .modal-btn-delete,
+    .modal-btn-cancel {
+        padding: 8px 18px;
+        font-size: 1rem;
+    }
+} 

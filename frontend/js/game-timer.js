@@ -5,6 +5,7 @@
 let gameStartTime = null;
 let timerInterval = null;
 let isGameActive = false;
+let finalStoredTime = 0; 
 
 const TIMER_DEBUG = true;
 
@@ -20,7 +21,14 @@ function updateTimerDisplay() {
     if (!timerElement) return;
     
     if (!isGameActive || gameStartTime === null) {
-        timerElement.textContent = '0:00';
+        // If we have a stored final time, show it
+        if (finalStoredTime > 0) {
+            const mins = Math.floor(finalStoredTime / 60);
+            const secs = finalStoredTime % 60;
+            timerElement.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        } else {
+            timerElement.textContent = '0:00';
+        }
         return;
     }
     
@@ -39,6 +47,7 @@ function startGameTimer() {
     
     gameStartTime = Date.now();
     isGameActive = true;
+    finalStoredTime = 0;
     
     if (timerInterval) {
         clearInterval(timerInterval);
@@ -49,16 +58,24 @@ function startGameTimer() {
     logTimer('Timer STARTED at 0:00');
 }
 
-// Stop the timer completely (when leaving play.html)
+// Stop the timer and return final duration (for game completion)
 function stopGameTimer() {
+    // Save the duration BEFORE clearing anything
+    const duration = getGameDuration();
+    finalStoredTime = duration;
+    
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
     }
     isGameActive = false;
-    gameStartTime = null;
+    // Keep gameStartTime so getFormattedDuration() still works
+    // DO NOT set gameStartTime = null here
+    
     updateTimerDisplay();
-    logTimer('Timer STOPPED and RESET');
+    logTimer(`Timer STOPPED - Final duration: ${duration}s (${getFormattedDuration()})`);
+    
+    return duration; 
 }
 
 // Pause timer (when leaving page - keeps time for return)
@@ -87,7 +104,7 @@ function resumeGameTimer() {
 }
 
 function getGameDuration() {
-    if (gameStartTime === null) return 0;
+    if (gameStartTime === null) return finalStoredTime || 0;
     return Math.floor((Date.now() - gameStartTime) / 1000);
 }
 
@@ -111,6 +128,7 @@ function setSavedGameTime(seconds) {
     logTimer(`Setting timer to ${seconds} seconds`);
     gameStartTime = Date.now() - (seconds * 1000);
     isGameActive = true;
+    finalStoredTime = 0;
     
     if (timerInterval) {
         clearInterval(timerInterval);
@@ -129,6 +147,7 @@ function resetGameTimer() {
     }
     gameStartTime = null;
     isGameActive = false;
+    finalStoredTime = 0;
     updateTimerDisplay();
 }
 

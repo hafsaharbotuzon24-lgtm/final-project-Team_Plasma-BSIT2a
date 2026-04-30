@@ -1,0 +1,792 @@
+/* =============================================
+   BASE STYLES
+   ============================================= */
+.char-select-page {
+    background-image: url(../img/bg-galaxy.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.character-display {
+    height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#charCarousel {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+#charCarousel .carousel-inner {
+    height: auto;
+}
+
+#charCarousel .carousel-item {
+    height: auto;
+}
+
+#charCarousel .carousel-item .row {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+/* =============================================
+   CHARACTER INFO CONTAINER
+   ============================================= */
+.slab-textfield {
+    background-color: #1c3554;
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid #000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.info-container.slab-textfield {
+    text-align: justify;
+    font-family: 'Pixelify Sans', sans-serif;
+    color: #ffffff;
+    outline: none !important;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+}
+
+/* =============================================
+   CHARACTER MODEL & SPRITE
+   ============================================= */
+.char-model {
+    image-rendering: pixelated;
+}
+
+.char-role {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#role-scroll {
+    max-width: 100%;
+    height: auto;
+}
+
+.char-model-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#char-sprite {
+    position: relative;
+    max-width: 100%;
+    height: auto;
+}
+
+.char-arrow:hover {
+    scale: 1.1;
+}
+
+/* =============================================
+   CAROUSEL ARROWS
+   ============================================= */
+.carousel-control-prev.char-arrow,
+.carousel-control-next.char-arrow {
+    width: auto;
+    height: auto;
+    image-rendering: pixelated;
+    opacity: 1;
+    z-index: 100;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+}
+
+.carousel-control-prev.char-arrow img,
+.carousel-control-next.char-arrow img {
+    width: 100%;
+    height: auto;
+}
+
+.carousel-control-prev.char-arrow:hover,
+.carousel-control-next.char-arrow:hover {
+    opacity: 0.8;
+}
+
+/* =============================================
+   STATS & INFO
+   ============================================= */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.star-img {
+    width: 25px;
+    margin-left: 5px;
+}
+
+.bio-section {
+    width: 100%;
+}
+
+.stats-section {
+    width: 100%;
+}
+
+ .scroll-btn-enter {
+    background: #1a2744;
+    border: 2px solid #000;
+    outline: none;
+    cursor: pointer;
+    padding: 15px 40px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.2rem;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    margin: 20px auto 0;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+}
+
+.scroll-btn-enter:hover {
+    background: #1f3058;
+    border-color: #17213a;
+    transform: scale(1.05);
+}
+
+.scroll-btn-enter:active {
+    transform: scale(0.98);
+    background: #152040;
+}
+
+/* Small Desktop / Tablet - 769px to 991px */
+@media (min-width: 769px) and (max-width: 991px) {
+    .scroll-btn-enter {
+        padding: 12px 35px;
+        font-size: 1.1rem;
+        margin: 20px auto 0;
+    }
+}
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+    .scroll-btn-enter {
+        padding: 12px 30px;
+        font-size: 1rem;
+        margin: 15px auto 0;
+        width: auto;
+        min-width: 150px;
+    }
+}
+
+/* =============================================
+   BOTTOM NAVIGATION
+   ============================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =============================================
+   LOAD SLOTS (if used)
+   ============================================= */
+.lb-row {
+    grid-template-columns: 0.8fr 1.8fr 1fr;
+    gap: 6px;
+    padding: 10px 0;
+}
+
+.load-column {
+    padding: 18px 12px;
+}
+
+.slab-load-slot {
+    padding: 12px;
+}
+
+/* =============================================
+   DESKTOP LARGE - 1200px and above
+   ============================================= */
+@media (min-width: 1200px) {
+    .character-display {
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #charCarousel {
+        width: 100%;
+        position: relative;
+    }
+    
+    #charCarousel .carousel-inner {
+        display: flex;
+        align-items: center;
+    }
+    
+    #charCarousel .carousel-item {
+        height: auto;
+    }
+    
+    #charCarousel .carousel-item .row {
+        padding: 0 120px;
+        min-height: auto;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+    
+    /* Left column */
+    #charCarousel .carousel-item .col-md-5 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        gap: 10px;
+    }
+    
+    .char-role {
+        margin-bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #role-scroll {
+        width: 380px;
+        height: auto;
+        display: block;
+    }
+    
+    .char-model-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #char-sprite.char-model {
+        height: 380px;
+        width: auto;
+        position: relative;
+    }
+    
+    /* Right column */
+    #charCarousel .carousel-item .col-md-7 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    
+    .info-container.slab-textfield {
+        margin: 0;
+        padding: 35px 40px;
+        font-size: 1.1rem;
+        min-height: 450px;
+        width: 100%;
+        max-width: 580px;
+    }
+    
+    /* Arrows */
+    .carousel-control-prev.char-arrow {
+        left: 15px;
+    }
+    
+    .carousel-control-next.char-arrow {
+        right: 15px;
+    }
+    
+    .carousel-control-prev.char-arrow img,
+    .carousel-control-next.char-arrow img {
+        width: 75px;
+    }
+    
+    /* Text sizing */
+    .bioLabel {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+    
+    .bioText {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+    
+    .stats-section {
+        margin-top: 25px;
+    }
+    
+    .stats-label {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+    
+    .stat-row {
+        font-size: 1.1rem;
+        margin-bottom: 14px;
+    }
+    
+    .star-img {
+        width: 24px;
+    }
+    
+    /* Bottom nav */
+    .bottom-nav {
+        bottom: 25px;
+    }
+    
+    .scroll-btn-enter img {
+        width: 300px;
+    }
+}
+
+/* =============================================
+   DESKTOP MEDIUM - 992px to 1199px
+   ============================================= */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .character-display {
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #charCarousel {
+        width: 100%;
+        position: relative;
+    }
+    
+    #charCarousel .carousel-inner {
+        display: flex;
+        align-items: center;
+    }
+    
+    #charCarousel .carousel-item {
+        height: auto;
+    }
+    
+    #charCarousel .carousel-item .row {
+        padding: 0 90px;
+        min-height: auto;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+    
+    /* Left column */
+    #charCarousel .carousel-item .col-md-5 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        gap: 10px;
+    }
+    
+    .char-role {
+        margin-bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #role-scroll {
+        width: 300px;
+        height: auto;
+        display: block;
+    }
+    
+    .char-model-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #char-sprite.char-model {
+        height: 300px;
+        width: auto;
+        position: relative;
+    }
+    
+    /* Right column */
+    #charCarousel .carousel-item .col-md-7 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    
+    .info-container.slab-textfield {
+        margin: 0;
+        padding: 30px 35px;
+        font-size: 1rem;
+        min-height: 400px;
+        width: 100%;
+        max-width: 480px;
+    }
+    
+    /* Arrows */
+    .carousel-control-prev.char-arrow {
+        left: 12px;
+    }
+    
+    .carousel-control-next.char-arrow {
+        right: 12px;
+    }
+    
+    .carousel-control-prev.char-arrow img,
+    .carousel-control-next.char-arrow img {
+        width: 65px;
+    }
+    
+    /* Text sizing */
+    .bioLabel {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+    
+    .bioText {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+    
+    .stats-section {
+        margin-top: 20px;
+    }
+    
+    .stats-label {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+    }
+    
+    .stat-row {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    .star-img {
+        width: 22px;
+    }
+    
+    /* Bottom nav - centered */
+    .bottom-nav {
+        bottom: 20px;
+    }
+    
+    .scroll-btn-enter img {
+        width: 260px;
+    }
+}
+
+/* =============================================
+   SMALL DESKTOP / TABLET - 769px to 991px
+   ============================================= */
+@media (min-width: 769px) and (max-width: 991px) {
+    .character-display {
+        padding: 80px 0 80px;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    #charCarousel .carousel-item .row {
+        padding: 0 50px;
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    /* Stack columns vertically */
+    #charCarousel .carousel-item .col-md-5 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    #charCarousel .carousel-item .col-md-7 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+    
+    .char-role {
+        margin-bottom: 15px;
+    }
+    
+    #role-scroll {
+        width: 250px;
+        height: auto;
+    }
+    
+    #char-sprite.char-model {
+        height: 280px;
+        width: auto;
+    }
+    
+    .info-container.slab-textfield {
+        margin: 0;
+        padding: 20px;
+        font-size: 0.95rem;
+        min-height: auto;
+        max-width: 500px;
+        width: 100%;
+    }
+    
+    /* Arrows */
+    .carousel-control-prev.char-arrow {
+        left: 5px;
+    }
+    
+    .carousel-control-next.char-arrow {
+        right: 5px;
+    }
+    
+    .carousel-control-prev.char-arrow img,
+    .carousel-control-next.char-arrow img {
+        width: 50px;
+    }
+    
+    /* Bottom nav */
+    .bottom-nav {
+        bottom: 20px;
+    }
+    
+    .scroll-btn-enter img {
+        width: 240px;
+    }
+}
+
+/* =============================================
+   MOBILE - 768px and below
+   ============================================= */
+@media (max-width: 768px) {
+    /* Allow scrolling */
+    .char-select-page {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .character-display {
+        height: auto;
+        padding: 70px 0 100px;
+        justify-content: flex-start;
+    }
+
+    /* Carousel */
+    #charCarousel {
+        height: auto;
+        overflow: visible;
+    }
+
+    #charCarousel .carousel-inner {
+        height: auto;
+        overflow: visible;
+    }
+
+    #charCarousel .carousel-item {
+        height: auto;
+    }
+
+    /* Stack columns vertically */
+    #charCarousel .carousel-item .row {
+        flex-direction: column;
+        padding: 0 20px;
+        min-height: auto;
+    }
+
+    /* Character visual column - top */
+    #charCarousel .carousel-item .col-md-5 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+
+    /* Character info column - bottom */
+    #charCarousel .carousel-item .col-md-7 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    /* Role banner */
+    .char-role {
+        margin-bottom: 12px;
+    }
+
+    #role-scroll {
+        width: 230px;
+        height: auto;
+    }
+
+    /* Character sprite */
+    #char-sprite.char-model {
+        max-width: 200px;
+        height: auto;
+        max-height: 250px;
+    }
+
+    /* Info container */
+    .info-container.slab-textfield {
+        margin: 0 auto;
+        padding: 15px;
+        font-size: 0.9rem;
+        min-height: auto;
+        height: auto;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    /* Bio */
+    .bio-section {
+        text-align: left;
+        width: 100%;
+    }
+
+    .bioLabel {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .bioText {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        margin-bottom: 10px;
+    }
+
+    /* Stats */
+    .stats-section {
+        text-align: left;
+        width: 100%;
+    }
+
+    .stats-label {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .stat-row {
+        justify-content: space-between;
+        gap: 6px;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+
+    .star-img {
+        width: 18px;
+    }
+
+    /* Arrows */
+    .carousel-control-prev.char-arrow,
+    .carousel-control-next.char-arrow {
+        top: 35%;
+    }
+
+    .carousel-control-prev.char-arrow {
+        left: 5px;
+    }
+
+    .carousel-control-next.char-arrow {
+        right: 5px;
+    }
+
+    .carousel-control-prev.char-arrow img,
+    .carousel-control-next.char-arrow img {
+        width: 40px;
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+        bottom: 15px;
+    }
+
+    .scroll-btn-enter img {
+        width: 220px;
+    }
+}
+
+/* =============================================
+   EXTRA SMALL MOBILE - 480px and below
+   ============================================= */
+@media (max-width: 480px) {
+    #charCarousel .carousel-item .row {
+        padding: 0 15px;
+    }
+    
+    .info-container.slab-textfield {
+        padding: 12px;
+    }
+    
+    .bioText {
+        font-size: 0.8rem;
+    }
+    
+    .stat-row {
+        font-size: 0.8rem;
+    }
+    
+    .scroll-btn-enter img {
+        width: 180px;
+    }
+    
+    #role-scroll {
+        width: 180px;
+    }
+    
+    #char-sprite.char-model {
+        max-width: 160px;
+        max-height: 210px;
+    }
+    
+    .carousel-control-prev.char-arrow img,
+    .carousel-control-next.char-arrow img {
+        width: 32px;
+    }
+    
+    .bottom-nav {
+        bottom: 10px;
+    }
+}

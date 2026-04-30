@@ -28,7 +28,7 @@ function navigate(destination) {
                 window.location.href = "settings.html";
                 break;
             case 'home':
-                window.location.href = "index.html";
+                window.location.href = "home.html";
                 break;
         }
     }, 150);
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (charCarousel) {
         charCarousel.addEventListener('slide.bs.carousel', function (event) {
-            const index = event.to; // The index of the next character
+            const index = event.to; 
             updateCharacterInfo(index);
         });
     }
@@ -239,12 +239,12 @@ document.addEventListener('keydown', function(event) {
 
 function openProfile() {
     window.location.href = 'profile.html';
-    // Add your profile modal/page logic here
+    
 }
 
 function switchTheme() {
     console.log('Switch Theme');
-    // Add your theme switching logic here
+   
 }
 
 function signOut() {
@@ -321,3 +321,4 @@ function closeCcModal() {
 function confirmCcLogout() {
     window.location.href = 'login.html';
 }
+

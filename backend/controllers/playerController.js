@@ -97,3 +97,71 @@ exports.updatePlayer = async (req, res) => {
 
   res.json(player);
 };
+
+exports.changePassword = async (req, res) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'Old password and new password are required' });
+    }
+
+    const bcrypt = require('bcryptjs');
+
+    const player = await Player.findById(playerId);
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, player.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Old password is incorrect' });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'New password must be at least 8 characters' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    player.password = hashedPassword;
+    await player.save();
+
+    res.json({ message: 'Password changed successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteMyAccount = async (req, res) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const player = await Player.findByIdAndDelete(playerId);
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    res.json({ message: 'Account deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deletePlayer = async (req, res) => {
+  try {
+    const player = await Player.findByIdAndDelete(req.params.id);
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+    res.json({ message: 'Player deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

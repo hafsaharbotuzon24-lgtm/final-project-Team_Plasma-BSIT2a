@@ -1,30 +1,29 @@
-// Function to handle the character selection and navigation
 const enterBtn = document.querySelector('.scroll-btn-enter');
 
 if (enterBtn) {
     enterBtn.addEventListener('click', (e) => {
-        // Prevent default navigation if handled via JS
         e.preventDefault();
 
-        // 1. Identify which slide is active in the Bootstrap Carousel
-        const activeSlide = document.querySelector('#charCarousel .carousel-item.active');
+        // Get the current character index from the carousel
+        let selectedChar = characters[currentIndex].roleScroll;
         
-        // 2. Determine character ID based on the content of the active slide
-        let selectedChar = 'witch'; // Default
-        
-        // We check for unique identifiers within the active slide
-        if (activeSlide.innerHTML.includes('rogue') || activeSlide.classList.contains('rogue-slide')) {
-            selectedChar = 'rogue';
-        } else if (activeSlide.innerHTML.includes('knight') || activeSlide.classList.contains('knight-slide')) {
-            selectedChar = 'knight';
-        } else if (activeSlide.innerHTML.includes('witch') || activeSlide.classList.contains('witch-slide')) {
+        // Determine character based on roleScroll image
+        if (selectedChar.includes('witch')) {
             selectedChar = 'witch';
+        } else if (selectedChar.includes('knight')) {
+            selectedChar = 'knight';
+        } else if (selectedChar.includes('rogue')) {
+            selectedChar = 'rogue';
+        } else {
+            selectedChar = 'witch'; 
         }
 
-        // 3. Save to LocalStorage (This automatically overwrites previous values)
+        console.log('Character selected:', selectedChar);
+        
+        // Save to LocalStorage
         localStorage.setItem('selectedCharacter', selectedChar);
 
-        // 4. Move to play page
+        // Move to play page
         window.location.href = 'play.html';
     });
 }
@@ -68,7 +67,7 @@ function updateDisplay() {
     
     // Update Stats
     const statsContainer = document.getElementById('stats-container');
-    statsContainer.innerHTML = ''; // Clear old stats
+    statsContainer.innerHTML = ''; 
     
     for (const [name, value] of Object.entries(char.stats)) {
         let stars = '';

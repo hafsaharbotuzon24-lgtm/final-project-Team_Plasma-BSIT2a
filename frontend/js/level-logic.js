@@ -200,7 +200,7 @@ function startEvent(type) {
 }
 
 function proceed() {
-    // Properly hide the current modal and wait for backdrop to clear
+    // This proceed is called from non-boss victory modals (chest, room, regular battles)
     const modalEl = document.getElementById('gameModal');
     if (modalEl) {
         const modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -212,7 +212,14 @@ function proceed() {
                 gameState.currentSite++;
                 
                 if (gameState.currentSite > 5) {
-                    showLevelCompleteModal();
+                    // Check if this is Level 3 completion (should not happen from regular proceed)
+                    if (gameState.currentLevel === 3) {
+                        // This shouldn't normally be reached from regular proceed,
+                        // but just in case, call the game complete modal
+                        showGameCompleteModal();
+                    } else {
+                        showLevelCompleteModal();
+                    }
                     return;
                 }
                 
@@ -227,7 +234,45 @@ function proceed() {
     // Fallback if no modal instance
     gameState.currentSite++;
     if (gameState.currentSite > 5) {
-        showLevelCompleteModal();
+        if (gameState.currentLevel === 3) {
+            showGameCompleteModal();
+        } else {
+            showLevelCompleteModal();
+        }
+        return;
+    }
+    setTimeout(() => updateUI(), 300);
+}
+
+// New function specifically for Level 3 boss victory
+function proceedFromBossVictory() {
+    // This is called ONLY from the Level 3 boss victory modal
+    const modalEl = document.getElementById('gameModal');
+    if (modalEl) {
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) {
+            modalEl.addEventListener('hidden.bs.modal', function handler() {
+                modalEl.removeEventListener('hidden.bs.modal', handler);
+                
+                gameState.currentSite++;
+                
+                if (gameState.currentSite > 5 && gameState.currentLevel === 3) {
+                    showGameCompleteModal();
+                    return;
+                }
+                
+                updateUI();
+            }, { once: true });
+            
+            modalInstance.hide();
+            return;
+        }
+    }
+    
+    // Fallback
+    gameState.currentSite++;
+    if (gameState.currentSite > 5 && gameState.currentLevel === 3) {
+        showGameCompleteModal();
         return;
     }
     setTimeout(() => updateUI(), 300);
@@ -239,25 +284,66 @@ function showLevelCompleteModal() {
     const nextLevelName = levelNames[nextLevel] || "COMPLETE";
     const isGameComplete = gameState.currentLevel >= 3;
     
+    // For Level 3, use the game complete modal with timer
+    if (isGameComplete) {
+        showGameCompleteModal();
+        return;
+    }
+    
     document.getElementById('modalContentWrapper').innerHTML = `
         <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
-            <h1 class="text-white mb-3" style="font-size: 2.5em;">
-                ${isGameComplete ? 'ALL LEVELS COMPLETE!' : 'LEVEL COMPLETE!'}
-            </h1>
+            <h1 class="text-white mb-3" style="font-size: 2.5em;">LEVEL COMPLETE!</h1>
             <div class="bg-dark d-inline-block px-5 py-3 rounded mb-4" style="border: 3px solid #fff;">
                 <p class="text-white fs-3 mb-1">${levelNames[gameState.currentLevel]} conquered!</p>
-                <p class="text-warning fs-5 mb-0">
-                    ${isGameComplete ? 'You are a true Code Warrior!' : 'Prepare for ' + nextLevelName}
-                </p>
+                <p class="text-warning fs-5 mb-0">Prepare for ${nextLevelName}</p>
             </div>
             <div class="d-flex justify-content-center gap-3 mb-3">
                 <span class="text-white fs-5">Hearts: ${gameState.hearts}</span>
                 <span class="text-warning fs-5">Hints: ${gameState.hints}</span>
             </div>
-            <button class="btn btn-light pixel-font fs-4 px-4" 
-                onclick="${isGameComplete ? "location.href='index.html'" : "advanceToNextLevel()"}">
-                ${isGameComplete ? 'RETURN TO MENU' : 'CONTINUE TO LEVEL ' + nextLevel}
+            <button class="btn btn-light pixel-font fs-4 px-4" onclick="advanceToNextLevel()">
+                CONTINUE TO LEVEL ${nextLevel}
             </button>
+        </div>`;
+
+    new bootstrap.Modal(document.getElementById('gameModal')).show();
+}
+
+// New function for game completion with timer
+function showGameCompleteModal() {
+    const VICTORY_DIAL = ["That fight burned my shoe!", "Victory served hot!", "Keep up the heat! Bring it on!"];
+    
+    // Stop the timer and get final time
+    let finalTime = 0;
+    let formattedTime = '0:00';
+    
+    if (typeof stopGameTimer === 'function') {
+        finalTime = stopGameTimer();
+        if (typeof getFormattedDuration === 'function') {
+            formattedTime = getFormattedDuration();
+        }
+        console.log('Game complete! Final time:', finalTime, 'seconds - Formatted:', formattedTime);
+    }
+    
+    // Submit to leaderboard
+    if (typeof submitGameCompletionTime === 'function') {
+        submitGameCompletionTime(finalTime).then(() => {
+            console.log('Leaderboard updated with time:', finalTime);
+        }).catch(err => {
+            console.error('Leaderboard submission failed:', err);
+        });
+    }
+    
+    document.getElementById('modalContentWrapper').innerHTML = `
+        <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
+            <h1 class="text-white mb-3">✨ GAME COMPLETE! ✨</h1>
+            <p class="text-white fs-2 mb-2">⏱️ Completion Time: ${formattedTime}</p>
+            <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
+            <p class="text-light mb-4">Your time has been recorded on the leaderboard!</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <button class="btn btn-light pixel-font fs-4 px-4" onclick="location.href='leaderboard.html'">VIEW LEADERBOARD</button>
+                <button class="btn btn-warning pixel-font fs-4 px-4" onclick="location.href='index.html'">MAIN MENU</button>
+            </div>
         </div>`;
 
     new bootstrap.Modal(document.getElementById('gameModal')).show();
@@ -334,6 +420,7 @@ function restartGame() {
     gameState.lastChoice = null;
     setTimeout(() => updateUI(), 300);
 }
+
 // Force fix for heart and hint alignment
 function fixHeartHintAlignment() {
     // Get the container that holds both heart and hint (the status-container)

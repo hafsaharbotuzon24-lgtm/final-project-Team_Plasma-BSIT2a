@@ -2,8 +2,7 @@
 let bgm;
 
 /**
- * Plays a one-shot sound effect (SFX)
- * Usage: playSFX('assets/sounds/click.mp3');
+ * Plays a one-shot sound effect 
  */
 function playSFX(audioPath) {
     const volume = localStorage.getItem('sfxVolume') || 80;
@@ -13,8 +12,7 @@ function playSFX(audioPath) {
 }
 
 /**
- * Starts background music (BGM) with persistence
- * Usage: startBGM('assets/sounds/theme.mp3');
+ * Starts background music
  */
 function startBGM(audioPath) {
     const volume = localStorage.getItem('musicVolume') || 50;
@@ -22,7 +20,7 @@ function startBGM(audioPath) {
     if (!bgm) {
         bgm = new Audio(audioPath);
         bgm.loop = true;
-        // Resume from where the user left off on the previous page
+        
         const savedTime = localStorage.getItem('bgmTime');
         if (savedTime) bgm.currentTime = parseFloat(savedTime);
     }
@@ -78,10 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sfxBtn) {
         sfxBtn.addEventListener('click', () => {
             const current = localStorage.getItem('sfxVolume') || 80;
-            const target = current > 0 ? 0 : 80; // Toggle between mute and default
+            const target = current > 0 ? 0 : 80; 
             localStorage.setItem('sfxVolume', target);
             if (sfxSlider) sfxSlider.value = target;
-            playSFX('assets/sounds/click.mp3'); // Play sound to confirm
+            playSFX('assets/sounds/click.mp3'); 
         });
     }
 
@@ -97,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- STATE-BASED BGM ENGINE ---
-let currentTrackPath = ""; // Track the currently playing file
+let currentTrackPath = ""; 
 
 function startBGM(audioPath) {
     const volume = localStorage.getItem('musicVolume') || 50;
@@ -116,8 +114,8 @@ function startBGM(audioPath) {
 
     // 3. Initialize the new track for this "Area"
     bgm = new Audio(audioPath);
-    bgm.loop = true; // Continuous loop
-    currentTrackPath = audioPath; // Update state
+    bgm.loop = true; 
+    currentTrackPath = audioPath; 
     bgm.volume = volume / 100;
 
     // 4. Persistence: Resume if it's the same track we previously saved

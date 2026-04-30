@@ -1,0 +1,210 @@
+.load-slot-container {
+            min-height: 100vh;
+            background: transparent;
+            padding: 100px 20px 40px;
+        }
+
+        .new-game-btn {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            border: 3px solid #b68d06;
+            padding: 15px 40px;
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 400px;
+            cursor: pointer;
+        }
+
+        .new-game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, #ffaa00, #ffd700);
+        }
+
+        .slots-wrapper {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .load-slot-card {
+            background: #15324e;
+            border: 3px solid #040f4b;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+        }
+
+        .load-slot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .slot-header {
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slot-number {
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 1.8rem;
+            color: #ffd700;
+            text-shadow: 2px 2px 0 #ff6600;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .slot-status {
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 0.9rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .slot-status.occupied {
+            background: #28a745;
+            color: white;
+        }
+
+        .slot-status.empty {
+            background: #6c757d;
+            color: white;
+        }
+
+        .slot-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 0.8rem;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .load-btn {
+            background: #040f4b;
+            color: #15324e;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .load-btn:hover:not(:disabled) {
+            background: #ffaa00;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .load-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            font-family: 'Pixelify Sans', monospace;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .load-slot-container {
+                padding: 80px 15px 30px;
+            }
+
+            .new-game-btn {
+                font-size: 1.3rem;
+                padding: 12px 30px;
+                max-width: 100%;
+            }
+
+            .slots-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .load-slot-card {
+                min-width: 100%;
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .slot-number {
+                font-size: 1.4rem;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .detail-label {
+                font-size: 0.7rem;
+            }
+
+            .detail-value {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .slots-wrapper {
+                gap: 20px;
+            }
+            
+            .load-slot-card {
+                min-width: 280px;
+            }
+        }

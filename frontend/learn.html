@@ -10,15 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-           
-  
+    <link rel="stylesheet" href="css/learn.css">
 </head>
-<body class="learn-body" style="background: url('../frontend/img/bg-main.png')">
+<body class="learn-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
+                    <span>Combat Coders</span>
+                </button>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -26,16 +26,16 @@
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
+                 
             </div>
 
-            <!-- Only ONE profile trigger, inside the navbar -->
+            <!-- Profile trigger with circular avatar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
@@ -47,11 +47,14 @@
             </button>
         </div>
     </nav>
+    
     <div class="learn-main-wrapper">
         <div class="learn-container-main">
             <h1 class="learn-header-title">GAME MECHANICS</h1>
             
+            <!-- 4 Column Grid - Responsive -->
             <div class="learn-grid">
+                <!-- Column 1: Choosing Cards -->
                 <div class="learn-card">
                     <h3 class="card-subtitle">CHOOSING CARDS</h3>
                     <div class="card-divider"></div>
@@ -61,7 +64,7 @@
                             <span class="label">BATTLE</span>
                             <span class="value">A code to solve</span>
                         </div>
-                        <img src="img/icon-battle.png" class="mini-pixel-icon">
+                        <img src="img/icon-battle.png" class="mini-pixel-icon" alt="battle">
                     </div>
 
                     <div class="mechanic-item">
@@ -69,7 +72,7 @@
                             <span class="label">ROOM</span>
                             <span class="value">Will provide HP</span>
                         </div>
-                        <img src="img/icon-room.png" class="mini-pixel-icon">
+                        <img src="img/icon-room.png" class="mini-pixel-icon" alt="room">
                     </div>
 
                     <div class="mechanic-item">
@@ -77,54 +80,130 @@
                             <span class="label">CHEST</span>
                             <span class="value">Will provide hints</span>
                         </div>
-                        <img src="img/icon-chest.png" class="mini-pixel-icon">
+                        <img src="img/icon-chest.png" class="mini-pixel-icon" alt="chest">
                     </div>
                 </div>
 
+                <!-- Column 2: Battle Mechanics -->
                 <div class="learn-card">
                     <h3 class="card-subtitle">BATTLE MECHANICS</h3>
                     <div class="card-divider"></div>
                     
                     <div class="mechanic-desc">
                         <p>Hearts are the lifeline of the player, 0 hearts mean defeat.</p>
-                        <div class="icon-center"><img src="img/icon-heart.png" class="mid-pixel-icon"></div>
+                        <div class="icon-center"><img src="img/icon-heart.png" class="mid-pixel-icon" alt="heart"></div>
                     </div>
 
                     <div class="mechanic-desc">
-                        <p>Hints give the player a clue how to solve the problem..</p>
-                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon"></div>
+                        <p>Hints give the player a clue how to solve the problem.</p>
+                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon" alt="hint"></div>
                     </div>
                 </div>
 
+                <!-- Column 3: Chest & Boss -->
                 <div class="learn-card">
                     <h3 class="card-subtitle">CHEST & BOSS</h3>
                     <div class="card-divider"></div>
 
                     <div class="mechanic-desc">
                         <p>Chests provide non-stackable hints.</p>
-                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon"></div>
+                        <div class="icon-center"><img src="img/icon-hint.png" class="mid-pixel-icon" alt="hint reward"></div>
                     </div>
 
                     <div class="mechanic-desc">
                         <p>Clear paths to reach the final Boss room.</p>
-                        <div class="icon-center"><img src="img/icon-boss.png" class="mid-pixel-icon"></div>
+                        <div class="icon-center"><img src="img/icon-boss.png" class="mid-pixel-icon" alt="boss"></div>
+                    </div>
+                </div>
+
+                <!-- Column 4: Battle Encounter & Rewards (NEW) -->
+                <div class="learn-card">
+                    <h3 class="card-subtitle">BATTLE ENCOUNTER</h3>
+                    <div class="card-divider"></div>
+                    
+                    <div class="mechanic-desc">
+                        <p>An insect monster will appear and give you a coding challenge!</p>
+                        <div class="battle-preview-mini">
+                            <img src="img/knight-model.png" class="preview-sprite-mini" alt="player">
+                            <span class="vs-text-mini">VS</span>
+                            <img src="img/enemy-roach.png" class="preview-sprite-mini" alt="enemy">
+                        </div>
+                    </div>
+
+                    <div class="mechanic-desc reward-desc">
+                        <p class="reward-title">🎁 BATTLE REWARDS 🎁</p>
+                        <div class="reward-items">
+                            <div class="reward-item">
+                                <img src="img/icon-heart.png" class="reward-icon" alt="heart">
+                                <span>Win = +1 Heart</span>
+                            </div>
+                            <div class="reward-item">
+                                <img src="img/icon-hint.png" class="reward-icon" alt="hint">
+                                <span>Win = +1 Hint</span>
+                            </div>
+                        </div>
+                        <p class="reward-note">*Rewards are awarded after defeating any enemy</p>
                     </div>
                 </div>
             </div>
 
-            <div class="learn-footer-card">
+            <!-- Battle Preview Footer (hidden on mobile, integrated into column 4 on desktop) -->
+            <div class="learn-footer-card visible-mobile">
                 <h3 class="card-subtitle">BATTLE ENCOUNTER</h3>
                 <p>An insect monster will appear and give you a challenge</p>
                 <div class="battle-preview">
-                    <img src="img/knight-model.png" class="preview-sprite">
+                    <img src="img/knight-model.png" class="preview-sprite" alt="player">
                     <span class="vs-text">VS</span>
-                    <img src="img/enemy-roach.png" class="preview-sprite">
+                    <img src="img/enemy-roach.png" class="preview-sprite" alt="enemy">
+                </div>
+                <div class="reward-info-footer">
+                    <p class="mt-3 mb-2"><strong>✨ Rewards ✨</strong></p>
+                    <div class="reward-icons-footer">
+                        <span>❤️ +1 Heart</span>
+                        <span>💡 +1 Hint</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="js/account.js"></script>
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script>
+    // Navbar Avatar Update Script
+    function updateNavbarAvatar() {
+        const storedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
+        
+        // Update the navbar profile icon
+        const navProfileIcon = document.getElementById('navProfileIcon');
+        if (navProfileIcon) {
+            navProfileIcon.src = storedAvatar;
+            navProfileIcon.style.width = '40px';
+            navProfileIcon.style.height = '40px';
+            navProfileIcon.style.borderRadius = '50%';
+            navProfileIcon.style.objectFit = 'cover';
+            navProfileIcon.style.imageRendering = 'auto';
+            navProfileIcon.style.border = '2px solid #FFD700';
+        }
+        
+        // Also update any other profile trigger images
+        const profTriggerImg = document.querySelector('#profTrigger img');
+        if (profTriggerImg && profTriggerImg.id !== 'navProfileIcon') {
+            profTriggerImg.src = storedAvatar;
+            profTriggerImg.style.width = '40px';
+            profTriggerImg.style.height = '40px';
+            profTriggerImg.style.borderRadius = '50%';
+            profTriggerImg.style.objectFit = 'cover';
+            profTriggerImg.style.imageRendering = 'auto';
+            profTriggerImg.style.border = '2px solid #FFD700';
+        }
+    }
+    
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNavbarAvatar();
+    });
+</script>
 </body>
 </html>

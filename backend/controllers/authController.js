@@ -128,7 +128,6 @@ exports.googleLogin = async (req, res) => {
       let attempt = 0;
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        // try a few variations
         const candidate = attempt === 0 ? username : `${username}_${attempt}`;
         // eslint-disable-next-line no-await-in-loop
         const exists = await Player.findOne({ username: candidate });
@@ -156,6 +155,104 @@ exports.googleLogin = async (req, res) => {
     const safePlayer = player.toObject();
     delete safePlayer.password;
     res.json({ token, player: safePlayer });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Forgot Password - Generate and send OTP
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
+    const player = await Player.findOne({ email: email.toLowerCase() });
+    if (!player) {
+      return res.status(404).json({ message: 'No account found with this email' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save OTP to database
+    const OTP = require('../models/OTP');
+    await OTP.deleteMany({ email: email.toLowerCase() }); // Clear old OTPs
+    await OTP.create({ email: email.toLowerCase(), otp });
+
+    // For demo/development - log OTP to console instead of sending email
+    console.log(`OTP for ${email}: ${otp}`);
+
+    res.json({ 
+      message: 'OTP sent successfully. Check your email.',
+      ...(process.env.NODE_ENV !== 'production' && { otp }) 
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Verify OTP
+exports.verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ message: 'Email and OTP are required' });
+    }
+
+    const OTP = require('../models/OTP');
+    const otpRecord = await OTP.findOne({ 
+      email: email.toLowerCase(), 
+      otp: otp 
+    });
+
+    if (!otpRecord) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    res.json({ message: 'OTP verified successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Reset Password
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: 'Email, OTP, and new password are required' });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters' });
+    }
+
+    const OTP = require('../models/OTP');
+    const otpRecord = await OTP.findOne({ 
+      email: email.toLowerCase(), 
+      otp: otp 
+    });
+
+    if (!otpRecord) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    // Hash new password
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update player password
+    await Player.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { password: hashedPassword }
+    );
+
+    // Delete used OTP
+    await OTP.deleteMany({ email: email.toLowerCase() });
+
+    res.json({ message: 'Password reset successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

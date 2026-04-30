@@ -9,341 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body.profile-body {
-            padding-top: 70px; 
-            background-image: url('../frontend/img/bg-main.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            font-family: 'Pixelify Sans', sans-serif;
-            margin: 0;
-            padding-top: 80px;
-            min-height: 100vh;
-            color: #ffffff;
-            width: 100%;
-            overflow-x: hidden;
-        }
-        
-        .profile-main-wrapper {
-            width: 100%;
-            min-height: calc(100vh - 80px);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 20px;
-        }
-        
-        .profile-container {
-            background-color: #0d1b30;
-            border: 3px solid #1a3350;
-            border-radius: 16px;
-            padding: 40px;
-            width: 100%;
-            max-width: 750px;
-        }
-        
-        .profile-header {
-            text-align: center;
-            color: #ffffff;
-            font-size: 2rem;
-            margin-bottom: 35px;
-            letter-spacing: 2px;
-        }
-        
-        .profile-content {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            margin-bottom: 35px;
-        }
-        
-        .avatar-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        
-        .avatar-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #2a4a6e;
-            overflow: hidden;
-            background: #1a2d45;
-            margin-bottom: 14px;
-        }
-        
-        .avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            image-rendering: pixelated;
-        }
-        
-        .change-avatar-btn {
-            background: #1a2d45;
-            border: 2px solid #2a4a6e;
-            color: #c0d0e0;
-            padding: 8px 18px;
-            font-family: 'Pixelify Sans', sans-serif;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        
-        .change-avatar-btn:hover {
-            background: #2a4a6e;
-            color: #ffffff;
-        }
-        
-        .info-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .info-row {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            background: #1a2d45;
-            border-radius: 8px;
-            gap: 12px;
-        }
-        
-        .info-label {
-            color: #8aa0b8;
-            font-size: 1rem;
-            min-width: 55px;
-            font-weight: bold;
-        }
-        
-        .info-value {
-            color: #ffffff;
-            font-size: 1.1rem;
-            flex: 1;
-        }
-        
-        .change-name-btn {
-            background: #0d1b30;
-            border: 1px solid #2a4a6e;
-            color: #8aa0b8;
-            padding: 5px 14px;
-            font-family: 'Pixelify Sans', sans-serif;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-        
-        .change-name-btn:hover {
-            background: #2a4a6e;
-            color: #ffffff;
-        }
-        
-        .achievements-section {
-            padding-top: 25px;
-            border-top: 2px solid #1a3350;
-        }
-        
-        .achievements-title {
-            color: #8aa0b8;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-        
-        .achievements-row {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .achievement-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #1a2d45;
-            padding: 14px 18px;
-            border-radius: 10px;
-            flex: 1;
-            min-width: 200px;
-            max-width: 230px;
-        }
-        
-        .medal-slot {
-            width: 44px;
-            height: 44px;
-            flex-shrink: 0;
-        }
-        
-        .medal-slot img {
-            width: 44px;
-            height: 44px;
-            image-rendering: pixelated;
-        }
-        
-        .medal-placeholder {
-            width: 44px;
-            height: 44px;
-            border: 2px dashed #2a4a6e;
-            border-radius: 50%;
-        }
-        
-        .achievement-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .achievement-name {
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-        
-        .achievement-desc {
-            color: #6a82a0;
-            font-size: 0.75rem;
-        }
-        
-        .custom-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .custom-modal-overlay.show {
-            display: flex;
-        }
-        
-        .custom-modal-box {
-            background: #0d1b30;
-            border: 3px solid #2a4a6e;
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-        }
-        
-        .custom-modal-box h3 {
-            color: #ffffff;
-            font-family: 'Pixelify Sans', sans-serif;
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-        }
-        
-        .custom-modal-box input {
-            width: 100%;
-            padding: 12px;
-            background: #1a2d45;
-            border: 2px solid #2a4a6e;
-            color: #ffffff;
-            font-family: 'Pixelify Sans', sans-serif;
-            font-size: 1rem;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            outline: none;
-        }
-        
-        .custom-modal-box input:focus {
-            border-color: #4a7aaa;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .modal-btn-save {
-            background: #2a5a3a;
-            border: 2px solid #3a7a4a;
-            color: #ffffff;
-            padding: 10px 24px;
-            font-family: 'Pixelify Sans', sans-serif;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-        
-        .modal-btn-save:hover {
-            background: #2ebe52;
-        }
-        
-        .modal-btn-cancel {
-            background: #c00000;
-            border: 2px solid #5a3a3a;
-            color: #ffffff;
-            padding: 10px 24px;
-            font-family: 'Pixelify Sans', sans-serif;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-        
-        .modal-btn-cancel:hover {
-            background: #b92c2c;
-        }
-        
-        @media (max-width: 768px) {
-            body.profile-body {
-                padding-top: 70px;
-            }
-            
-            .profile-container {
-                padding: 25px 18px;
-            }
-            
-            .profile-content {
-                flex-direction: column;
-                align-items: center;
-                gap: 25px;
-            }
-            
-            .avatar-section {
-                flex-direction: row;
-                gap: 18px;
-            }
-            
-            .avatar-circle {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .info-section {
-                width: 100%;
-            }
-            
-            .achievements-row {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .achievement-item {
-                max-width: 100%;
-                width: 100%;
-            }
-        }
-    </style>
+     <link rel="stylesheet" href="css/profile.css">
+ 
 </head>
 <body class="profile-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
@@ -358,15 +25,15 @@
                 <button class="play-btn" onclick="navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="navigate('settings')">Settings</button>
+                
             </div>
 
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
@@ -379,15 +46,17 @@
     </nav>
 
     <div class="profile-main-wrapper">
+        <!-- Main Profile Container -->
         <div class="profile-container">
+            <button class="edit-profile-btn" id="editProfileBtn" onclick="toggleEditMode()">Edit Profile</button>
             <h1 class="profile-header">PROFILE</h1>
             
             <div class="profile-content">
                 <div class="avatar-section">
-                    <div class="avatar-circle">
-                        <img id="profileAvatar" src="img/player-profile.png" alt="Avatar">
+                    <div class="avatar-circle" id="avatarCircle">
+                        <img id="profileAvatar" src="img/player-profile.png" alt=" ">
                     </div>
-                    <button class="change-avatar-btn" onclick="triggerAvatarUpload()">Change Picture</button>
+                    <button class="change-avatar-btn" id="changeAvatarBtn" onclick="triggerAvatarUpload()">Change Picture</button>
                     <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
                 </div>
                 
@@ -395,11 +64,16 @@
                     <div class="info-row">
                         <span class="info-label">Name:</span>
                         <span class="info-value" id="displayUserName">CombatCoder_01</span>
-                        <button class="change-name-btn" onclick="openNameModal()">Change</button>
+                        <input type="text" class="edit-name-input" id="editNameInput" maxlength="20">
+                        <button class="change-name-btn" id="changeNameBtn" onclick="openNameModal()">Change</button>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Level:</span>
                         <span class="info-value" id="displayLevel">1</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value" id="displayUserEmail">player@plasma.com</span>
                     </div>
                 </div>
             </div>
@@ -409,110 +83,176 @@
                 
                 <div class="achievements-row">
                     <div class="achievement-item">
-                        <div class="medal-slot" id="bronzeMedal">
+                        <div class="medal-slot" id="medal1">
                             <div class="medal-placeholder"></div>
                         </div>
                         <div class="achievement-info">
                             <span class="achievement-name">Forest Guardian</span>
-                            <span class="achievement-desc">Defeat Level 1 Boss</span>
+                            <span class="achievement-desc">Complete Level 1</span>
                         </div>
                     </div>
                     
                     <div class="achievement-item">
-                        <div class="medal-slot" id="silverMedal">
+                        <div class="medal-slot" id="medal2">
                             <div class="medal-placeholder"></div>
                         </div>
                         <div class="achievement-info">
                             <span class="achievement-name">Dungeon Conqueror</span>
-                            <span class="achievement-desc">Defeat Level 2 Boss</span>
+                            <span class="achievement-desc">Complete Level 2</span>
                         </div>
                     </div>
                     
                     <div class="achievement-item">
-                        <div class="medal-slot" id="goldMedal">
+                        <div class="medal-slot" id="medal3">
                             <div class="medal-placeholder"></div>
                         </div>
                         <div class="achievement-info">
                             <span class="achievement-name">Volcanic Champion</span>
-                            <span class="achievement-desc">Defeat Level 3 Boss</span>
+                            <span class="achievement-desc">Complete Level 3</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Sidebar -->
+        <div class="profile-sidebar">
+            <h2 class="sidebar-title">PROFILE SETTINGS</h2>
+            <button class="sidebar-btn" onclick="openChangePasswordModal()" style="background: #4a4a4a; color: #fff; margin-bottom: 10px;">Change Password</button>
+            <button class="sidebar-btn delete-btn" onclick="openDeleteModal()">Delete Account</button>
+        </div>
     </div>
 
-    <!-- Change Name Modal -->
-    <div class="custom-modal-overlay" id="nameModal">
-        <div class="custom-modal-box">
-            <h3>CHANGE USERNAME</h3>
-            <input type="text" id="newUsernameInput" placeholder="Enter new username..." maxlength="20">
+    <!-- Change Password Modal -->
+    <div class="delete-modal-overlay" id="changePasswordModal">
+        <div class="delete-modal-box">
+            <h3>CHANGE PASSWORD</h3>
+            <p>Enter your current password and new password below.</p>
+            <input type="password" id="oldPasswordInput" class="form-control mb-3 pixel-input" placeholder="Current Password" style="background: #333; color: #fff; border: 1px solid #666;">
+            <input type="password" id="newPasswordInput" class="form-control mb-3 pixel-input" placeholder="New Password (min 8 chars)" style="background: #333; color: #fff; border: 1px solid #666;">
+            <input type="password" id="confirmNewPasswordInput" class="form-control mb-3 pixel-input" placeholder="Confirm New Password" style="background: #333; color: #fff; border: 1px solid #666;">
             <div class="modal-buttons">
-                <button class="modal-btn-save" onclick="saveNewUsername()">SAVE</button>
-                <button class="modal-btn-cancel" onclick="closeNameModal()">CANCEL</button>
+                <button class="modal-btn-delete" onclick="changePassword()" style="background: #4CAF50;">UPDATE</button>
+                <button class="modal-btn-cancel" onclick="closeChangePasswordModal()">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="delete-modal-overlay" id="deleteModal">
+        <div class="delete-modal-box">
+            <h3>DELETE ACCOUNT</h3>
+            <p>Are you sure you want to delete this account? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn-delete" onclick="deleteAccount()">YES</button>
+                <button class="modal-btn-cancel" onclick="closeDeleteModal()">NO</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api-connection.js"></script>
     <script src="js/script.js"></script>
     <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
+        let isEditing = false;
+        
         function loadProfileData() {
             const storedName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
             document.getElementById('displayUserName').innerText = storedName;
             
+            const storedEmail = localStorage.getItem('playerEmail') || 'player@plasma.com';
+            document.getElementById('displayUserEmail').innerText = storedEmail;
+            
             const storedAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
             document.getElementById('profileAvatar').src = storedAvatar;
             
+            // Update navbar profile icon
+            updateNavbarProfileIcon(storedAvatar);
+            
             const savedLevel = localStorage.getItem('currentLevel') || '1';
             document.getElementById('displayLevel').innerText = savedLevel;
+            
+            // Load medals based on level completion
+            loadMedals();
+        }
+        
+        function updateNavbarProfileIcon(avatarSrc) {
+            const navProfileIcon = document.getElementById('navProfileIcon');
+            if (navProfileIcon && avatarSrc) {
+                navProfileIcon.src = avatarSrc;
+                navProfileIcon.style.width = '40px';
+                navProfileIcon.style.height = '40px';
+                navProfileIcon.style.borderRadius = '50%';
+                navProfileIcon.style.objectFit = 'cover';
+                navProfileIcon.style.imageRendering = 'auto';
+            }
+        }
+        
+        function loadMedals() {
+            const level1Completed = localStorage.getItem('level1Completed') === 'true';
+            const level2Completed = localStorage.getItem('level2Completed') === 'true';
+            const level3Completed = localStorage.getItem('level3Completed') === 'true';
             
             const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
             const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
             const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
             
-            if (boss1Defeated) {
-                document.getElementById('bronzeMedal').innerHTML = '<img src="img/bronze-medal.png" alt="Bronze">';
+            if (level1Completed || boss1Defeated) {
+                document.getElementById('medal1').innerHTML = '<img src="img/medal-1.png" alt="Medal 1" onerror="this.src=\'img/bronze-medal.png\'">';
             }
-            if (boss2Defeated) {
-                document.getElementById('silverMedal').innerHTML = '<img src="img/silver-medal.png" alt="Silver">';
+            
+            if (level2Completed || boss2Defeated) {
+                document.getElementById('medal2').innerHTML = '<img src="img/medal-2.png" alt="Medal 2" onerror="this.src=\'img/silver-medal.png\'">';
             }
-            if (boss3Defeated) {
-                document.getElementById('goldMedal').innerHTML = '<img src="img/gold-medal.png" alt="Gold">';
-            }
-        }
-        
-        function openNameModal() {
-            const currentName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
-            document.getElementById('newUsernameInput').value = currentName;
-            document.getElementById('nameModal').classList.add('show');
-            document.getElementById('newUsernameInput').focus();
-        }
-        
-        function closeNameModal() {
-            document.getElementById('nameModal').classList.remove('show');
-        }
-        
-        function saveNewUsername() {
-            const newName = document.getElementById('newUsernameInput').value.trim();
-            if (newName !== '') {
-                localStorage.setItem('playerUserName', newName);
-                document.getElementById('displayUserName').innerText = newName;
-                closeNameModal();
+            
+            if (level3Completed || boss3Defeated) {
+                document.getElementById('medal3').innerHTML = '<img src="img/medal-3.png" alt="Medal 3" onerror="this.src=\'img/gold-medal.png\'">';
             }
         }
         
-        // Close modal on Enter key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && document.getElementById('nameModal').classList.contains('show')) {
-                saveNewUsername();
+        function toggleEditMode() {
+            isEditing = !isEditing;
+            const editBtn = document.getElementById('editProfileBtn');
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            const changeNameBtn = document.getElementById('changeNameBtn');
+            const editNameInput = document.getElementById('editNameInput');
+            const displayName = document.getElementById('displayUserName');
+            const avatarCircle = document.getElementById('avatarCircle');
+            
+            if (isEditing) {
+                editBtn.textContent = 'Update Profile';
+                editBtn.classList.add('updating');
+                changeAvatarBtn.classList.add('visible');
+                changeNameBtn.classList.add('visible');
+                avatarCircle.classList.add('editing');
+                
+                displayName.style.display = 'none';
+                editNameInput.classList.add('visible');
+                editNameInput.value = displayName.innerText;
+                editNameInput.focus();
+                
+                avatarCircle.onclick = function() { triggerAvatarUpload(); };
+            } else {
+                const newName = editNameInput.value.trim();
+                if (newName) {
+                    localStorage.setItem('playerUserName', newName);
+                    displayName.innerText = newName;
+                }
+                
+                editBtn.textContent = 'Edit Profile';
+                editBtn.classList.remove('updating');
+                changeAvatarBtn.classList.remove('visible');
+                changeNameBtn.classList.remove('visible');
+                avatarCircle.classList.remove('editing');
+                
+                displayName.style.display = '';
+                editNameInput.classList.remove('visible');
+                
+                avatarCircle.onclick = null;
             }
-            if (e.key === 'Escape' && document.getElementById('nameModal').classList.contains('show')) {
-                closeNameModal();
-            }
-        });
+        }
         
         function triggerAvatarUpload() {
             document.getElementById('avatarInput').click();
@@ -526,8 +266,121 @@
                     const base64Image = e.target.result;
                     localStorage.setItem('playerAvatar', base64Image);
                     document.getElementById('profileAvatar').src = base64Image;
+                    // Update navbar profile icon immediately
+                    updateNavbarProfileIcon(base64Image);
                 };
                 reader.readAsDataURL(file);
+            }
+        }
+        
+        function openNameModal() {
+            const currentName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
+            const newName = prompt("Enter new username:", currentName);
+            if (newName && newName.trim() !== "") {
+                localStorage.setItem('playerUserName', newName.trim());
+                document.getElementById('displayUserName').innerText = newName.trim();
+            }
+        }
+        
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+        
+        async function deleteAccount() {
+            const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+            const token = localStorage.getItem('authToken');
+            
+            if (token) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/players/me`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        credentials: 'include'
+                    });
+                    
+                    if (!response.ok) {
+                        const data = await response.json();
+                        alert(data.message || 'Failed to delete account');
+                        return;
+                    }
+                } catch (err) {
+                    console.error('Delete account error:', err);
+                    alert('Network error. Account deleted locally only.');
+                }
+            }
+            
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+        
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('show');
+        }
+        
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.remove('show');
+            document.getElementById('oldPasswordInput').value = '';
+            document.getElementById('newPasswordInput').value = '';
+            document.getElementById('confirmNewPasswordInput').value = '';
+        }
+        
+        async function changePassword() {
+            const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+            const token = localStorage.getItem('authToken');
+            
+            if (!token) {
+                alert('You must be logged in to change your password');
+                return;
+            }
+            
+            const oldPassword = document.getElementById('oldPasswordInput').value;
+            const newPassword = document.getElementById('newPasswordInput').value;
+            const confirmPassword = document.getElementById('confirmNewPasswordInput').value;
+            
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all password fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/players/me/password`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ oldPassword, newPassword })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    alert(data.message || 'Failed to change password');
+                    return;
+                }
+                
+                alert('Password changed successfully!');
+                closeChangePasswordModal();
+            } catch (err) {
+                console.error('Change password error:', err);
+                alert('Network error. Please try again.');
             }
         }
         
@@ -541,11 +394,31 @@
             }
         }
         
-        window.markBossDefeated = function(level) {
+        window.markLevelCompleted = function(level) {
+            localStorage.setItem('level' + level + 'Completed', 'true');
             localStorage.setItem('boss' + level + 'Defeated', 'true');
         };
         
+        window.markBossDefeated = function(level) {
+            localStorage.setItem('boss' + level + 'Defeated', 'true');
+            localStorage.setItem('level' + level + 'Completed', 'true');
+        };
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('show')) {
+                closeDeleteModal();
+            }
+        });
+        
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+        
         document.addEventListener('DOMContentLoaded', loadProfileData);
+        
+        setInterval(loadMedals, 5000);
     </script>
 </body>
 </html>

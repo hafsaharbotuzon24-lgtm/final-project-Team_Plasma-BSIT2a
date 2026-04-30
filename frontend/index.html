@@ -3,27 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combat Coders - Home Page</title>
-    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <title>Combat Coders</title>
+    <script>
+        // Redirect BEFORE page renders if animation already played or authenticated
+        const authToken = localStorage.getItem('authToken');
+        const animationPlayed = sessionStorage.getItem('animationPlayed');
+        
+        if (animationPlayed || authToken) {
+            const nextPage = authToken ? "home.html" : "login.html";
+            window.location.replace(nextPage);
+        }
+    </script>
     <style>
-        .intro-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             background-color: #020617;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
 
-        .intro-logo-wrapper {
+        .logo-wrapper {
             position: relative;
             width: 550px;
             height: 550px;
@@ -31,12 +38,17 @@
             justify-content: center;
             align-items: center;
             filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
-            animation: introGlow 2s ease-in-out infinite;
-            opacity: 1;
-            transition: opacity 0.3s ease-out;
+            animation: glow 2s ease-in-out infinite;
+
+            opacity: 0;
+            transition: opacity 0.3s ease-out; 
         }
 
-        @keyframes introGlow {
+        .logo-wrapper.show {
+            opacity: 1;
+        }
+
+        @keyframes glow {
             0%, 100% {
                 filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
             }
@@ -45,246 +57,51 @@
             }
         }
 
-        .intro-logo-wrapper img {
+        .logo-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
 
         @media (max-width: 768px) {
-            .intro-logo-wrapper {
+            .logo-wrapper {
                 width: 300px;
                 height: 300px;
             }
         }
     </style>
 </head>
-
-<body class="index-body">
-    <div class="intro-overlay" id="introOverlay" aria-hidden="true">
-        <div class="intro-logo-wrapper" id="introLogoWrapper">
-            <img src="img/LOGO ANIM.gif" alt="Team Plasma Logo" id="introLogoImg">
-        </div>
+<body>
+    <div class="logo-wrapper" id="logoWrapper">
+        <img src="img/LOGO ANIM.gif" alt="Team Plasma Logo" id="logoImg">
     </div>
 
-    <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
-        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
-            <div class="navbar-brand d-flex align-items-center m-0">
-                <button class="nav-btn-logo">
-                <span>Combat Coders</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-3 nav-links-wrap">
-                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
-                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
-                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
-                <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                <button class="settings-btn" onclick="playSFX('sound-fx/click.mp3');navigate('settings')">Settings</button>
-            </div>
-
-            <!-- Only ONE profile trigger, inside the navbar -->
-            <div class="profile-trigger-container" id="profileContainer">
-                <button class="prof-icon" id="profTrigger" type="button">
-                    <img src="img/icon-frame.png" alt="Profile" class="pixel-icon-large">
-                </button>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="openProfile()">Profile</button>
-                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
-                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
-                </div>
-            </div>
-
-            <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
-                <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
-                <span>Team Plasma</span>
-            </button>
-        </div>
-    </nav>
-
-    <div class="main-menu-container">
-        <div class="top-section text-center">
-            <img src="img/logo.png" alt="Combat Coders Logo" class="logo-png floating">
-            <p class="motd-text">The End of Bugs Reign</p>
-            <div><button class="scroll-btn-play" onclick="playSFX('sound-fx/click.mp3');navigate('play')">
-        <img src="img/scrolls/scroll-play.png" alt="play"></button></div>
-        </div>
-    </div>
-    
-    <section class="combat-preview-section">
-    <div class="combat-preview-container">
-        
-         
-         
-        <div class="cp-description">
-            <p class="cp-desc-text">Enter a world of fast-paced 2D combat where combat meets coding. Choose your role, learn the ways of coding, and fight your way to victory against evil bugs that dare to initiate a fiersome duel!</p>
-        </div>
-        
-        <div class="cp-row">
-            <div class="cp-row-image">
-                <img src="img/cards.png" alt="Combat Preview" class="cp-img">
-            </div>
-            <div class="cp-row-text">
-                <h3 class="cp-row-title">Play Your Own Way</h3>
-                <p class="cp-row-desc">Combat Coders is an interactive, game-based learning system designed to improve players' coding skills while enhancing strategic and decision-making abilities. Players navigate using a card-driven system (similar to tarot cards), choosing paths that lead to treasure rooms, battles, or special events. At the start, players choose between the Knight, Witch, or Rogue (purely cosmetic), then progress by solving coding challenges to advance through increasingly difficult levels.
-</p>
-            </div>
-        </div>
-
-        <!-- Row 2 - Text Left, Image Right -->
-        <div class="cp-row cp-row-reverse">
-            <div class="cp-row-text">
-                <h3 class="cp-row-title">Brain-tangling battles!</h3>
-                <p class="cp-row-desc">When a player chooses the "battle" path, a bug appears and presents coding questions involving HTML, CSS, or JavaScript. The player must answer correctly to deal damage. Right solutions hurt the enemy, while wrong answers reduce the player's health. After each battle, the player proceeds and is given new choices: chest, battle, or room.</p>
-            </div>
-            <div class="cp-row-image">
-                <img src="img/fight.png" alt="Combat Preview" class="cp-img">
-            </div>
-        </div>
-        
-        <!-- Row 3 - Image Left, Text Right -->
-        <div class="cp-row">
-            <div class="cp-row-image">
-                <img src="img/tutorial.png" alt="Combat Preview" class="cp-img">
-            </div>
-            <div class="cp-row-text">
-                <h3 class="cp-row-title">Learn Through Interactive Tutorial</h3>
-                <p class="cp-row-desc">Get hands-on with the core mechanics through a guided interactive tutorial. Learn the fundamentals step by step, so you are ready to compete from your very first match.</p>
-            </div>
-        </div>
-        
-        <!-- Row 4 - Text Left, Image Right -->
-        <div class="cp-row cp-row-reverse">
-            <div class="cp-row-text">
-                <h3 class="cp-row-title">Tough Bosses</h3>
-                <p class="cp-row-desc">The boss fight begins when the player reaches the final path of a certain level. The boss provides a code snippet containing HTML, CSS, and JavaScript with blanks that the user must fill in or answer correctly. Defeating the boss allows the player to proceed to the next level.</p>
-            </div>
-            <div class="cp-row-image">
-                <img src="img/boss.png" alt="Combat Preview" class="cp-img">
-            </div>
-        </div>
-        
-    </div>
-
-    
-</section>
-
-<footer class="about-footer">
-     <div class="about-footer-top">
-            <div class="about-footer-brand">
-                <img class ="about-footer-logo" src ="img/Combat Coders Logo-2.png.png">
-            </div>
-        </div>
-
-        <div class="about-footer-links">
-            <div class="footer-column">
-                <p class="footer-heading">Game</p>
-                <a href="about.html">About</a>
-                <a href="learn.html">Learn</a>
-                <a href="leaderboard.html">Leaderboard</a>
-                <a href="settings.html">Settings</a>
-            </div>
-
-            <div class="footer-column">
-                <p class="footer-heading">User</p>
-                <a href="load-slot.html">Play</a>
-                <a href="profile.html">Profile</a>
-                <a href="leaderboard.html">Donate</a>
-            </div>
-
-            <div class="footer-column">
-                <p class="footer-heading">Main Tools</p>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">HTML5</a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">CSS3</a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript</a>
-                <a href="https://nodejs.org/" target="_blank">Node.js</a>
-                <a href="https://www.mongodb.com/" target="_blank">MongoDB</a>
-            </div>
-
-            <div class="footer-column">
-                <p class="footer-heading">Stack</p>
-                <a href="https://getbootstrap.com/" target="_blank">Bootstrap 5</a>
-                <a href="https://fonts.google.com/" target="_blank">Google Fonts</a>
-                <a href="https://github.com/" target="_blank">GitHub</a>
-                <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-            </div>
-        </div>
-
-        <div class="about-footer-bottom">
-            <p>© 2026 Team Plasma. All rights reserved.</p>
-            <div class="about-footer-socials">
-                <a href="https://www.instagram.com/combatcoders_official/" target="_blank" aria-label="Instagram">
-                    <img class="about-footer-social-link" src="img/ig-logo.png" alt="Instagram">
-                </a>
-                <a href="https://discord.gg/f7CxjvxK" target="_blank" aria-label="Discord">
-                    <img class="about-footer-social-link" src="img/dc-logo.png" alt="Discord">
-                </a>
-                <a href="https://github.com/hafsaharbotuzon24-lgtm/final-project-Team_Plasma-BSIT2a" target="_blank" aria-label="GitHub">
-                    <img class="about-footer-social-link" src="img/github-logo.png" alt="GitHub">
-                </a>
-            </div>
-        </div>
-</footer>
-
-    <script src="js/script.js"></script>
-    <script src="js/audio-manager.js"></script>
-    <script>
+<script>
 window.addEventListener("load", () => {
-    const introOverlay = document.getElementById('introOverlay');
-    const introLogoWrapper = document.getElementById('introLogoWrapper');
-    const introLogoImg = document.getElementById('introLogoImg');
+    const logoWrapper = document.getElementById('logoWrapper');
+    const logoImg = document.getElementById('logoImg');
 
-    if (!introOverlay || !introLogoWrapper || !introLogoImg) return;
-    const authToken = localStorage.getItem('authToken');
+    const GIF_DURATION = 1000; 
+    const FADE_DURATION = 100;
 
-    // If user is already authenticated, skip intro redirect and show home page.
-    if (authToken) {
-        introOverlay.style.display = 'none';
-        return;
-    }
+    // Show the logo
+    logoWrapper.classList.add('show');
 
-    const GIF_DURATION = 1000;
-    const FADE_DURATION = 300;
+    const originalSrc = logoImg.getAttribute("src");
+    logoImg.src = originalSrc + "?t=" + Date.now();
 
-    const originalSrc = introLogoImg.getAttribute("src");
-    introLogoImg.src = originalSrc + "?t=" + Date.now();
+    // Mark animation as played
+    sessionStorage.setItem('animationPlayed', 'true');
 
+    // After animation ends, fade out
     setTimeout(() => {
-        introLogoWrapper.style.opacity = "0";
+        logoWrapper.style.opacity = "0";
     }, GIF_DURATION);
-
+    
+    // Then redirect to login
     setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.replace("login.html");
     }, GIF_DURATION + FADE_DURATION);
-});
-
-// Fade in/out combat preview section on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const combatSection = document.querySelector('.combat-preview-section');
-    
-    if (!combatSection) return;
-    
-    // Set initial state
-    combatSection.style.opacity = '0';
-    combatSection.style.transition = 'opacity 0.6s ease';
-    
-    function checkScroll() {
-        const sectionTop = combatSection.getBoundingClientRect().top;
-        const sectionBottom = combatSection.getBoundingClientRect().bottom;
-        const windowHeight = window.innerHeight;
-        
-        // Fade in when section enters viewport
-        if (sectionTop < windowHeight - 100 && sectionBottom > 0) {
-            combatSection.style.opacity = '1';
-        } else {
-            combatSection.style.opacity = '0';
-        }
-    }
-    
-    // Check on scroll
-    window.addEventListener('scroll', checkScroll);
-    
-    // Check on page load
-    checkScroll();
 });
 </script>
 

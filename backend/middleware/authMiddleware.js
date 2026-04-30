@@ -36,7 +36,7 @@ const protect = (req, res, next) => {
   }
 };
 
-// Optional authentication - doesn't require token but verifies if provided
+// Optional authentication
 const optionalProtect = (req, res, next) => {
   let token;
 
@@ -58,7 +58,7 @@ const optionalProtect = (req, res, next) => {
   next();
 };
 
-// Role-based authorization (for future use)
+// Role-based authorization
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.player) {

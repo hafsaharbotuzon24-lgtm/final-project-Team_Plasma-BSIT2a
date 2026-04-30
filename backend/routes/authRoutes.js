@@ -43,6 +43,11 @@ router.post('/register', validateRegister, handleValidationErrors, authControlle
 router.post('/login', validateLogin, handleValidationErrors, authController.login);
 router.post('/google', validateGoogle, handleValidationErrors, authController.googleLogin);
 
+// Forgot Password Routes
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/verify-otp', authController.verifyOTP);
+router.post('/reset-password', authController.resetPassword);
+
 // Protected route - requires valid JWT token
 router.get('/secure-data', protect, (req, res) => {
   try {

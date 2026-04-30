@@ -9,5 +9,9 @@ router.get('/me', protect, controller.getMyPlayer);
 router.patch('/me/resources', protect, controller.updateMyResources);
 router.get('/:id', protect, controller.getPlayer);
 router.put('/:id', protect, controller.updatePlayer);
+router.delete('/:id', protect, controller.deletePlayer);
+
+router.patch('/me/password', protect, controller.changePassword);
+router.delete('/me', protect, controller.deleteMyAccount);
 
 module.exports = router;

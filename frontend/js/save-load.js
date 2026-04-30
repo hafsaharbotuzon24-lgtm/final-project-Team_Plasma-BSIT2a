@@ -146,8 +146,6 @@ async function loadGameFromSlot(slotNumber) {
     return true;
 }
 
-// Function to load saved data on play.html
-// Function to load saved data on play.html
 function applyLoadedSave() {
     const savedData = localStorage.getItem('loadSaveSlot');
     if (!savedData) return false;
@@ -157,26 +155,27 @@ function applyLoadedSave() {
         
         // Apply saved data to gameState
         if (typeof gameState !== 'undefined') {
-            gameState.character = saveData.character;
-            gameState.hearts = saveData.hearts;
-            gameState.hints = saveData.hints;
-            gameState.currentLevel = saveData.currentLevel;
-            gameState.currentSite = saveData.currentSite;
-            gameState.lastChoice = saveData.lastChoice;
+            gameState.character = saveData.character || 'witch';
+            gameState.hearts = saveData.hearts || 3;
+            gameState.hints = saveData.hints || 1;
+            gameState.currentLevel = saveData.currentLevel || 1;
+            gameState.currentSite = saveData.currentSite || 1;
+            gameState.lastChoice = saveData.lastChoice || null;
         }
         
-        // Apply player data
-        localStorage.setItem('playerUserName', saveData.playerName);
-        localStorage.setItem('playerEmail', saveData.playerEmail);
-        localStorage.setItem('playerAvatar', saveData.playerAvatar);
-        localStorage.setItem('selectedCharacter', saveData.character);
+        // Force character into localStorage
+        localStorage.setItem('selectedCharacter', saveData.character || 'witch');
         
-        // Apply timer time - CRITICAL FIX
+        // Apply player data
+        localStorage.setItem('playerUserName', saveData.playerName || 'CombatCoder_01');
+        localStorage.setItem('playerEmail', saveData.playerEmail || 'player@plasma.com');
+        localStorage.setItem('playerAvatar', saveData.playerAvatar || 'img/player-profile.png');
+        
+        // Apply timer time
         if (saveData.gameTime && saveData.gameTime > 0) {
             if (typeof setSavedGameTime === 'function') {
                 setSavedGameTime(saveData.gameTime);
             } else {
-                // Direct timer manipulation if function not available
                 if (typeof gameStartTime !== 'undefined') {
                     gameStartTime = Date.now() - (saveData.gameTime * 1000);
                     isGameActive = true;
@@ -189,17 +188,14 @@ function applyLoadedSave() {
                     }
                 }
             }
-            console.log(`Timer restored to ${saveData.formattedTime} (${saveData.gameTime} seconds)`);
         }
         
         // Clear the saved slot data after loading
         localStorage.removeItem('loadSaveSlot');
         
-        console.log('Save data applied successfully', saveData);
-        
         // Update UI if function exists
         if (typeof updateUI === 'function') {
-            updateUI();
+            setTimeout(() => updateUI(), 100);
         }
         
         return true;

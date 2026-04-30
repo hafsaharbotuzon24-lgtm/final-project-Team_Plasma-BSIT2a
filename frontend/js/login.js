@@ -2,12 +2,32 @@ const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
 
 function openModal(id) {
     const modal = document.getElementById(id);
-    if (modal) modal.classList.remove('d-none');
+    if (modal) {
+        // Remove d-none to show modal
+        modal.classList.remove('d-none');
+        
+        // Auto-focus first input if exists
+        setTimeout(() => {
+            const firstInput = modal.querySelector('input');
+            if (firstInput) firstInput.focus();
+        }, 150);
+    }
 }
 
 function closeModal(id) {
     const modal = document.getElementById(id);
-    if (modal) modal.classList.add('d-none');
+    if (modal) {
+        // Hide the modal
+        modal.classList.add('d-none');
+        
+        // Clear input fields
+        const inputs = modal.querySelectorAll('input:not([type="button"]):not([type="submit"])');
+        inputs.forEach(input => {
+            if (input.type !== 'hidden') {
+                input.value = '';
+            }
+        });
+    }
 }
 
 // Local storage keys
@@ -32,7 +52,7 @@ function setAuthSession(token, player) {
     localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(safePlayer));
 
-    // Compatibility keys used in other frontend scripts.
+    // Compatibility keys used in other frontend scripts
     localStorage.setItem('playerId', safePlayer.id);
     localStorage.setItem('playerUserName', safePlayer.username);
     localStorage.setItem('playerEmail', safePlayer.email);
@@ -44,6 +64,13 @@ function getCurrentUser() {
     return user ? JSON.parse(user) : null;
 }
 
+// Check if user is authenticated
+function isAuthenticated() {
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    const user = getCurrentUser();
+    return !!(token && user && user.id);
+}
+
 // Logout
 function logout() {
     localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -51,6 +78,7 @@ function logout() {
     localStorage.removeItem('playerId');
     localStorage.removeItem('playerUserName');
     localStorage.removeItem('playerEmail');
+    window.location.href = 'login.html';
 }
 
 // Modal functions
@@ -71,8 +99,21 @@ function showError(msg) {
     const errorModal = document.getElementById('errorModal');
     
     if (errorMsg && errorModal) {
+        // Set the error message
         errorMsg.innerText = msg;
+        
+        // Ensure error modal shows on top by removing and re-adding
+        // This helps with any z-index stacking issues
         errorModal.classList.remove('d-none');
+        
+        // Force the error modal to be on top
+        errorModal.style.zIndex = '2000';
+        
+        console.log('Error shown:', msg);
+    } else {
+        // Fallback if elements not found
+        console.error('Error modal elements not found');
+        alert(msg);
     }
 }
 
@@ -81,7 +122,6 @@ function isValidEmail(email) {
 }
 
 function isValidPassword(password) {
-    // Must match backend policy.
     return (
         typeof password === 'string' &&
         password.length >= 8 &&
@@ -148,7 +188,7 @@ async function saveNewAccount() {
         document.getElementById('regPass').value = '';
 
         closeRegModal();
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } catch (err) {
         showError(err.message || 'Unable to register right now.');
     }
@@ -193,7 +233,7 @@ async function validateExistingLogin() {
 
         closeModal('loginExistingModal');
         updateAccountDisplay();
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } catch (err) {
         showError(err.message || 'Unable to login right now.');
     }
@@ -284,7 +324,7 @@ async function handleCredentialResponse(response) {
         }
 
         setAuthSession(payload.token, payload.player);
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } catch (err) {
         showError(err.message || 'Unable to continue with Google login.');
     }
@@ -293,22 +333,51 @@ async function handleCredentialResponse(response) {
 // =============================================
 // FORGOT PASSWORD FLOW
 // =============================================
+let resetEmail = '';
+let resetOTP = '';
+
 function openForgotEmailModal() {
     closeModal('loginExistingModal');
     openModal('forgotEmailModal');
 }
 
-function processEmailRecovery() {
+async function processEmailRecovery() {
     const email = document.getElementById('forgotEmailInput')?.value.trim();
     if (!email || !email.includes('@')) {
         showError('Please enter a valid email address.');
         return;
     }
 
-    showError('Password recovery API is not connected yet. Please contact support/admin.');
+    try {
+        const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            showError(data.message || 'Failed to send OTP');
+            return;
+        }
+
+        resetEmail = email;
+        document.getElementById('otpSentEmail').textContent = email;
+        closeModal('forgotEmailModal');
+        openModal('otpSentModal');
+        
+        // In development, OTP is returned - store it for auto-fill
+        if (data.otp) {
+            resetOTP = data.otp;
+            console.log('Development OTP:', data.otp);
+        }
+    } catch (err) {
+        showError('Network error. Please try again.');
+    }
 }
 
-function processOTPVerify() {
+async function processOTPVerify() {
     const otp = document.getElementById('otpCodeInput')?.value.trim();
     
     if (!otp || otp.length !== 6) {
@@ -316,24 +385,132 @@ function processOTPVerify() {
         return;
     }
 
-    closeModal('otpVerifyModal');
-    openModal('renewPasswordModal');
+    try {
+        const response = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: resetEmail, otp })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            showError(data.message || 'Invalid OTP');
+            return;
+        }
+
+        resetOTP = otp;
+        closeModal('otpVerifyModal');
+        openModal('renewPasswordModal');
+    } catch (err) {
+        showError('Network error. Please try again.');
+    }
 }
 
-function processPasswordRenewal() {
-    showError('Password reset API is not connected yet.');
+async function processPasswordRenewal() {
+    const newPass = document.getElementById('newPassInput')?.value;
+    const confirmPass = document.getElementById('confirmNewPassInput')?.value;
+    
+    if (!newPass || !confirmPass) {
+        showError('Please fill in both password fields.');
+        return;
+    }
+    
+    if (newPass !== confirmPass) {
+        showError('Passwords do not match.');
+        return;
+    }
+    
+    if (newPass.length < 8) {
+        showError('Password must be at least 8 characters.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/api/auth/reset-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: resetEmail, 
+                otp: resetOTP, 
+                newPassword: newPass 
+            })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            showError(data.message || 'Failed to reset password');
+            return;
+        }
+
+        closeModal('renewPasswordModal');
+        alert('Password reset successfully! Please login with your new password.');
+        openModal('loginExistingModal');
+    } catch (err) {
+        showError('Network error. Please try again.');
+    }
+}
+
+// =============================================
+// DEV LOGIN - For development purposes
+// =============================================
+function devLogin(username = 'DevTester', email = 'dev@plasma.com') {
+    const devUser = {
+        id: 'dev_' + Date.now(),
+        username: username,
+        email: email
+    };
+    
+    const devToken = 'dev_token_' + Math.random().toString(36).substring(2);
+    
+    setAuthSession(devToken, devUser);
+    
+    console.log('✅ Dev login successful!');
+    console.log('👤 Username:', devUser.username);
+    console.log('📧 Email:', devUser.email);
+    console.log('🔄 Redirecting to home page...');
+    
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 300);
 }
 
 // =============================================
 // INITIALIZATION
 // =============================================
 document.addEventListener('DOMContentLoaded', function() {
+    // Only run this on login.html page - check if element specific to login page exists
+    const loginModal = document.getElementById('loginExistingModal');
+    const regModal = document.getElementById('regModal');
+    
+    // Check if already authenticated and redirect (only on login page)
+    if (loginModal || regModal) {
+        if (isAuthenticated()) {
+            const currentUser = getCurrentUser();
+            console.log('✅ Already logged in as:', currentUser.username);
+            console.log('🔄 Redirecting to home page...');
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 300);
+            return;
+        }
+    }
+    
     updateAccountDisplay();
     
-    const currentUser = getCurrentUser();
-    const authToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    // Expose dev tools to console
+    window.devLogin = devLogin;
+    window.logout = logout;
     
-    if (currentUser && authToken) {
-        console.log('Logged in as:', currentUser.username);
+    console.log('🛠️ Dev Tools Available:');
+    console.log('  - devLogin() - Instant login as DevTester');
+    console.log('  - devLogin("username", "email") - Custom dev login');
+    console.log('  - logout() - Clear session');
+    
+    // Ensure error modal has highest z-index on load
+    const errorModal = document.getElementById('errorModal');
+    if (errorModal) {
+        errorModal.style.zIndex = '2000';
     }
 });

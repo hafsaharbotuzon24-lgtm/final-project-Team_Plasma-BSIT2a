@@ -73,7 +73,7 @@ function openInstructionsModal() {
             "Example Code<br><br><pre style='color:white; font-family:\"Pixelify Sans\", monospace; text-align:left; font-size:0.7em; line-height:1.3; background:#0a0a1a; padding:10px; border:1px solid #FFD700; border-radius:4px; overflow-x:auto;'>&lt;!DOCTYPE html&gt;<br>&lt;html&gt;<br>&lt;body&gt;<br><br>  &lt;header&gt;<br>    &lt;h1&gt;Dashboard&lt;/h1&gt;<br>    &lt;nav&gt;Home | Settings&lt;/nav&gt;<br>  &lt;/header&gt;<br><br>  &lt;hr&gt;<br><br>  &lt;main&gt;<br>    &lt;section&gt;<br>      &lt;h2&gt;Task List&lt;/h2&gt;<br>      &lt;ul&gt;<br>        &lt;li&gt;HTML (Done)&lt;/li&gt;<br>        &lt;li&gt;Forms (WIP)&lt;/li&gt;<br>      &lt;/ul&gt;<br>    &lt;/section&gt;<br>  &lt;/main&gt;<br><br>  &lt;footer&gt;<br>    &lt;small&gt;Admin | Offline&lt;/small&gt;<br>  &lt;/footer&gt;<br><br>&lt;/body&gt;<br>&lt;/html&gt;</pre>",
             
             // Slide 7
-            "LVL2 — See It In Action<br><br>Here's what the code looks like rendered in a browser:",
+            "LVL2 — See It In Action<br></br> Here's what the code looks like rendered in a browser:",
             
             // Slide 8
             "Go get 'em, Tiger!<br><br>You've learned HTML structure. Now go build something great!"
@@ -122,7 +122,7 @@ function openInstructionsModal() {
     const isLevel3 = gameState.currentLevel === 3;
     
     // Image slide positions
-    const imageSlideIndex = isLevel1 ? 3 : (isLevel2 ? 7 : -1); // Level 3 has no image slide
+    const imageSlideIndex = isLevel1 ? 3 : (isLevel2 ? 7 : -1);
 
     let carouselItemsHTML = '';
     
@@ -240,9 +240,9 @@ function openInstructionsModal() {
                     if (gameState.currentLevel === 1) {
                         imagePath = "img/examples.jpg";
                     } else if (gameState.currentLevel === 2) {
-                        imagePath = "img/example2.png";
+                        imagePath = "img/examples2.png";
                     } else if (gameState.currentLevel === 3) {
-                        imagePath = "img/example3.png";
+                        imagePath = "img/examples3.png";
                     }
                     
                     const imgContainer = document.getElementById('instr-img-container');
