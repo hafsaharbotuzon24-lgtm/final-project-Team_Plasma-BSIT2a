@@ -216,9 +216,13 @@
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateNavbarAvatar);
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbarAvatar();
+            loadAllSlots();
+        });
     } else {
         updateNavbarAvatar();
+        loadAllSlots();
     }
     
     window.addEventListener('storage', function(e) {
