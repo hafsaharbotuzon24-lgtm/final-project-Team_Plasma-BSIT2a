@@ -69,7 +69,6 @@ body.profile-body {
     transform: scale(1.02);
 }
 
-/* Settings button style */
 .settings-btn {
     width: 100%;
     background: #1a2d45;
@@ -90,7 +89,6 @@ body.profile-body {
     transform: scale(1.02);
 }
 
-/* Change password button style */
 .change-password-btn {
     background: #2a4a6e;
     border-color: #3a6a8e;
@@ -102,7 +100,6 @@ body.profile-body {
     color: #ffffff;
 }
 
-/* Delete button style */
 .delete-btn {
     background: #3a1a1a;
     border-color: #5a2a2a;
@@ -196,8 +193,8 @@ body.profile-body {
 .avatar-circle img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    image-rendering: pixelated;
+    object-fit: contain;
+    image-rendering: auto;
 }
 
 .change-avatar-btn {
@@ -259,7 +256,6 @@ body.profile-body {
     transition: none !important;
 }
 
-/* When in edit mode, the info-value is hidden - but the row maintains same size */
 .info-value[style*="display: none"] {
     display: none !important;
 }
@@ -376,19 +372,327 @@ body.profile-body {
     font-size: 0.85rem;
 }
 
+.drag-hint {
+    color: #8aa0b8;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
 /* Navbar profile icon */
 #profTrigger img {
     width: 40px !important;
     height: 40px !important;
     border-radius: 50% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
     image-rendering: auto !important;
     border: 2px solid #FFD700 !important;
     transition: border-color 0.3s ease;
+    background-color: #1a2d45;
 }
 
 #profTrigger img:hover {
     border-color: #FFD700 !important;
+}
+
+/* Custom scrollbar styles */
+.avatar-editor-box::-webkit-scrollbar,
+.settings-panel::-webkit-scrollbar,
+.delete-modal-box::-webkit-scrollbar,
+.custom-modal-box::-webkit-scrollbar {
+    width: 12px;
+}
+
+.avatar-editor-box::-webkit-scrollbar-track,
+.settings-panel::-webkit-scrollbar-track,
+.delete-modal-box::-webkit-scrollbar-track,
+.custom-modal-box::-webkit-scrollbar-track {
+    background: #0d1b30;
+    border-radius: 10px;
+    border: 2px solid #1a3350;
+}
+
+.avatar-editor-box::-webkit-scrollbar-thumb,
+.settings-panel::-webkit-scrollbar-thumb,
+.delete-modal-box::-webkit-scrollbar-thumb,
+.custom-modal-box::-webkit-scrollbar-thumb {
+    background: #2a4a6e;
+    border-radius: 10px;
+    border: 2px solid #3a6a8e;
+}
+
+.avatar-editor-box::-webkit-scrollbar-thumb:hover,
+.settings-panel::-webkit-scrollbar-thumb:hover,
+.delete-modal-box::-webkit-scrollbar-thumb:hover,
+.custom-modal-box::-webkit-scrollbar-thumb:hover {
+    background: #3a6a8e;
+    border-color: #4a8abe;
+}
+
+/* Avatar Editor Modal Styles */
+.avatar-editor-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10001;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.avatar-editor-overlay.show {
+    display: flex;
+}
+
+.avatar-editor-box {
+    background: #0d1b30;
+    border: 3px solid #1a3350;
+    border-radius: 16px;
+    padding: 28px;
+    width: 90%;
+    max-width: 550px;
+    text-align: center;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.avatar-editor-box h3 {
+    color: #ffd966;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.avatar-editor-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar-editor-frame {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid #4a7aaa;
+    overflow: hidden;
+    background: #1a2d45;
+    position: relative;
+    cursor: grab;
+}
+
+.avatar-editor-frame.dragging {
+    cursor: grabbing;
+}
+
+.avatar-editor-frame img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    transition: none;
+    user-select: none;
+    pointer-events: auto;
+    object-fit: none;
+    max-width: none;
+    max-height: none;
+}
+
+.avatar-editor-controls {
+    background: #1a2d45;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+}
+
+.avatar-control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.avatar-control-row:last-child {
+    margin-bottom: 0;
+}
+
+.avatar-control-label {
+    color: #8aa0b8;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 0.95rem;
+    min-width: 50px;
+    text-align: right;
+}
+
+.avatar-control-row .custom-pixel-slider {
+    flex: 1;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #0d1b30;
+    border-radius: 10px;
+    outline: none;
+    border: 2px solid #2a4a6e;
+}
+
+.avatar-control-row .custom-pixel-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: #4a8abe;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #6ab0e0;
+    box-shadow: 0 0 8px rgba(74, 138, 190, 0.5);
+}
+
+.avatar-control-row .custom-pixel-slider::-webkit-slider-thumb:hover {
+    background: #6ab0e0;
+    transform: scale(1.15);
+    box-shadow: 0 0 12px rgba(106, 176, 224, 0.7);
+}
+
+.avatar-control-row .custom-pixel-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: #4a8abe;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #6ab0e0;
+    box-shadow: 0 0 8px rgba(74, 138, 190, 0.5);
+}
+
+.avatar-control-row .custom-pixel-slider::-moz-range-track {
+    background: #0d1b30;
+    border-radius: 10px;
+    border: 2px solid #2a4a6e;
+    height: 10px;
+}
+
+.avatar-control-value {
+    color: #ffffff;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 0.9rem;
+    min-width: 45px;
+    text-align: left;
+}
+
+.avatar-presets-section {
+    margin-bottom: 20px;
+}
+
+.avatar-presets-title {
+    color: #8aa0b8;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.avatar-presets-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.avatar-preset-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #2a4a6e;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #1a2d45;
+}
+
+.avatar-preset-item:hover {
+    border-color: #ffd966;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.5);
+}
+
+.avatar-preset-item.selected {
+    border-color: #ffaa33;
+    box-shadow: 0 0 12px rgba(255, 170, 51, 0.7);
+}
+
+.preset-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.avatar-upload-section {
+    margin-bottom: 20px;
+}
+
+.avatar-upload-btn {
+    background: #1a2d45;
+    border: 2px solid #3a6a8e;
+    color: #c0d0e0;
+    padding: 10px 20px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.avatar-upload-btn:hover {
+    background: #2a4a6e;
+    color: #ffffff;
+    transform: scale(1.02);
+}
+
+.avatar-editor-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.avatar-editor-btn-confirm {
+    background: #2a5a3a;
+    border: 2px solid #3a7a4a;
+    color: #ffffff;
+    padding: 10px 24px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+
+.avatar-editor-btn-confirm:hover {
+    background: #2ebe52;
+    transform: scale(1.05);
+}
+
+.avatar-editor-btn-cancel {
+    background: #3a1a1a;
+    border: 2px solid #5a2a2a;
+    color: #ffaaaa;
+    padding: 10px 24px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+
+.avatar-editor-btn-cancel:hover {
+    background: #5a2a2a;
+    color: #ff6666;
 }
 
 /* Custom Change Name Modal */
@@ -563,14 +867,155 @@ body.profile-body {
     transform: scale(1.05);
 }
 
-/* =============================================
-   DESKTOP & SLIGHTLY SMALL DESKTOP (769px - 1400px)
-   SMALLER BUTTONS DURING EDIT MODE - NO POSITION CHANGES
-   ============================================= */
+/* Settings Panel Styles */
+.settings-panel {
+    background-color: #0d1b30;
+    border: 3px solid #1a3350;
+    border-radius: 16px;
+    padding: 22px 24px;
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+    transition: none !important;
+}
 
-/* Desktop and slightly small desktop - FIXED POSITIONS, NO MOVEMENT */
+.settings-header {
+    text-align: center;
+    color: #ffd966;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.settings-row {
+    background: #1a2d45;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.icon-container {
+    flex-shrink: 0;
+}
+
+.pixel-icon-btn {
+    background: #0d1b30;
+    border: 2px solid #2a4a6e;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pixel-icon-btn:hover {
+    background: #2a4a6e;
+    transform: scale(1.05);
+}
+
+.pixel-icon {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+}
+
+.slider-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.pixel-label {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.1rem;
+    color: #8aa0b8;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.custom-pixel-slider {
+    width: 100%;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #0d1b30;
+    border-radius: 10px;
+    outline: none;
+    border: 2px solid #2a4a6e;
+}
+
+.custom-pixel-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: #4a8abe;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #6ab0e0;
+    box-shadow: 0 0 8px rgba(74, 138, 190, 0.5);
+}
+
+.custom-pixel-slider::-webkit-slider-thumb:hover {
+    background: #6ab0e0;
+    transform: scale(1.15);
+    box-shadow: 0 0 12px rgba(106, 176, 224, 0.7);
+}
+
+.custom-pixel-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: #4a8abe;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #6ab0e0;
+    box-shadow: 0 0 8px rgba(74, 138, 190, 0.5);
+}
+
+.custom-pixel-slider::-moz-range-track {
+    background: #0d1b30;
+    border-radius: 10px;
+    border: 2px solid #2a4a6e;
+    height: 10px;
+}
+
+.profile-container.hidden {
+    display: none;
+}
+
+.settings-panel.hidden {
+    display: none;
+}
+
+.settings-btn,
+.change-password-btn,
+.delete-btn {
+    background: #2a4a6e;
+    border-color: #3a6a8e;
+    color: #c0d0e0;
+}
+
+.settings-btn:hover,
+.change-password-btn:hover {
+    background: #3a6a8e;
+    color: #ffffff;
+}
+
+.delete-btn:hover {
+    background: #5a2a2a;
+    color: #ff4444;
+}
+
+/* Desktop Responsive */
 @media (min-width: 769px) {
-    /* Prevent any layout shift in the entire profile area */
     .profile-main-wrapper {
         transition: none !important;
         transform: none !important;
@@ -581,43 +1026,35 @@ body.profile-body {
         transform: none !important;
     }
     
-    /* Fixed dimensions for info rows - prevents width changes */
     .info-row {
         transition: none !important;
         transform: none !important;
         min-height: 60px;
     }
     
-    /* Keep the name column width stable when switching between text and input */
     .info-value,
     .edit-name-input {
         transition: none !important;
         transform: none !important;
     }
     
-    /* When edit mode is active, the input appears in the exact same space */
     .info-row:has(.edit-name-input.visible) {
         min-height: 60px;
     }
     
-    /* Fixed width for name section to prevent shifting */
     .info-row:first-child {
         min-width: 380px;
     }
     
-    /* Avatar section - no movement */
     .avatar-section {
         transition: none !important;
         transform: none !important;
     }
     
-    /* Avatar circle - hover effects only, no layout change */
     .avatar-circle {
         transition: border-color 0.2s ease, transform 0.2s ease;
     }
     
-    /* EDIT MODE BUTTONS - SMALLER SIZE, NO LAYOUT SHIFT */
-    /* Change Avatar button - smaller during edit mode */
     .change-avatar-btn.visible {
         display: block;
         padding: 4px 12px;
@@ -626,7 +1063,6 @@ body.profile-body {
         white-space: nowrap;
     }
     
-    /* Change Name button - smaller during edit mode */
     .change-name-btn.visible {
         display: block;
         padding: 4px 10px;
@@ -636,7 +1072,6 @@ body.profile-body {
         margin-left: 4px;
     }
     
-    /* Edit name input - fixed width to prevent expansion */
     .edit-name-input.visible {
         max-width: 180px;
         min-width: 120px;
@@ -644,14 +1079,13 @@ body.profile-body {
         font-size: 0.95rem;
     }
     
-    /* Update Profile button text size adjustment */
     .edit-profile-btn.updating {
         font-size: 0.85rem;
         padding: 8px 16px;
     }
 }
 
-/* Tablet / Small Desktop (769px - 1024px) */
+/* Tablet */
 @media (min-width: 769px) and (max-width: 1024px) {
     body.profile-body {
         padding-top: 85px !important;
@@ -698,12 +1132,10 @@ body.profile-body {
         min-height: 60px;
     }
     
-    /* Fixed width for name section on small desktop */
     .info-row:first-child {
         min-width: 350px;
     }
     
-    /* Smaller edit mode buttons for small desktop */
     .change-avatar-btn.visible {
         padding: 3px 10px;
         font-size: 0.7rem;
@@ -725,9 +1157,24 @@ body.profile-body {
         font-size: 0.8rem;
         padding: 7px 14px;
     }
+    
+    .avatar-editor-box {
+        max-width: 480px;
+        padding: 24px;
+    }
+    
+    .avatar-editor-frame {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .avatar-preset-item {
+        width: 50px;
+        height: 50px;
+    }
 }
 
-/* Mobile (up to 768px) - responsive but still stable */
+/* Mobile */
 @media (max-width: 768px) {
     body.profile-body {
         padding-top: 80px !important;
@@ -783,7 +1230,6 @@ body.profile-body {
         font-size: 1.1rem;
     }
     
-    /* Mobile edit mode button sizes */
     .change-avatar-btn.visible {
         padding: 3px 10px;
         font-size: 0.7rem;
@@ -854,9 +1300,61 @@ body.profile-body {
         width: 32px !important;
         height: 32px !important;
     }
+    
+    .avatar-editor-box {
+        max-width: 95%;
+        padding: 20px 15px;
+    }
+    
+    .avatar-editor-box h3 {
+        font-size: 1.5rem;
+    }
+    
+    .avatar-editor-frame {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .avatar-editor-preview {
+        padding: 10px;
+    }
+    
+    .avatar-editor-controls {
+        padding: 12px 10px;
+    }
+    
+    .avatar-control-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .avatar-control-label {
+        font-size: 0.8rem;
+        min-width: 45px;
+    }
+    
+    .avatar-presets-row {
+        gap: 8px;
+    }
+    
+    .avatar-preset-item {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .avatar-editor-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .avatar-editor-btn-confirm,
+    .avatar-editor-btn-cancel {
+        width: 100%;
+        padding: 12px;
+    }
 }
 
-/* Extra Small Mobile (up to 480px) */
+/* Extra Small Mobile */
 @media (max-width: 480px) {
     body.profile-body {
         padding-top: 75px !important;
@@ -894,7 +1392,6 @@ body.profile-body {
         font-size: 1rem;
     }
     
-    /* Extra small mobile edit mode buttons */
     .change-avatar-btn.visible {
         padding: 2px 8px;
         font-size: 0.65rem;
@@ -972,191 +1469,84 @@ body.profile-body {
         padding: 8px 18px;
         font-size: 0.9rem;
     }
+    
+    .avatar-editor-box {
+        padding: 15px 10px;
+    }
+    
+    .avatar-editor-box h3 {
+        font-size: 1.3rem;
+    }
+    
+    .avatar-editor-frame {
+        width: 120px !important;
+        height: 120px !important;
+    }
+    
+    .avatar-preset-item {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .avatar-control-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .avatar-control-label {
+        text-align: center;
+        min-width: auto;
+    }
+    
+    .avatar-control-value {
+        text-align: center;
+    }
+    
+    .avatar-control-row .custom-pixel-slider {
+        height: 8px;
+    }
+    
+    .avatar-control-row .custom-pixel-slider::-webkit-slider-thumb {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .avatar-control-row .custom-pixel-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+    }
 }
 
-/* =============================================
-    SETTINGS PANEL STYLES - Same size as profile container
-   ============================================= */
-        
-.settings-panel {
-    background-color: #0d1b30;
-    border: 3px solid #1a3350;
-    border-radius: 16px;
-    padding: 22px 24px;
-    width: 100%;
-    max-width: 750px;
-    position: relative;
-    transition: none !important;
+/* Settings Panel Responsive */
+@media (max-width: 768px) {
+    .settings-panel {
+        padding: 18px 15px;
+    }
+    .settings-header {
+        font-size: 1.6rem;
+    }
+    .settings-row {
+        padding: 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+    .slider-wrapper {
+        width: 100%;
+    }
+    .pixel-icon {
+        width: 32px;
+        height: 32px;
+    }
 }
-        
-.settings-header {
-    text-align: center;
-    color: #ffd966;
-    font-size: 2rem;
-    margin-bottom: 30px;
-    letter-spacing: 3px;
-    font-family: 'Pixelify Sans', sans-serif;
+
+@media (max-width: 480px) {
+    .settings-panel {
+        padding: 15px 12px;
+    }
+    .settings-header {
+        font-size: 1.4rem;
+    }
+    .settings-row {
+        padding: 12px;
+    }
 }
-        
-.settings-row {
-    background: #1a2d45;
-    border-radius: 12px;
-    padding: 20px 25px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-        
-.icon-container {
-    flex-shrink: 0;
-}
-        
-.pixel-icon-btn {
-    background: #0d1b30;
-    border: 2px solid #2a4a6e;
-    border-radius: 12px;
-    padding: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-        
-.pixel-icon-btn:hover {
-    background: #2a4a6e;
-    transform: scale(1.05);
-}
-        
-.pixel-icon {
-    width: 40px;
-    height: 40px;
-    image-rendering: pixelated;
-}
-        
-.slider-wrapper {
-    flex: 1;
-    min-width: 200px;
-}
-        
-.pixel-label {
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 1.1rem;
-    color: #8aa0b8;
-    margin-bottom: 8px;
-    display: block;
-    letter-spacing: 1px;
-}
-        
-.custom-pixel-slider {
-    width: 100%;
-    height: 8px;
-    -webkit-appearance: none;
-    background: #0d1b30;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid #2a4a6e;
-}
-        
-.custom-pixel-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #ffd966;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #ffaa33;
-}
-        
-.custom-pixel-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    background: #ffaa33;
-}
-        
-/* Hide profile container when showing settings */
-.profile-container.hidden {
-    display: none;
-}
-        
-        .settings-panel.hidden {
-            display: none;
-        }
-        
-        /* Uniform sidebar button colors */
-        .settings-btn,
-        .change-password-btn,
-        .delete-btn {
-            background: #2a4a6e;
-            border-color: #3a6a8e;
-            color: #c0d0e0;
-        }
-        
-        .settings-btn:hover,
-        .change-password-btn:hover {
-            background: #3a6a8e;
-            color: #ffffff;
-        }
-        
-        .delete-btn:hover {
-            background: #5a2a2a;
-            color: #ff4444;
-        }
-        
-        /* Responsive adjustments for settings panel */
-        @media (max-width: 768px) {
-            .settings-panel {
-                padding: 18px 15px;
-            }
-            .settings-header {
-                font-size: 1.6rem;
-            }
-            .settings-row {
-                padding: 15px;
-                flex-direction: column;
-                text-align: center;
-            }
-            .slider-wrapper {
-                width: 100%;
-            }
-            .pixel-icon {
-                width: 32px;
-                height: 32px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .settings-panel {
-                padding: 15px 12px;
-            }
-            .settings-header {
-                font-size: 1.4rem;
-            }
-            .settings-row {
-                padding: 12px;
-            }
-        }
-        
-        /* Desktop edit mode button sizes - no layout shift */
-        @media (min-width: 769px) {
-            .change-avatar-btn.visible {
-                padding: 4px 12px;
-                font-size: 0.75rem;
-            }
-            .change-name-btn.visible {
-                padding: 4px 10px;
-                font-size: 0.7rem;
-            }
-            .edit-name-input.visible {
-                max-width: 180px;
-                min-width: 120px;
-                padding: 4px 8px;
-                font-size: 0.95rem;
-            }
-            .edit-profile-btn.updating {
-                font-size: 0.85rem;
-                padding: 8px 16px;
-            }
-        }

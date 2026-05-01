@@ -33,7 +33,7 @@
                 <div class="profile-dropdown" id="profileDropdown">
                     <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
-                    <button class="dropdown-item" onclick="window.location.href='settingsPanel'">Settings</button> <!-- HASDHASDHASHDASHDASH -->
+                    <button class="dropdown-item" onclick="navigateToSettings()">Settings</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <div class="avatar-circle" id="avatarCircle">
                         <img id="profileAvatar" src="img/player-profile.png" alt="avatar">
                     </div>
-                    <button class="change-avatar-btn" id="changeAvatarBtn" onclick="triggerAvatarUpload()">Change Picture</button>
+                    <button class="change-avatar-btn" id="changeAvatarBtn" onclick="openAvatarEditor()">Change Picture</button>
                     <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatarTemp(event)">
                 </div>
                 
@@ -152,6 +152,71 @@
         </div>
     </div>
 
+    <!-- Avatar Editor Modal -->
+    <div class="avatar-editor-overlay" id="avatarEditorModal">
+        <div class="avatar-editor-box">
+            <h3>EDIT AVATAR</h3>
+            
+            <!-- Preview Area -->
+            <div class="avatar-editor-preview" id="avatarEditorPreviewContainer">
+                <div class="avatar-editor-frame" id="avatarEditorFrame">
+                    <img id="avatarEditorPreview" src="img/player-profile.png" alt="Preview" draggable="false">
+                </div>
+                <p class="drag-hint">Scroll to zoom • Drag to position</p>
+            </div>
+            
+            <!-- Zoom and Size Controls -->
+            <div class="avatar-editor-controls">
+                <div class="avatar-control-row">
+                    <label class="avatar-control-label">ZOOM</label>
+                    <input type="range" class="custom-pixel-slider" id="avatarZoomSlider" min="50" max="200" step="1" value="100">
+                    <span class="avatar-control-value" id="zoomValue">100%</span>
+                </div>
+                <div class="avatar-control-row">
+                    <label class="avatar-control-label">SIZE</label>
+                    <input type="range" class="custom-pixel-slider" id="avatarSizeSlider" min="80" max="150" step="1" value="100">
+                    <span class="avatar-control-value" id="sizeValue">100%</span>
+                </div>
+            </div>
+            
+            <!-- Preset Avatars -->
+            <div class="avatar-presets-section">
+                <h4 class="avatar-presets-title">PRESET AVATARS</h4>
+                <div class="avatar-presets-row">
+                    <div class="avatar-preset-item" onclick="selectPresetAvatar('img/avatar-penguin.png')">
+                        <img src="img/avatar-penguin.png" alt="Penguin" class="preset-avatar-img">
+                    </div>
+                    <div class="avatar-preset-item" onclick="selectPresetAvatar('img/avatar-raccoon.png')">
+                        <img src="img/avatar-raccoon.png" alt="Raccoon" class="preset-avatar-img">
+                    </div>
+                    <div class="avatar-preset-item" onclick="selectPresetAvatar('img/avatar-kitty.png')">
+                        <img src="img/avatar-kitty.png" alt="Kitty" class="preset-avatar-img">
+                    </div>
+                    <div class="avatar-preset-item" onclick="selectPresetAvatar('img/avatar-koala.png')">
+                        <img src="img/avatar-koala.png" alt="Koala" class="preset-avatar-img">
+                    </div>
+                    <div class="avatar-preset-item" onclick="selectPresetAvatar('img/avatar-cat.png')">
+                        <img src="img/avatar-cat.png" alt="Cat" class="preset-avatar-img">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upload Custom -->
+            <div class="avatar-upload-section">
+                <button class="avatar-upload-btn" onclick="document.getElementById('avatarInput').click()">UPLOAD CUSTOM</button>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="avatar-editor-buttons">
+                <button class="avatar-editor-btn-confirm" onclick="applyAvatarChanges()">APPLY</button>
+                <button class="avatar-editor-btn-cancel" onclick="closeAvatarEditor()">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden canvas for capturing avatar -->
+    <canvas id="avatarCaptureCanvas" style="display:none;" width="200" height="200"></canvas>
+
     <!-- Custom Change Name Modal (replaces browser prompt) -->
     <div class="custom-modal-overlay" id="customNameModal">
         <div class="custom-modal-box">
@@ -201,28 +266,326 @@
         // PROFILE PAGE SCRIPT - PRESERVES ALL BACKEND
         // Avatar saves ONLY on Update Profile click
         // Settings panel integration
+        // Avatar Editor Modal with presets
         // =============================================
         
         let isEditing = false;
         let tempAvatarPreview = null;
         
+        // Avatar Editor Variables
+        let currentEditorAvatar = null;
+        let avatarZoom = 100;
+        let avatarSize = 100;
+        let avatarOffsetX = 0;
+        let avatarOffsetY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let initialOffsetX = 0;
+        let initialOffsetY = 0;
+        
+        const presetAvatars = [
+            'img/avatar-penguin.png',
+            'img/avatar-raccoon.png',
+            'img/avatar-kitty.png',
+            'img/avatar-koala.png',
+            'img/avatar-cat.png'
+        ];
+        
+        // Get random preset avatar
+        function getRandomPresetAvatar() {
+            const randomIndex = Math.floor(Math.random() * presetAvatars.length);
+            return presetAvatars[randomIndex];
+        }
+        
+        // Navigate to settings panel instantly
+        function navigateToSettings() {
+            if (window.location.pathname.includes('profile.html')) {
+                if (isEditing) {
+                    saveProfileUpdates();
+                }
+                document.getElementById('profileContainerPanel').classList.add('hidden');
+                document.getElementById('settingsPanel').classList.remove('hidden');
+                window.location.hash = 'settings';
+            } else {
+                window.location.href = 'profile.html#settings';
+            }
+        }
+        
         // Settings Panel Functions
         function openSettingsPanel() {
-            // Exit edit mode if active
             if (isEditing) {
                 saveProfileUpdates();
             }
-            // Hide profile container, show settings panel
             document.getElementById('profileContainerPanel').classList.add('hidden');
             document.getElementById('settingsPanel').classList.remove('hidden');
+            window.location.hash = 'settings';
         }
         
         function closeSettingsPanel() {
-            // Hide settings panel, show profile container
             document.getElementById('settingsPanel').classList.add('hidden');
             document.getElementById('profileContainerPanel').classList.remove('hidden');
-            // Reload profile data to ensure it's up to date
+            if (window.location.hash === '#settings') {
+                history.pushState("", document.title, window.location.pathname);
+            }
             loadProfileData();
+        }
+        
+        // Apply the current transforms to the preview image
+        function updateAvatarPreview() {
+            const preview = document.getElementById('avatarEditorPreview');
+            const frame = document.getElementById('avatarEditorFrame');
+            const frameWidth = frame.clientWidth;
+            const frameHeight = frame.clientHeight;
+            
+            // Set image size based on size slider
+            const baseSize = Math.min(frameWidth, frameHeight) * (avatarSize / 100);
+            preview.style.width = baseSize + 'px';
+            preview.style.height = baseSize + 'px';
+            
+            // Center the image, then apply offset and scale
+            const translateX = (frameWidth - baseSize) / 2 + avatarOffsetX;
+            const translateY = (frameHeight - baseSize) / 2 + avatarOffsetY;
+            
+            preview.style.transform = `translate(${translateX}px, ${translateY}px) scale(${avatarZoom / 100})`;
+        }
+        
+        // Avatar Editor Functions
+        function openAvatarEditor() {
+            if (!isEditing) {
+                alert("Enter Edit Mode first (click Edit Profile).");
+                return;
+            }
+            
+            const currentAvatar = document.getElementById('profileAvatar').src;
+            currentEditorAvatar = currentAvatar;
+            document.getElementById('avatarEditorPreview').src = currentAvatar;
+            
+            // Reset sliders and position
+            avatarZoom = 100;
+            avatarSize = 100;
+            avatarOffsetX = 0;
+            avatarOffsetY = 0;
+            document.getElementById('avatarZoomSlider').value = 100;
+            document.getElementById('avatarSizeSlider').value = 100;
+            document.getElementById('zoomValue').textContent = '100%';
+            document.getElementById('sizeValue').textContent = '100%';
+            
+            // Wait for image to load before applying transform
+            const previewImg = document.getElementById('avatarEditorPreview');
+            previewImg.onload = function() {
+                updateAvatarPreview();
+            };
+            updateAvatarPreview();
+            
+            setupDragListeners();
+            setupFrameScrollZoom();
+            
+            document.getElementById('avatarEditorModal').classList.add('show');
+        }
+        
+        function closeAvatarEditor() {
+            document.getElementById('avatarEditorModal').classList.remove('show');
+            removeDragListeners();
+            removeFrameScrollZoom();
+            
+            const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
+            if (tempAvatarPreview) {
+                document.getElementById('profileAvatar').src = tempAvatarPreview;
+            } else {
+                document.getElementById('profileAvatar').src = savedAvatar;
+            }
+        }
+        
+        function setupDragListeners() {
+            const preview = document.getElementById('avatarEditorPreview');
+            
+            removeDragListeners();
+            
+            preview.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            
+            preview.addEventListener('touchstart', startDrag, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', stopDrag);
+            
+            preview.addEventListener('dragstart', (e) => e.preventDefault());
+        }
+        
+        function removeDragListeners() {
+            const preview = document.getElementById('avatarEditorPreview');
+            if (preview) {
+                preview.removeEventListener('mousedown', startDrag);
+                preview.removeEventListener('touchstart', startDrag);
+                preview.removeEventListener('dragstart', (e) => e.preventDefault());
+            }
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', stopDrag);
+        }
+        
+        function startDrag(e) {
+            e.preventDefault();
+            isDragging = true;
+            
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            
+            dragStartX = clientX;
+            dragStartY = clientY;
+            initialOffsetX = avatarOffsetX;
+            initialOffsetY = avatarOffsetY;
+            
+            document.getElementById('avatarEditorFrame').classList.add('dragging');
+        }
+        
+        function drag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            
+            const deltaX = clientX - dragStartX;
+            const deltaY = clientY - dragStartY;
+            
+            avatarOffsetX = initialOffsetX + deltaX;
+            avatarOffsetY = initialOffsetY + deltaY;
+            
+            updateAvatarPreview();
+        }
+        
+        function stopDrag() {
+            isDragging = false;
+            document.getElementById('avatarEditorFrame').classList.remove('dragging');
+        }
+        
+        // Scroll wheel zoom on the preview frame
+        function setupFrameScrollZoom() {
+            const frame = document.getElementById('avatarEditorFrame');
+            if (frame) {
+                frame.addEventListener('wheel', handleFrameScrollZoom, { passive: false });
+            }
+        }
+        
+        function removeFrameScrollZoom() {
+            const frame = document.getElementById('avatarEditorFrame');
+            if (frame) {
+                frame.removeEventListener('wheel', handleFrameScrollZoom);
+            }
+        }
+        
+        function handleFrameScrollZoom(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const delta = e.deltaY > 0 ? -3 : 3;
+            avatarZoom = Math.max(50, Math.min(200, avatarZoom + delta));
+            document.getElementById('avatarZoomSlider').value = avatarZoom;
+            document.getElementById('zoomValue').textContent = avatarZoom + '%';
+            updateAvatarPreview();
+        }
+        
+        function selectPresetAvatar(avatarPath) {
+            currentEditorAvatar = avatarPath;
+            const previewImg = document.getElementById('avatarEditorPreview');
+            previewImg.src = avatarPath;
+            
+            avatarZoom = 100;
+            avatarSize = 100;
+            avatarOffsetX = 0;
+            avatarOffsetY = 0;
+            document.getElementById('avatarZoomSlider').value = 100;
+            document.getElementById('avatarSizeSlider').value = 100;
+            document.getElementById('zoomValue').textContent = '100%';
+            document.getElementById('sizeValue').textContent = '100%';
+            
+            previewImg.onload = function() {
+                updateAvatarPreview();
+            };
+            updateAvatarPreview();
+        }
+        
+        // Capture the exact preview as a data URL using canvas
+        function captureAvatarPreview() {
+            const preview = document.getElementById('avatarEditorPreview');
+            const frame = document.getElementById('avatarEditorFrame');
+            const canvas = document.getElementById('avatarCaptureCanvas');
+            
+            const frameWidth = frame.clientWidth;
+            const frameHeight = frame.clientHeight;
+            
+            // Set canvas to match frame size
+            canvas.width = frameWidth;
+            canvas.height = frameHeight;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, frameWidth, frameHeight);
+            
+            // Draw the circular clip
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(frameWidth / 2, frameHeight / 2, frameWidth / 2, 0, Math.PI * 2);
+            ctx.clip();
+            
+            // Get the image's computed transform
+            const style = window.getComputedStyle(preview);
+            const transform = style.transform;
+            
+            // Parse the transform matrix
+            let translateX = 0, translateY = 0, scaleVal = 1;
+            
+            if (transform && transform !== 'none') {
+                // Handle translate and scale
+                const translateMatch = transform.match(/translate\(([^)]+)\)/);
+                const scaleMatch = transform.match(/scale\(([^)]+)\)/);
+                
+                if (translateMatch) {
+                    const parts = translateMatch[1].split(',').map(s => parseFloat(s.trim()));
+                    translateX = parts[0] || 0;
+                    translateY = parts[1] || 0;
+                }
+                if (scaleMatch) {
+                    scaleVal = parseFloat(scaleMatch[1]);
+                }
+            }
+            
+            // Get the natural image dimensions
+            const displayWidth = parseFloat(preview.style.width) || preview.offsetWidth;
+            const displayHeight = parseFloat(preview.style.height) || preview.offsetHeight;
+            
+            // Calculate the centered starting position
+            const startX = (frameWidth - displayWidth) / 2;
+            const startY = (frameHeight - displayHeight) / 2;
+            
+            // Apply the same transform as the CSS
+            ctx.translate(translateX, translateY);
+            ctx.scale(scaleVal, scaleVal);
+            
+            // Draw the image at the base position
+            ctx.drawImage(preview, startX / scaleVal, startY / scaleVal, displayWidth / scaleVal, displayHeight / scaleVal);
+            
+            ctx.restore();
+            
+            // Return the data URL
+            return canvas.toDataURL('image/png');
+        }
+        
+        function applyAvatarChanges() {
+            // Capture the exact preview with all transforms
+            const capturedAvatar = captureAvatarPreview();
+            tempAvatarPreview = capturedAvatar;
+            document.getElementById('profileAvatar').src = capturedAvatar;
+            document.getElementById('avatarCircle').classList.add('temp-preview');
+            
+            // Update navbar icon immediately
+            updateNavbarProfileIcon(capturedAvatar);
+            
+            closeAvatarEditor();
         }
         
         // Audio Settings Initialization (from audio-manager.js)
@@ -232,7 +595,6 @@
             const sfxBtn = document.getElementById('toggle-sfx');
             const musicBtn = document.getElementById('toggle-music');
             
-            // Load saved volumes from localStorage
             const savedSfx = localStorage.getItem('sfxVolume') || '80';
             const savedMusic = localStorage.getItem('musicVolume') || '50';
             
@@ -248,28 +610,24 @@
                 musicSlider.addEventListener('input', (e) => {
                     const val = e.target.value;
                     localStorage.setItem('musicVolume', val);
-                    // Update BGM volume if playing
                     if (window.bgm) {
                         window.bgm.volume = val / 100;
                     }
                 });
             }
             
-            // Mute/Toggle for SFX
             if (sfxBtn) {
                 sfxBtn.addEventListener('click', () => {
                     const current = localStorage.getItem('sfxVolume') || '80';
                     const target = current > '0' ? '0' : '80';
                     localStorage.setItem('sfxVolume', target);
                     if (sfxSlider) sfxSlider.value = target;
-                    // Play a test sound to confirm SFX works
                     const testAudio = new Audio('sound-fx/click.mp3');
                     testAudio.volume = 0.5;
                     testAudio.play().catch(() => {});
                 });
             }
             
-            // Mute/Toggle for Music
             if (musicBtn) {
                 musicBtn.addEventListener('click', () => {
                     const current = localStorage.getItem('musicVolume') || '50';
@@ -281,6 +639,53 @@
             }
         }
         
+        // Avatar Editor Slider Events with scroll wheel support
+        function initAvatarEditorSliders() {
+            const zoomSlider = document.getElementById('avatarZoomSlider');
+            const sizeSlider = document.getElementById('avatarSizeSlider');
+            const editorBox = document.getElementById('avatarEditorModal');
+            
+            if (zoomSlider) {
+                zoomSlider.addEventListener('input', (e) => {
+                    avatarZoom = parseInt(e.target.value);
+                    document.getElementById('zoomValue').textContent = avatarZoom + '%';
+                    updateAvatarPreview();
+                });
+                
+                zoomSlider.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY > 0 ? -2 : 2;
+                    avatarZoom = Math.max(50, Math.min(200, avatarZoom + delta));
+                    zoomSlider.value = avatarZoom;
+                    document.getElementById('zoomValue').textContent = avatarZoom + '%';
+                    updateAvatarPreview();
+                });
+            }
+            
+            if (sizeSlider) {
+                sizeSlider.addEventListener('input', (e) => {
+                    avatarSize = parseInt(e.target.value);
+                    document.getElementById('sizeValue').textContent = avatarSize + '%';
+                    updateAvatarPreview();
+                });
+                
+                sizeSlider.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY > 0 ? -2 : 2;
+                    avatarSize = Math.max(80, Math.min(150, avatarSize + delta));
+                    sizeSlider.value = avatarSize;
+                    document.getElementById('sizeValue').textContent = avatarSize + '%';
+                    updateAvatarPreview();
+                });
+            }
+            
+            if (editorBox) {
+                editorBox.addEventListener('wheel', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        }
+        
         function loadProfileData() {
             const storedName = localStorage.getItem('playerUserName') || 'CombatCoder_01';
             document.getElementById('displayUserName').innerText = storedName;
@@ -288,7 +693,11 @@
             const storedEmail = localStorage.getItem('playerEmail') || 'player@plasma.com';
             document.getElementById('displayUserEmail').innerText = storedEmail;
             
-            const finalAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+            let finalAvatar = localStorage.getItem('playerAvatar');
+            if (!finalAvatar || finalAvatar === 'img/player-profile.png' || finalAvatar === '') {
+                finalAvatar = getRandomPresetAvatar();
+                localStorage.setItem('playerAvatar', finalAvatar);
+            }
             document.getElementById('profileAvatar').src = finalAvatar;
             
             updateNavbarProfileIcon(finalAvatar);
@@ -302,12 +711,17 @@
         function updateNavbarProfileIcon(avatarSrc) {
             const navProfileIcon = document.getElementById('navProfileIcon');
             if (navProfileIcon && avatarSrc) {
-                navProfileIcon.src = avatarSrc;
+                let navbarAvatar = avatarSrc;
+                if (!navbarAvatar || navbarAvatar === 'img/player-profile.png' || navbarAvatar === '') {
+                    navbarAvatar = getRandomPresetAvatar();
+                }
+                navProfileIcon.src = navbarAvatar;
                 navProfileIcon.style.width = '40px';
                 navProfileIcon.style.height = '40px';
                 navProfileIcon.style.borderRadius = '50%';
-                navProfileIcon.style.objectFit = 'cover';
+                navProfileIcon.style.objectFit = 'contain';
                 navProfileIcon.style.imageRendering = 'auto';
+                navProfileIcon.style.backgroundColor = '#1a2d45';
             }
         }
         
@@ -335,9 +749,26 @@
             if (file && isEditing) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    tempAvatarPreview = e.target.result;
-                    document.getElementById('profileAvatar').src = tempAvatarPreview;
-                    document.getElementById('avatarCircle').classList.add('temp-preview');
+                    currentEditorAvatar = e.target.result;
+                    document.getElementById('avatarEditorPreview').src = currentEditorAvatar;
+                    avatarZoom = 100;
+                    avatarSize = 100;
+                    avatarOffsetX = 0;
+                    avatarOffsetY = 0;
+                    document.getElementById('avatarZoomSlider').value = 100;
+                    document.getElementById('avatarSizeSlider').value = 100;
+                    document.getElementById('zoomValue').textContent = '100%';
+                    document.getElementById('sizeValue').textContent = '100%';
+                    
+                    const previewImg = document.getElementById('avatarEditorPreview');
+                    previewImg.onload = function() {
+                        updateAvatarPreview();
+                    };
+                    updateAvatarPreview();
+                    
+                    document.getElementById('avatarEditorModal').classList.add('show');
+                    setupDragListeners();
+                    setupFrameScrollZoom();
                 };
                 reader.readAsDataURL(file);
             } else if (file && !isEditing) {
@@ -393,7 +824,7 @@
             editNameInput.classList.remove('visible');
             avatarCircle.onclick = null;
             
-            const savedAvatar = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+            const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
             document.getElementById('profileAvatar').src = savedAvatar;
             tempAvatarPreview = null;
             document.getElementById('avatarInput').value = '';
@@ -420,9 +851,9 @@
                 editNameInput.value = displayName.innerText;
                 editNameInput.focus();
                 
-                avatarCircle.onclick = function() { triggerAvatarUpload(); };
+                avatarCircle.onclick = function() { openAvatarEditor(); };
                 
-                const currentStored = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+                const currentStored = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
                 document.getElementById('profileAvatar').src = currentStored;
                 tempAvatarPreview = null;
             } else {
@@ -583,6 +1014,7 @@
                 if (document.getElementById('deleteModal').classList.contains('show')) closeDeleteModal();
                 if (document.getElementById('changePasswordModal').classList.contains('show')) closeChangePasswordModal();
                 if (document.getElementById('customNameModal').classList.contains('show')) closeCustomNameModal();
+                if (document.getElementById('avatarEditorModal').classList.contains('show')) closeAvatarEditor();
             }
         });
         
@@ -595,11 +1027,30 @@
         document.getElementById('customNameModal').addEventListener('click', function(e) {
             if (e.target === this) closeCustomNameModal();
         });
+        document.getElementById('avatarEditorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAvatarEditor();
+        });
         
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
             initAudioSettings();
+            initAvatarEditorSliders();
+            
+            if (window.location.hash === '#settings') {
+                setTimeout(() => {
+                    openSettingsPanel();
+                }, 100);
+            }
         });
+        
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#settings') {
+                openSettingsPanel();
+            } else if (window.location.hash === '') {
+                closeSettingsPanel();
+            }
+        });
+        
         setInterval(loadMedals, 5000);
     </script>
 </body>

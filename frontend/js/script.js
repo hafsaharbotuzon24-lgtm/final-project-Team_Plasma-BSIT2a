@@ -23,10 +23,8 @@ function navigate(destination) {
                 break;
             case 'learn':
                 window.location.href = "learn.html";
-                break;
-            case 'settings':
-                window.location.href = "settings.html";
-                break;
+                break;            
+                
             case 'home':
                 window.location.href = "home.html";
                 break;
@@ -34,6 +32,69 @@ function navigate(destination) {
     }, 150);
 }
 
+// ============================================================
+// ACTIVE NAV BUTTON HIGHLIGHT - TEXT GLOW ONLY
+// ============================================================
+(function() {
+    // Get current page filename
+    const path = window.location.pathname;
+    const currentPage = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+    
+    console.log('Current page detected:', currentPage);
+    
+    // Map pages to nav button classes
+    const pageToButtonMap = {
+        'home': '.home-btn',
+        'load-slot': '.play-btn',
+        'char-select': '.play-btn',
+        'leaderboard': '.leaderboard-btn',
+        'learn': '.learn-btn'
+    };
+    
+    function applyTextGlow() {
+        const buttonSelector = pageToButtonMap[currentPage];
+        
+        if (!buttonSelector) {
+            console.log('No button mapping for page:', currentPage);
+            return;
+        }
+        
+        const activeButton = document.querySelector(buttonSelector);
+        
+        if (!activeButton) {
+            console.log('Button not found:', buttonSelector);
+            return;
+        }
+        
+        console.log('Applying text glow to:', buttonSelector);
+        
+        // Yellow text glow effect ONLY - no background, no border
+        activeButton.style.setProperty('color', '#ffc107', 'important');
+        activeButton.style.setProperty('text-shadow', '0 0 10px rgba(255, 193, 7, 0.9), 0 0 20px rgba(255, 193, 7, 0.7), 0 0 30px rgba(255, 193, 7, 0.5), 0 0 40px rgba(255, 193, 7, 0.3)', 'important');
+        activeButton.style.setProperty('font-weight', 'bold', 'important');
+        activeButton.style.setProperty('transition', 'all 0.3s ease', 'important');
+        activeButton.style.setProperty('background-color', 'transparent', 'important');
+        activeButton.style.setProperty('border-color', '#ffc107', 'important');
+        activeButton.style.setProperty('box-shadow', 'none', 'important');
+        
+        // Also style any span inside the button
+        const innerSpan = activeButton.querySelector('span');
+        if (innerSpan) {
+            innerSpan.style.setProperty('color', '#ffc107', 'important');
+            innerSpan.style.setProperty('text-shadow', '0 0 10px rgba(255, 193, 7, 0.9), 0 0 20px rgba(255, 193, 7, 0.7)', 'important');
+        }
+    }
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyTextGlow);
+    } else {
+        applyTextGlow();
+    }
+    
+    // Also run after a short delay to ensure all other scripts have loaded
+    setTimeout(applyTextGlow, 200);
+})();
  
 // For Volume Slider //
 document.addEventListener('DOMContentLoaded', () => {

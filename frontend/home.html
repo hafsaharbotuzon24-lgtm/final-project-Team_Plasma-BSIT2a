@@ -36,7 +36,7 @@
                 <div class="profile-dropdown" id="profileDropdown">
                     <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
                     <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
-                    <button class="dropdown-item" onclick="window.location.href='settingsPanel.html'">Settings</button>
+                    <button class="dropdown-item" onclick="navigateToSettings()">Settings</button>
                     <button class="dropdown-item" onclick="signOut()">Sign out</button>
                 </div>
             </div>
@@ -298,6 +298,38 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('storage', function(e) {
         if (e.key === 'playerAvatar') {
             updateNavbarAvatar();
+        }
+    });
+
+    function navigateToSettings() {
+            if (window.location.pathname.includes('profile.html')) {
+                if (isEditing) {
+                    saveProfileUpdates();
+                }
+                document.getElementById('profileContainerPanel').classList.add('hidden');
+                document.getElementById('settingsPanel').classList.remove('hidden');
+                window.location.hash = 'settings';
+            } else {
+                window.location.href = 'profile.html#settings';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        
+        const pageMap = {
+            'home': 'home',
+            'char-select': 'play',
+            'load-slot': 'play',
+            'learn': 'learn',
+            'leaderboard': 'leaderboard'
+        };
+        
+        const destination = pageMap[currentPage];
+        if (destination) {
+            const activeBtn = document.querySelector(`[onclick*="navigate('${destination}'"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active-page');
+            }
         }
     });
 </script>

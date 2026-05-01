@@ -158,12 +158,18 @@ function createSaveData(slotNumber) {
         formattedTime = getFormattedDuration();
     }
     
+    // Get avatar - extract just the filename if it's base64 encoded
+    let playerAvatarValue = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
+    if (playerAvatarValue.startsWith('data:')) {
+        playerAvatarValue = 'img/player-profile.png'; // Use default if it's base64
+    }
+    
     return {
         slot: slotNumber,
         playerId: localStorage.getItem('playerId') || '',
         playerName: localStorage.getItem('playerUserName') || 'CombatCoder_01',
         playerEmail: localStorage.getItem('playerEmail') || 'player@plasma.com',
-        playerAvatar: localStorage.getItem('playerAvatar') || 'img/player-profile.png',
+        playerAvatar: playerAvatarValue,  // Now only stores the path, not base64 data
         character: gameState ? gameState.character : localStorage.getItem('selectedCharacter') || 'witch',
         hearts: gameState ? gameState.hearts : 3,
         hints: gameState ? gameState.hints : 1,

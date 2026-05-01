@@ -1,5 +1,3 @@
-
-
 function openBattleModal(isBoss) {
     // CRITICAL: Start timer when first battle begins
     console.log('openBattleModal called - Level:', gameState.currentLevel, 'Site:', gameState.currentSite);
@@ -21,8 +19,50 @@ function openBattleModal(isBoss) {
     document.getElementById('modalContentWrapper').innerHTML = `
         <div class="battle-container border border-4 border-white bg-black position-relative overflow-hidden" style="font-family: 'Pixelify Sans', sans-serif; color: white;">
             <style>
-                .blank-input { background: #222; border: none; border-bottom: 2px solid #fff; color: #00ff00; font-family: 'Pixelify Sans', monospace; padding: 0 5px; margin: 2px; }
-                .blank-input:focus { outline: none; background: #333; border-bottom: 2px solid #00ff00; }
+                .blank-input { 
+                    background: #222; 
+                    border: none; 
+                    border-bottom: 2px solid #fff; 
+                    color: #00ff00; 
+                    font-family: 'Pixelify Sans', monospace; 
+                    padding: 0 5px; 
+                    margin: 2px; 
+                }
+                .blank-input:focus { 
+                    outline: none; 
+                    background: #333; 
+                    border-bottom: 2px solid #00ff00; 
+                }
+                .input-with-indicator {
+                    display: inline-block;
+                    position: relative;
+                    margin: 0 2px;
+                }
+                .input-indicator {
+                    width: 100%;
+                    height: 4px;
+                    background: #00ff00;
+                    border-radius: 0 0 2px 2px;
+                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3);
+                    animation: pulse-indicator 1.5s ease-in-out infinite;
+                }
+                @keyframes pulse-indicator {
+                    0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3); }
+                    50% { opacity: 1; box-shadow: 0 0 15px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.5); }
+                }
+                .question-section {
+                    background: rgba(0, 0, 0, 0.3);
+                    border-left: 3px solid #00ff00;
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    border-radius: 4px;
+                }
+                .fill-section {
+                    background: rgba(0, 0, 0, 0.2);
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                    padding: 10px;
+                    border-radius: 4px;
+                }
             </style>
             <div id="heartLossBox" class="position-absolute top-0 start-50 translate-middle-x mt-2 d-none" style="z-index: 6000;"><div class="bg-danger border border-white p-3 text-white pixel-font shadow-lg"><h3 class="mb-0 text-uppercase">-1 Heart: System Corruption!</h3></div></div>
             <div id="errorFeedbackBox" class="position-absolute top-50 start-50 translate-middle mt-2 d-none" style="z-index: 6000; width: 90%;"><div class="bg-warning border border-white p-3 text-dark pixel-font shadow-lg"><p id="errorFeedbackText" class="mb-0"></p></div></div>
@@ -31,8 +71,15 @@ function openBattleModal(isBoss) {
                 <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model" style="height:260px; object-fit:contain;">
             </div>
             <div id="dialogueBox" class="p-4 bg-dark text-white border-top border-4 border-white" style="min-height: 200px; cursor: pointer;">
-                <p id="battleText" class="pixel-font fs-4 mb-0" style="line-height: 1.4; white-space: pre-wrap;"></p>
-                <div id="quizArea" class="d-none mt-3">
+                <div class="question-section mb-3">
+                    <p class="text-uppercase text-success mb-2 fs-6" style="letter-spacing: 2px;">► Question</p>
+                    <p id="battleText" class="pixel-font fs-4 mb-0" style="line-height: 1.4; white-space: pre-wrap;"></p>
+                </div>
+                <div id="quizArea" class="d-none">
+                    <div class="fill-section mb-3">
+                        <p class="text-uppercase text-info mb-2 fs-6" style="letter-spacing: 2px;">► Your Answer</p>
+                        <div id="fillInBlankContainer" style="line-height: 2.5;"></div>
+                    </div>
                     <button class="btn btn-warning w-100 pixel-font fw-bold" onclick="checkBattleAnswer(${isBoss})">SUBMIT DATA</button>
                 </div>
             </div>
@@ -158,6 +205,43 @@ function battleEnterHandler(e) {
 function loadQuestion() {
     const qData = QUESTIONS[gameState.currentSite][battleQIndex];
     document.getElementById('battleText').innerHTML = qData.q;
+    
+    // Move the fill-in-the-blank inputs to the dedicated container
+    const fillContainer = document.getElementById('fillInBlankContainer');
+    const battleTextEl = document.getElementById('battleText');
+    
+    if (fillContainer && battleTextEl) {
+        // Clear the container first
+        fillContainer.innerHTML = '';
+        
+        // Find all inputs in the battle text and move them
+        const inputs = battleTextEl.querySelectorAll('.blank-input');
+        inputs.forEach((input, index) => {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'input-with-indicator';
+            wrapper.style.display = 'inline-block';
+            wrapper.style.margin = '0 4px';
+            
+            // Clone the input
+            const clonedInput = input.cloneNode(true);
+            clonedInput.style.display = 'block';
+            clonedInput.style.margin = '0';
+            
+            // Create the green indicator bar
+            const indicator = document.createElement('div');
+            indicator.className = 'input-indicator';
+            
+            wrapper.appendChild(clonedInput);
+            wrapper.appendChild(indicator);
+            fillContainer.appendChild(wrapper);
+            
+            // Add spacing between inputs
+            if (index < inputs.length - 1) {
+                fillContainer.appendChild(document.createTextNode(' '));
+            }
+        });
+    }
+    
     const inputs = document.querySelectorAll('.blank-input');
     if (inputs.length > 0) inputs[0].focus();
 }
