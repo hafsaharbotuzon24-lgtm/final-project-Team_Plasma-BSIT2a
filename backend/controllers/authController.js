@@ -7,7 +7,7 @@ const { OAuth2Client } = require('google-auth-library');
 const googleClient = new OAuth2Client();
 
 function signToken(playerId) {
-  return jwt.sign({ id: playerId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ id: playerId }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '7d' });
 }
 
 exports.register = async (req, res) => {
@@ -141,7 +141,7 @@ exports.googleLogin = async (req, res) => {
         }
       }
 
-      const randomPassword = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const randomPassword = jwt.sign({ email }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '1h' });
       const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
       player = await Player.create({
