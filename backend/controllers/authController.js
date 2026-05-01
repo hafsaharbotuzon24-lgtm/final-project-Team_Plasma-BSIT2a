@@ -246,7 +246,8 @@ exports.resetPassword = async (req, res) => {
     // Update player password
     await Player.findOneAndUpdate(
       { email: email.toLowerCase() },
-      { password: hashedPassword }
+      { password: hashedPassword },
+      { returnDocument: 'after' }
     );
 
     // Delete used OTP

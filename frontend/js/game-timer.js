@@ -9,6 +9,15 @@ let finalStoredTime = 0;
 
 const TIMER_DEBUG = true;
 
+function getScopedLoadSaveSlot() {
+    const playerId = localStorage.getItem('playerId');
+    if (playerId) {
+        const scoped = localStorage.getItem(`loadSaveSlot:${playerId}`);
+        if (scoped) return scoped;
+    }
+    return localStorage.getItem('loadSaveSlot');
+}
+
 function logTimer(message) {
     if (TIMER_DEBUG) {
         console.log(`[TIMER] ${message}`);
@@ -164,7 +173,7 @@ function initGameTimer() {
     }
     
     // Check if there's a saved game to load
-    const savedData = localStorage.getItem('loadSaveSlot');
+    const savedData = getScopedLoadSaveSlot();
     if (savedData) {
         try {
             const saveData = JSON.parse(savedData);

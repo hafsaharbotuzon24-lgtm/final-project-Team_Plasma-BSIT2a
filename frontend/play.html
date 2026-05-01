@@ -91,10 +91,19 @@
     <script src="js/battle-logic-l3.js"></script>
     <script src="js/save-load.js"></script>
     <script>
+    function getScopedLoadSaveSlot() {
+        const playerId = localStorage.getItem('playerId');
+        if (playerId) {
+            const scoped = localStorage.getItem(`loadSaveSlot:${playerId}`);
+            if (scoped) return scoped;
+        }
+        return localStorage.getItem('loadSaveSlot');
+    }
+
     // NOW gameState exists - sync character and level immediately from save
     (function() {
         // Check if loading from save first (save data takes priority)
-        const savedData = localStorage.getItem('loadSaveSlot');
+        const savedData = getScopedLoadSaveSlot();
         if (savedData) {
             try {
                 const saveData = JSON.parse(savedData);
@@ -138,7 +147,7 @@
     
     // Check for saved game data on page load BEFORE timer initializes
     (function() {
-        const savedData = localStorage.getItem('loadSaveSlot');
+        const savedData = getScopedLoadSaveSlot();
         if (savedData) {
             try {
                 const saveData = JSON.parse(savedData);

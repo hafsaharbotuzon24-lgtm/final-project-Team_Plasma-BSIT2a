@@ -286,6 +286,19 @@ function closeCCLogout() {
 }
 
 function confirmCCLogout() {
+    const scopedPrefixes = ['combatCoders_saveSlots:', 'loadSaveSlot:'];
+    const keysToDelete = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key) continue;
+        if (scopedPrefixes.some((prefix) => key.startsWith(prefix))) {
+            keysToDelete.push(key);
+        }
+    }
+    keysToDelete.forEach((key) => localStorage.removeItem(key));
+    localStorage.removeItem('combatCoders_saveSlots');
+    localStorage.removeItem('loadSaveSlot');
+
     localStorage.removeItem('combatCoders_currentUser');
     localStorage.removeItem('authToken');
     localStorage.removeItem('playerId');

@@ -1,96 +1,55 @@
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const Player = require('../models/Player');
 
-const protect = (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  }
-
-  if (!token) {
-    return res.status(401).json({ 
-      success: false,
-      message: "No token provided, access denied" 
-    });
-  }
-
+const protect = async (req, res, next) => {
   try {
+    const authHeader = String(req.headers.authorization || '');
+    if (!authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Not authorized, no token provided' });
+    }
+
+    const token = authHeader.slice(7).trim();
+    if (!token) {
+      return res.status(401).json({ message: 'Not authorized, token is empty' });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.player = decoded; // attach player info
-    next();
+    const player = await Player.findById(decoded.id).select('_id username email level');
+
+    if (!player) {
+      return res.status(401).json({ message: 'Not authorized, player not found' });
+    }
+
+    req.player = {
+      id: String(player._id),
+      username: player.username,
+      email: player.email,
+      level: player.level
+    };
+
+    return next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        success: false,
-        message: "Token has expired" 
-      });
+      return res.status(401).json({ message: 'Not authorized, token expired' });
     }
-    res.status(401).json({ 
-      success: false,
-      message: "Invalid token" 
-    });
+    return res.status(401).json({ message: 'Not authorized, token failed' });
   }
-};
-
-// Optional authentication
-const optionalProtect = (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  }
-
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.player = decoded;
-    } catch (err) {
-      console.warn('Invalid optional token:', err.message);
-    }
-  }
-  next();
-};
-
-// Role-based authorization
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.player) {
-      return res.status(401).json({ 
-        success: false,
-        message: "Not authenticated" 
-      });
-    }
-
-    if (roles.length && !roles.includes(req.player.role)) {
-      return res.status(403).json({ 
-        success: false,
-        message: "Insufficient permissions" 
-      });
-    }
-
-    next();
-  };
 };
 
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      success: false,
-      errors: errors.array().map(err => ({
-        field: err.param,
-        message: err.msg
-      }))
-    });
+  if (errors.isEmpty()) {
+    return next();
   }
-  next();
+
+  return res.status(400).json({
+    message: errors.array()[0].msg,
+    errors: errors.array()
+  });
 };
 
-module.exports = { protect, optionalProtect, authorize, handleValidationErrors };
+module.exports = {
+  protect,
+  handleValidationErrors
+};

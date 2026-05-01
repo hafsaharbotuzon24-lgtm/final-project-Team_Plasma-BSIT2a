@@ -71,12 +71,12 @@ exports.updateMyResources = async (req, res) => {
     }
 
     const player = await Player.findByIdAndUpdate(
-      playerId,
-      update,
-      { new: true, runValidators: true }
+    playerId,
+    update,
+    { returnDocument: 'after', runValidators: true } 
     )
-      .select('-password')
-      .lean();
+    .select('-password')
+    .lean();
 
     if (!player) {
       return res.status(404).json({ message: 'Player not found' });
@@ -92,7 +92,7 @@ exports.updatePlayer = async (req, res) => {
   const player = await Player.findByIdAndUpdate(
     req.params.id,
     req.body,
-    { new: true }
+    { returnDocument: 'after' }  
   ).populate("currentPath");
 
   res.json(player);

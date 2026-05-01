@@ -2,8 +2,67 @@
 // SAVE/LOAD SYSTEM
 // ============================================================
 
-const SAVE_SLOTS_KEY = 'combatCoders_saveSlots';
-const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+const SAVE_SLOTS_KEY_PREFIX = 'combatCoders_saveSlots';
+const LOAD_SLOT_KEY_PREFIX = 'loadSaveSlot';
+const CURRENT_USER_KEY = 'combatCoders_currentUser';
+if (typeof API_BASE === 'undefined') {
+    var API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+}
+
+function getCurrentPlayerId() {
+    const explicitPlayerId = localStorage.getItem('playerId');
+    if (explicitPlayerId) return explicitPlayerId;
+
+    const currentUserRaw = localStorage.getItem(CURRENT_USER_KEY);
+    if (!currentUserRaw) return 'guest';
+
+    try {
+        const currentUser = JSON.parse(currentUserRaw);
+        return currentUser?.id || 'guest';
+    } catch (_) {
+        return 'guest';
+    }
+}
+
+function getSaveSlotsKey() {
+    return `${SAVE_SLOTS_KEY_PREFIX}:${getCurrentPlayerId()}`;
+}
+
+function getLoadSlotKey() {
+    return `${LOAD_SLOT_KEY_PREFIX}:${getCurrentPlayerId()}`;
+}
+
+function readScopedSaves() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(getSaveSlotsKey()) || '{}');
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (_) {
+        return {};
+    }
+}
+
+function writeScopedSaves(saves) {
+    localStorage.setItem(getSaveSlotsKey(), JSON.stringify(saves || {}));
+}
+
+function isSaveOwnedByCurrentUser(saveData) {
+    if (!saveData || typeof saveData !== 'object') return false;
+
+    const currentPlayerId = String(localStorage.getItem('playerId') || '').trim();
+    const currentEmail = String(localStorage.getItem('playerEmail') || '').trim().toLowerCase();
+    const savePlayerId = String(saveData.playerId || '').trim();
+    const saveEmail = String(saveData.playerEmail || '').trim().toLowerCase();
+
+    if (currentPlayerId && savePlayerId) {
+        return currentPlayerId === savePlayerId;
+    }
+
+    if (currentEmail && saveEmail) {
+        return currentEmail === saveEmail;
+    }
+
+    return false;
+}
 
 function getAuthToken() {
     return localStorage.getItem('authToken');
@@ -48,8 +107,11 @@ async function fetchBackendSaveSlot(slotNumber) {
     if (!token) return null;
 
     try {
-        const response = await fetch(`${API_BASE}/api/save-slots/${slotNumber}`, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await fetch(`${API_BASE}/api/save-slots/${slotNumber}?cache=false`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Cache-Control': 'no-cache'
+            },
             credentials: 'include'
         });
         if (!response.ok) return null;
@@ -65,8 +127,11 @@ async function fetchAllBackendSaveSlots() {
     if (!token) return [];
 
     try {
-        const response = await fetch(`${API_BASE}/api/save-slots`, {
-            headers: { Authorization: `Bearer ${token}` },
+        const response = await fetch(`${API_BASE}/api/save-slots?cache=false`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Cache-Control': 'no-cache'
+            },
             credentials: 'include'
         });
         if (!response.ok) return [];
@@ -95,6 +160,7 @@ function createSaveData(slotNumber) {
     
     return {
         slot: slotNumber,
+        playerId: localStorage.getItem('playerId') || '',
         playerName: localStorage.getItem('playerUserName') || 'CombatCoder_01',
         playerEmail: localStorage.getItem('playerEmail') || 'player@plasma.com',
         playerAvatar: localStorage.getItem('playerAvatar') || 'img/player-profile.png',
@@ -114,9 +180,9 @@ function saveGameToSlot(slotNumber) {
     const saveData = createSaveData(slotNumber);
     
     // Get existing saves
-    let saves = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
+    let saves = readScopedSaves();
     saves[slotNumber] = saveData;
-    localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(saves));
+    writeScopedSaves(saves);
 
     syncSaveToBackend(slotNumber, saveData);
     
@@ -125,15 +191,23 @@ function saveGameToSlot(slotNumber) {
 }
 
 async function loadGameFromSlot(slotNumber) {
-    const saves = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
-    let saveData = saves[slotNumber];
-    
-    if (!saveData) {
+    const token = getAuthToken();
+    const saves = readScopedSaves();
+    let saveData = null;
+
+    if (token) {
         const remoteSave = await fetchBackendSaveSlot(slotNumber);
         if (remoteSave) {
             saveData = remoteSave;
             saves[slotNumber] = remoteSave;
-            localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(saves));
+            writeScopedSaves(saves);
+        }
+    }
+
+    if (!saveData) {
+        const localSave = saves[slotNumber];
+        if (!token || isSaveOwnedByCurrentUser(localSave)) {
+            saveData = localSave;
         }
     }
     
@@ -143,7 +217,7 @@ async function loadGameFromSlot(slotNumber) {
     }
     
     // Store save data to be loaded on play.html
-    localStorage.setItem('loadSaveSlot', JSON.stringify(saveData));
+    localStorage.setItem(getLoadSlotKey(), JSON.stringify(saveData));
     
     console.log(`Game data prepared for loading from slot ${slotNumber}`, saveData);
     
@@ -160,7 +234,7 @@ async function loadGameFromSlot(slotNumber) {
 }
 
 function applyLoadedSave() {
-    const savedData = localStorage.getItem('loadSaveSlot');
+    const savedData = localStorage.getItem(getLoadSlotKey()) || localStorage.getItem('loadSaveSlot');
     if (!savedData) return false;
     
     try {
@@ -204,6 +278,7 @@ function applyLoadedSave() {
         }
         
         // Clear the saved slot data after loading
+        localStorage.removeItem(getLoadSlotKey());
         localStorage.removeItem('loadSaveSlot');
         
         // Update UI if function exists
@@ -269,9 +344,9 @@ function confirmDeleteSlot(slotNumber) {
     if (modal) modal.hide();
     
     // Delete the save
-    const saves = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
+    const saves = readScopedSaves();
     delete saves[slotNumber];
-    localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(saves));
+    writeScopedSaves(saves);
     loadAllSlots();
 
     const token = getAuthToken();
@@ -312,15 +387,17 @@ function confirmDeleteSlot(slotNumber) {
 }
 
 async function loadAllSlots() {
-    const saves = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
-    const remoteSaves = await fetchAllBackendSaveSlots();
-    if (remoteSaves.length) {
+    const token = getAuthToken();
+    let saves = readScopedSaves();
+    const remoteSaves = token ? await fetchAllBackendSaveSlots() : [];
+
+    if (token) {
         remoteSaves.forEach((slotData) => {
             if (slotData && slotData.slot) {
                 saves[slotData.slot] = slotData;
             }
         });
-        localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(saves));
+        writeScopedSaves(saves);
     }
     
     for (let i = 1; i <= 3; i++) {
@@ -374,12 +451,12 @@ async function loadAllSlots() {
 }
 
 function hasAnySaveData() {
-    const saves = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
+    const saves = readScopedSaves();
     return Object.keys(saves).length > 0;
 }
 
 function getSaveSlots() {
-    return JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || '{}');
+    return readScopedSaves();
 }
 
 // Make functions global
