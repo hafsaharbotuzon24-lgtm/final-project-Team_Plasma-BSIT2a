@@ -91,21 +91,40 @@
     <script src="js/battle-logic-l3.js"></script>
     <script src="js/save-load.js"></script>
     <script>
-    // NOW gameState exists - sync character immediately
+    // NOW gameState exists - sync character and level immediately from save
     (function() {
         // Check if loading from save first (save data takes priority)
         const savedData = localStorage.getItem('loadSaveSlot');
         if (savedData) {
             try {
                 const saveData = JSON.parse(savedData);
-                if (saveData.character && typeof gameState !== 'undefined') {
-                    gameState.character = saveData.character;
-                    localStorage.setItem('selectedCharacter', saveData.character);
-                    console.log('Character loaded from save:', saveData.character);
+                if (typeof gameState !== 'undefined') {
+                    // Load character
+                    if (saveData.character) {
+                        gameState.character = saveData.character;
+                        localStorage.setItem('selectedCharacter', saveData.character);
+                        console.log('Character loaded from save:', saveData.character);
+                    }
+                    // Load level and site
+                    if (saveData.currentLevel) {
+                        gameState.currentLevel = saveData.currentLevel;
+                        console.log('Level loaded from save:', saveData.currentLevel);
+                    }
+                    if (saveData.currentSite) {
+                        gameState.currentSite = saveData.currentSite;
+                        console.log('Site loaded from save:', saveData.currentSite);
+                    }
+                    // Load hearts and hints
+                    if (typeof saveData.hearts !== 'undefined') {
+                        gameState.hearts = saveData.hearts;
+                    }
+                    if (typeof saveData.hints !== 'undefined') {
+                        gameState.hints = saveData.hints;
+                    }
                     return; 
                 }
             } catch(e) {
-                console.error('Error pre-loading character:', e);
+                console.error('Error pre-loading save data:', e);
             }
         }
         
