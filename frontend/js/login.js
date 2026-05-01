@@ -1,4 +1,4 @@
-const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+var API_BASE = window.API_BASE_URL || window.API_BASE || 'http://localhost:5000';
 
 function openModal(id) {
     const modal = document.getElementById(id);

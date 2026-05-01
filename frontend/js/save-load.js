@@ -11,7 +11,12 @@ function getAuthToken() {
 
 async function syncSaveToBackend(slotNumber, saveData) {
     const token = getAuthToken();
-    if (!token) return false;
+    if (!token) {
+        console.error('No auth token for save sync');
+        return false;
+    }
+
+    console.log('Syncing save to backend:', { slotNumber, API_BASE, hasToken: !!token });
 
     try {
         const response = await fetch(`${API_BASE}/api/save-slots/${slotNumber}`, {
@@ -23,9 +28,17 @@ async function syncSaveToBackend(slotNumber, saveData) {
             credentials: 'include',
             body: JSON.stringify(saveData)
         });
+        
+        console.log('Save sync response:', response.status, response.statusText);
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Save sync failed:', response.status, errorData);
+        }
+        
         return response.ok;
     } catch (err) {
-        console.warn('Save slot backend sync failed:', err.message);
+        console.error('Save slot backend sync failed:', err.message);
         return false;
     }
 }
