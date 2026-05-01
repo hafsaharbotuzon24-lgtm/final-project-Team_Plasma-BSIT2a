@@ -14,6 +14,62 @@
             window.location.replace(nextPage);
         }
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #020617;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            width: 550px;
+            height: 550px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
+            animation: glow 2s ease-in-out infinite;
+
+            opacity: 0;
+            transition: opacity 0.3s ease-out; 
+        }
+
+        .logo-wrapper.show {
+            opacity: 1;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(100, 200, 255, 0.6));
+            }
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .logo-wrapper {
+                width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="logo-wrapper" id="logoWrapper">
