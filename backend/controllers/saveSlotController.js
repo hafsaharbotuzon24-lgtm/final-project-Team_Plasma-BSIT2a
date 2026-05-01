@@ -1,4 +1,5 @@
 const SaveSlot = require('../models/SaveSlot');
+const mongoose = require('mongoose');
 
 function normalizeSlot(slotRaw) {
   const slot = Number(slotRaw);
@@ -8,7 +9,7 @@ function normalizeSlot(slotRaw) {
 
 exports.upsertSaveSlot = async (req, res) => {
   try {
-    const playerId = req.player?.id;
+    const playerId = req.player?.id ? new mongoose.Types.ObjectId(req.player.id) : null;
     const slot = normalizeSlot(req.params.slotNumber);
 
     if (!playerId) return res.status(401).json({ message: 'Unauthorized' });
@@ -46,7 +47,7 @@ exports.upsertSaveSlot = async (req, res) => {
 
 exports.getSaveSlot = async (req, res) => {
   try {
-    const playerId = req.player?.id;
+    const playerId = req.player?.id ? new mongoose.Types.ObjectId(req.player.id) : null;
     const slot = normalizeSlot(req.params.slotNumber);
 
     if (!playerId) return res.status(401).json({ message: 'Unauthorized' });
@@ -63,7 +64,7 @@ exports.getSaveSlot = async (req, res) => {
 
 exports.getAllSaveSlots = async (req, res) => {
   try {
-    const playerId = req.player?.id;
+    const playerId = req.player?.id ? new mongoose.Types.ObjectId(req.player.id) : null;
     if (!playerId) return res.status(401).json({ message: 'Unauthorized' });
 
     const saveSlots = await SaveSlot.find({ player_id: playerId })
@@ -78,7 +79,7 @@ exports.getAllSaveSlots = async (req, res) => {
 
 exports.deleteSaveSlot = async (req, res) => {
   try {
-    const playerId = req.player?.id;
+    const playerId = req.player?.id ? new mongoose.Types.ObjectId(req.player.id) : null;
     const slot = normalizeSlot(req.params.slotNumber);
 
     if (!playerId) return res.status(401).json({ message: 'Unauthorized' });
