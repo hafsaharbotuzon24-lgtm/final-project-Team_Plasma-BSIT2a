@@ -36,7 +36,7 @@ async function initLeaderboard() {
             .map((entry) => ({
                 name: entry.player_id?.username || entry.username || 'Unknown Player',
                 time: Number(entry.time_seconds) || Number(entry.score) || 999999,
-                playerId: entry.player_id?.id || entry.player_id
+                playerId: entry.player_id?._id || entry.player_id?.id || entry.player_id
             }))
             .filter(p => p.time > 0 && p.time < 999999);
 
@@ -98,8 +98,15 @@ async function submitGameCompletionTime(timeSeconds) {
     const playerEmail = localStorage.getItem('playerEmail') || 'player@plasma.com';
     const playerId = localStorage.getItem('playerId');
 
+    console.log('Submitting to leaderboard:', { playerId, playerName, timeSeconds, hasToken: !!token });
+
     if (!token) {
-        console.log('No auth token, cannot submit time');
+        console.error('No auth token, cannot submit time');
+        return false;
+    }
+
+    if (!timeSeconds || timeSeconds <= 0) {
+        console.error('Invalid time:', timeSeconds);
         return false;
     }
 
@@ -112,16 +119,16 @@ async function submitGameCompletionTime(timeSeconds) {
             },
             credentials: 'include',
             body: JSON.stringify({
-                player_id: playerId,
-                username: playerName,
-                email: playerEmail,
-                time_seconds: timeSeconds,
-                score: timeSeconds
+                time_seconds: Number(timeSeconds),
+                score: Number(timeSeconds)
             })
         });
 
+        const data = await response.json();
+        console.log('Leaderboard submit response:', response.status, data);
+
         if (!response.ok) {
-            throw new Error('Failed to submit time');
+            throw new Error(data.message || 'Failed to submit time');
         }
         
         console.log('Time submitted successfully:', timeSeconds, 'seconds');

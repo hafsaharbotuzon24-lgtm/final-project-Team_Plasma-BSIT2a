@@ -334,15 +334,17 @@ function renderVictoryModal_L3(isBoss) {
             console.error('stopGameTimer function not available!');
         }
         
-        // Submit to leaderboard
-        if (typeof submitGameCompletionTime === 'function') {
-            submitGameCompletionTime(finalTime).then(() => {
-                console.log('Leaderboard updated with time:', finalTime);
+        // Submit to leaderboard - ensure valid time
+        if (typeof submitGameCompletionTime === 'function' && finalTime > 0) {
+            console.log('Submitting to leaderboard:', { finalTime, playerId: localStorage.getItem('playerId'), token: localStorage.getItem('authToken')?.substring(0, 20) + '...' });
+            submitGameCompletionTime(finalTime).then((result) => {
+                console.log('Leaderboard submission result:', result);
             }).catch(err => {
                 console.error('Leaderboard submission failed:', err);
+                alert('Failed to update leaderboard. Please try again.');
             });
         } else {
-            console.error('submitGameCompletionTime function not available!');
+            console.error('Cannot submit to leaderboard:', { hasFunction: typeof submitGameCompletionTime === 'function', finalTime, isPositive: finalTime > 0 });
         }
         
         document.getElementById('modalContentWrapper').innerHTML = `
