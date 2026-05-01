@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initLeaderboard();
 });
 
-const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+var API_BASE = window.API_BASE || window.API_BASE_URL || 'http://localhost:5000';
 
 async function initLeaderboard() {
     const container = document.getElementById('leaderboard-content');
