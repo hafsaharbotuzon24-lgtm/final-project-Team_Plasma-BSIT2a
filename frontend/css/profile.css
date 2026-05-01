@@ -973,3 +973,190 @@ body.profile-body {
         font-size: 0.9rem;
     }
 }
+
+/* =============================================
+    SETTINGS PANEL STYLES - Same size as profile container
+   ============================================= */
+        
+.settings-panel {
+    background-color: #0d1b30;
+    border: 3px solid #1a3350;
+    border-radius: 16px;
+    padding: 22px 24px;
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+    transition: none !important;
+}
+        
+.settings-header {
+    text-align: center;
+    color: #ffd966;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+        
+.settings-row {
+    background: #1a2d45;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+        
+.icon-container {
+    flex-shrink: 0;
+}
+        
+.pixel-icon-btn {
+    background: #0d1b30;
+    border: 2px solid #2a4a6e;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        
+.pixel-icon-btn:hover {
+    background: #2a4a6e;
+    transform: scale(1.05);
+}
+        
+.pixel-icon {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+}
+        
+.slider-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+        
+.pixel-label {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.1rem;
+    color: #8aa0b8;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 1px;
+}
+        
+.custom-pixel-slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    background: #0d1b30;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid #2a4a6e;
+}
+        
+.custom-pixel-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ffd966;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ffaa33;
+}
+        
+.custom-pixel-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: #ffaa33;
+}
+        
+/* Hide profile container when showing settings */
+.profile-container.hidden {
+    display: none;
+}
+        
+        .settings-panel.hidden {
+            display: none;
+        }
+        
+        /* Uniform sidebar button colors */
+        .settings-btn,
+        .change-password-btn,
+        .delete-btn {
+            background: #2a4a6e;
+            border-color: #3a6a8e;
+            color: #c0d0e0;
+        }
+        
+        .settings-btn:hover,
+        .change-password-btn:hover {
+            background: #3a6a8e;
+            color: #ffffff;
+        }
+        
+        .delete-btn:hover {
+            background: #5a2a2a;
+            color: #ff4444;
+        }
+        
+        /* Responsive adjustments for settings panel */
+        @media (max-width: 768px) {
+            .settings-panel {
+                padding: 18px 15px;
+            }
+            .settings-header {
+                font-size: 1.6rem;
+            }
+            .settings-row {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .slider-wrapper {
+                width: 100%;
+            }
+            .pixel-icon {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .settings-panel {
+                padding: 15px 12px;
+            }
+            .settings-header {
+                font-size: 1.4rem;
+            }
+            .settings-row {
+                padding: 12px;
+            }
+        }
+        
+        /* Desktop edit mode button sizes - no layout shift */
+        @media (min-width: 769px) {
+            .change-avatar-btn.visible {
+                padding: 4px 12px;
+                font-size: 0.75rem;
+            }
+            .change-name-btn.visible {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            .edit-name-input.visible {
+                max-width: 180px;
+                min-width: 120px;
+                padding: 4px 8px;
+                font-size: 0.95rem;
+            }
+            .edit-profile-btn.updating {
+                font-size: 0.85rem;
+                padding: 8px 16px;
+            }
+        }
