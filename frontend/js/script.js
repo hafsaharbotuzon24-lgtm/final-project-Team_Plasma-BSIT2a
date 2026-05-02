@@ -1,8 +1,3 @@
- 
-
- 
-
-
 // script.js
 function navigate(destination) {
     console.log("Traveling to " + destination + "...");

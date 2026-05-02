@@ -138,6 +138,7 @@ async function seedData() {
     await Leaderboard.create({
       player_id: player._id,
       score: 100,
+      time_seconds: 120,
       rank_number: 1
     });
 

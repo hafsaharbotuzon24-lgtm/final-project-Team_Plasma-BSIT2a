@@ -277,6 +277,16 @@ function checkBattleAnswer_L3(isBoss) {
     if (isCorrect) {
         const errorBox = document.getElementById('errorFeedbackBox');
         if (errorBox) errorBox.classList.add('d-none');
+
+        const totalQuestions = isBoss ? 5 : 3;
+        const isLastQuestion = battleQIndex_L3 === totalQuestions - 1;
+        const shouldShowPreview = isBoss || isLastQuestion;
+
+        if (shouldShowPreview && typeof openBattlePreviewModal === 'function') {
+            const currentAnswers = Array.from(inputs).map(input => input.value.trim());
+            openBattlePreviewModal(qData, currentAnswers);
+        }
+
         battleQIndex_L3++;
         if (battleQIndex_L3 >= (isBoss ? 5 : 3)) showBattleResult_L3(true, isBoss);
         else loadQuestion_L3();

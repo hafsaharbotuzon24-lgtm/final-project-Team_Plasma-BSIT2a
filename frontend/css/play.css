@@ -427,3 +427,125 @@ body {
     image-rendering: pixelated;
     display: block;
 }
+
+/* Battle code preview modal */
+.battle-preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 12000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.battle-preview-overlay.hidden {
+    display: none;
+}
+
+.battle-preview-modal-box {
+    width: min(640px, 84vw);
+    max-height: 80vh;
+    background: #1c2453;
+    border: 2px solid #090d22;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.battle-preview-topbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #232d63;
+    border-bottom: 1px solid #334187;
+}
+
+.battle-preview-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.battle-preview-dot.red { background: #ff5f57; }
+.battle-preview-dot.yellow { background: #ffbd2e; }
+.battle-preview-dot.green { background: #28c840; }
+
+.battle-preview-label {
+    margin-left: 8px;
+    color: #d7e2ff;
+    font-size: 0.9rem;
+    font-family: 'Pixelify Sans', monospace;
+}
+
+.battle-preview-content {
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.battle-preview-title {
+    color: #ffc812;
+    margin-bottom: 10px;
+    font-family: 'Pixelify Sans', monospace;
+}
+
+.battle-preview-frame {
+    width: 100%;
+    min-height: 160px;
+    border: 1px solid #4454a0;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.battle-preview-code {
+    margin-top: 8px;
+    background: #0f1538;
+    border: 1px solid #35448b;
+    border-radius: 8px;
+    color: #dfe8ff;
+    padding: 8px;
+    max-height: none;
+    overflow: visible;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Styled scrollbar for preview container */
+.battle-preview-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.battle-preview-content::-webkit-scrollbar-track {
+    background: #121a46;
+    border-radius: 10px;
+}
+
+.battle-preview-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4a5fb9, #2f428e);
+    border-radius: 10px;
+    border: 1px solid #6c80d8;
+}
+
+.battle-preview-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5b70c9, #3b52a0);
+}
+
+.battle-preview-overlay {
+    scrollbar-color: #4a5fb9 #121a46;
+    scrollbar-width: thin;
+}
+
+@media (max-width: 768px) {
+    .battle-preview-modal-box {
+        width: 90vw;
+        max-height: 76vh;
+    }
+
+    .battle-preview-frame {
+        min-height: 140px;
+    }
+}
