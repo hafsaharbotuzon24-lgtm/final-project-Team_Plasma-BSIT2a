@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <!-- Sidebar - Profile and Settings buttons (uniform color) -->
+        <!-- Sidebar - Profile and Settings buttons -->
         <div class="profile-sidebar">
             <button class="settings-btn" onclick="closeSettingsPanel()">Profile</button>
             <button class="settings-btn" onclick="openSettingsPanel()">Settings</button>
@@ -229,7 +229,7 @@
         </div>
     </div>
 
-    <!-- Change Password Modal (existing backend) -->
+    <!-- Change Password Modal -->
     <div class="delete-modal-overlay" id="changePasswordModal">
         <div class="delete-modal-box">
             <h3>CHANGE PASSWORD</h3>
@@ -347,7 +347,11 @@
             const translateX = (frameWidth - baseSize) / 2 + avatarOffsetX;
             const translateY = (frameHeight - baseSize) / 2 + avatarOffsetY;
             
+            preview.style.position = 'absolute';
+            preview.style.left = '0px';
+            preview.style.top = '0px';
             preview.style.transform = `translate(${translateX}px, ${translateY}px) scale(${avatarZoom / 100})`;
+            preview.style.transformOrigin = 'top left';
         }
         
         // Avatar Editor Functions
@@ -389,12 +393,15 @@
             removeDragListeners();
             removeFrameScrollZoom();
             
-            const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
-            if (tempAvatarPreview) {
-                document.getElementById('profileAvatar').src = tempAvatarPreview;
-            } else {
+            // If user clicked CANCEL (no tempAvatarPreview), revert to saved avatar
+            if (!tempAvatarPreview) {
+                const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
                 document.getElementById('profileAvatar').src = savedAvatar;
+                document.getElementById('profileAvatar').style.objectFit = 'none';
+                document.getElementById('profileAvatar').style.width = '100%';
+                document.getElementById('profileAvatar').style.height = '100%';
             }
+            // If tempAvatarPreview exists, the preview stays visible in the profile circle
         }
         
         function setupDragListeners() {
@@ -540,7 +547,6 @@
             let translateX = 0, translateY = 0, scaleVal = 1;
             
             if (transform && transform !== 'none') {
-                // Handle translate and scale
                 const translateMatch = transform.match(/translate\(([^)]+)\)/);
                 const scaleMatch = transform.match(/scale\(([^)]+)\)/);
                 
@@ -554,7 +560,7 @@
                 }
             }
             
-            // Get the natural image dimensions
+            // Get the display dimensions
             const displayWidth = parseFloat(preview.style.width) || preview.offsetWidth;
             const displayHeight = parseFloat(preview.style.height) || preview.offsetHeight;
             
@@ -579,13 +585,18 @@
             // Capture the exact preview with all transforms
             const capturedAvatar = captureAvatarPreview();
             tempAvatarPreview = capturedAvatar;
+            
+            // Show preview in profile circle but DO NOT save to localStorage yet
             document.getElementById('profileAvatar').src = capturedAvatar;
+            document.getElementById('profileAvatar').style.objectFit = 'none';
+            document.getElementById('profileAvatar').style.width = '100%';
+            document.getElementById('profileAvatar').style.height = '100%';
             document.getElementById('avatarCircle').classList.add('temp-preview');
             
-            // Update navbar icon immediately
-            updateNavbarProfileIcon(capturedAvatar);
-            
-            closeAvatarEditor();
+            // Close the editor modal (preview stays visible)
+            document.getElementById('avatarEditorModal').classList.remove('show');
+            removeDragListeners();
+            removeFrameScrollZoom();
         }
         
         // Audio Settings Initialization (from audio-manager.js)
@@ -622,9 +633,6 @@
                     const target = current > '0' ? '0' : '80';
                     localStorage.setItem('sfxVolume', target);
                     if (sfxSlider) sfxSlider.value = target;
-                    const testAudio = new Audio('sound-fx/click.mp3');
-                    testAudio.volume = 0.5;
-                    testAudio.play().catch(() => {});
                 });
             }
             
@@ -699,6 +707,9 @@
                 localStorage.setItem('playerAvatar', finalAvatar);
             }
             document.getElementById('profileAvatar').src = finalAvatar;
+            document.getElementById('profileAvatar').style.objectFit = 'none';
+            document.getElementById('profileAvatar').style.width = '100%';
+            document.getElementById('profileAvatar').style.height = '100%';
             
             updateNavbarProfileIcon(finalAvatar);
             
@@ -719,7 +730,7 @@
                 navProfileIcon.style.width = '40px';
                 navProfileIcon.style.height = '40px';
                 navProfileIcon.style.borderRadius = '50%';
-                navProfileIcon.style.objectFit = 'contain';
+                navProfileIcon.style.objectFit = 'none';
                 navProfileIcon.style.imageRendering = 'auto';
                 navProfileIcon.style.backgroundColor = '#1a2d45';
             }
@@ -793,10 +804,14 @@
                 document.getElementById('displayUserName').innerText = newName;
             }
             
+            // NOW save the avatar to localStorage when Update Profile is clicked
             if (tempAvatarPreview) {
                 localStorage.setItem('playerAvatar', tempAvatarPreview);
                 updateNavbarProfileIcon(tempAvatarPreview);
                 document.getElementById('profileAvatar').src = tempAvatarPreview;
+                document.getElementById('profileAvatar').style.objectFit = 'none';
+                document.getElementById('profileAvatar').style.width = '100%';
+                document.getElementById('profileAvatar').style.height = '100%';
                 tempAvatarPreview = null;
                 document.getElementById('avatarCircle').classList.remove('temp-preview');
             }
@@ -826,6 +841,9 @@
             
             const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
             document.getElementById('profileAvatar').src = savedAvatar;
+            document.getElementById('profileAvatar').style.objectFit = 'none';
+            document.getElementById('profileAvatar').style.width = '100%';
+            document.getElementById('profileAvatar').style.height = '100%';
             tempAvatarPreview = null;
             document.getElementById('avatarInput').value = '';
         }
@@ -855,6 +873,9 @@
                 
                 const currentStored = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
                 document.getElementById('profileAvatar').src = currentStored;
+                document.getElementById('profileAvatar').style.objectFit = 'none';
+                document.getElementById('profileAvatar').style.width = '100%';
+                document.getElementById('profileAvatar').style.height = '100%';
                 tempAvatarPreview = null;
             } else {
                 saveProfileUpdates();
@@ -869,6 +890,7 @@
             const currentName = document.getElementById('editNameInput').value || localStorage.getItem('playerUserName') || 'CombatCoder_01';
             document.getElementById('customNameInput').value = currentName;
             document.getElementById('customNameModal').classList.add('show');
+            document.getElementById('customNameInput').focus();
         }
         
         function closeCustomNameModal() {
@@ -1029,6 +1051,14 @@
         });
         document.getElementById('avatarEditorModal').addEventListener('click', function(e) {
             if (e.target === this) closeAvatarEditor();
+        });
+        
+        // Enter key for custom name modal
+        document.getElementById('customNameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmNameChange();
+            }
         });
         
         document.addEventListener('DOMContentLoaded', function() {

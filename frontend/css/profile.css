@@ -190,11 +190,11 @@ body.profile-body {
     box-shadow: 0 0 8px rgba(255, 170, 51, 0.5);
 }
 
+/* The profile avatar is a captured circle - let it fill the container naturally */
 .avatar-circle img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    image-rendering: auto;
+    display: block;
 }
 
 .change-avatar-btn {
@@ -379,16 +379,15 @@ body.profile-body {
     font-family: 'Pixelify Sans', sans-serif;
 }
 
-/* Navbar profile icon */
+/* Navbar profile icon - captured circle fills naturally */
 #profTrigger img {
     width: 40px !important;
     height: 40px !important;
     border-radius: 50% !important;
-    object-fit: contain !important;
-    image-rendering: auto !important;
     border: 2px solid #FFD700 !important;
     transition: border-color 0.3s ease;
     background-color: #1a2d45;
+    display: block;
 }
 
 #profTrigger img:hover {
@@ -492,6 +491,7 @@ body.profile-body {
     cursor: grabbing;
 }
 
+/* Editor image - allow free positioning */
 .avatar-editor-frame img {
     position: absolute;
     top: 0;
@@ -500,7 +500,6 @@ body.profile-body {
     transition: none;
     user-select: none;
     pointer-events: auto;
-    object-fit: none;
     max-width: none;
     max-height: none;
 }

@@ -48,7 +48,8 @@ function navigate(destination) {
         'load-slot': '.play-btn',
         'char-select': '.play-btn',
         'leaderboard': '.leaderboard-btn',
-        'learn': '.learn-btn'
+        'learn': '.learn-btn',
+        'about': '.home-btn'
     };
     
     function applyTextGlow() {

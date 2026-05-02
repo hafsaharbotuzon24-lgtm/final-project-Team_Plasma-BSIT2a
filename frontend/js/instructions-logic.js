@@ -26,7 +26,7 @@ function runTypewriter(text, elementId, callback) {
             }
 
             container.innerHTML = text.substring(0, index);
-            container._typewriterTimeout = setTimeout(type, 30); 
+            container._typewriterTimeout = setTimeout(type, 22); 
         } else {
             container._typewriterTimeout = null;
             if (callback) callback();

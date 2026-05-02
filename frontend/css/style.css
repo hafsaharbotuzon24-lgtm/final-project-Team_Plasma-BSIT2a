@@ -1812,3 +1812,25 @@ body {
 .cc-btn-yes {
     background-color: #a91e1e; 
 }
+
+/* Warning Modal */
+.warning-modal-box {
+    border-color: #ffaa33 !important;
+    max-width: 450px !important;
+}
+
+.warning-modal-box h3 {
+    color: #ffaa33 !important;
+}
+
+.warning-close-btn {
+    background: #ffaa33 !important;
+    border-color: #ff8800 !important;
+    color: #0d1b30 !important;
+    font-weight: bold !important;
+}
+
+.warning-close-btn:hover {
+    background: #ff8800 !important;
+    color: #000000 !important;
+}

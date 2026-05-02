@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combat Coders - Game Mechanics</title>
+    <title>Combat Coders - Learn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                    <span>Combat Coders</span>
-                </button>
+                <span>Combat Coders</span>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -26,10 +25,8 @@
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); navigate('play')">Play</button> 
                 <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
                 <button class="learn-btn" onclick="playSFX('sound-fx/click.mp3');navigate('learn')">Learn</button>
-                 
             </div>
 
-            <!-- Profile trigger with circular avatar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
                     <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
@@ -117,7 +114,7 @@
                     </div>
                 </div>
 
-                <!-- Column 4: Battle Encounter & Rewards (NEW) -->
+                <!-- Column 4: Battle Encounter & Rewards -->
                 <div class="learn-card">
                     <h3 class="card-subtitle">BATTLE ENCOUNTER</h3>
                     <div class="card-divider"></div>
@@ -148,31 +145,260 @@
                 </div>
             </div>
 
-            <!-- Battle Preview Footer (hidden on mobile, integrated into column 4 on desktop) -->
-            <div class="learn-footer-card visible-mobile">
-                <h3 class="card-subtitle">BATTLE ENCOUNTER</h3>
-                <p>An insect monster will appear and give you a challenge</p>
-                <div class="battle-preview">
-                    <img src="img/knight-model.png" class="preview-sprite" alt="player">
-                    <span class="vs-text">VS</span>
-                    <img src="img/enemy-roach.png" class="preview-sprite" alt="enemy">
+            <!-- ============================================ -->
+            <!-- LEARN MORE ABOUT SECTION -->
+            <!-- ============================================ -->
+            <div class="learn-more-section">
+                <h2 class="learn-more-title">LEARN MORE ABOUT...</h2>
+                
+                <!-- HTML Section -->
+                <div class="learn-topic-card" id="htmlSection">
+                    <button class="topic-dropdown-btn" onclick="toggleTopic('html')">
+                        <span class="topic-icon">📄</span>
+                        <span class="topic-name">HTML</span>
+                        <span class="topic-arrow" id="htmlArrow">▼</span>
+                    </button>
+                    <div class="topic-content hidden" id="htmlContent">
+                        <div class="topic-inner">
+                            <h4>What is HTML?</h4>
+                            <p><strong>HTML</strong> (HyperText Markup Language) is the standard language for creating web pages. Think of it as the <strong>skeleton</strong> of a website — it gives structure to content.</p>
+                            
+                            <h4>How It Works</h4>
+                            <p>HTML uses <strong>tags</strong> (enclosed in &lt; &gt;) to mark up content. Most tags come in pairs — an opening tag and a closing tag:</p>
+                            <div class="code-example"><code>&lt;h1&gt;Hello World!&lt;/h1&gt;</code></div>
+                            
+                            <h4>What HTML Can Do</h4>
+                            <ul>
+                                <li><strong>Structure content</strong> — headings, paragraphs, lists, tables</li>
+                                <li><strong>Add media</strong> — images, videos, audio</li>
+                                <li><strong>Create links</strong> — connect pages together (hyperlinks)</li>
+                                <li><strong>Build forms</strong> — text inputs, buttons, checkboxes for user input</li>
+                                <li><strong>Organize layouts</strong> — headers, navigation bars, footers, sections</li>
+                                <li><strong>Embed other content</strong> — maps, social media posts, iframes</li>
+                            </ul>
+                            
+                            <h4>What HTML Cannot Do</h4>
+                            <ul>
+                                <li>Cannot perform logic or calculations (needs JavaScript)</li>
+                                <li>Cannot style pages beautifully (needs CSS)</li>
+                                <li>Cannot store data permanently (needs backend/database)</li>
+                                <li>Is not a programming language — it's a markup language</li>
+                            </ul>
+                            
+                            <!-- HTML Quiz -->
+                            <div class="quiz-section" id="htmlQuiz">
+                                <h4 class="quiz-title">🧠 HTML Quiz</h4>
+                                <div class="quiz-question">
+                                    <p><strong>1. What does HTML stand for?</strong></p>
+                                    <label><input type="radio" name="htmlQ1" value="A"> A) HyperText Modern Language</label>
+                                    <label><input type="radio" name="htmlQ1" value="B"> B) HyperText Markup Language</label>
+                                    <label><input type="radio" name="htmlQ1" value="C"> C) High Tech Markup Language</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>2. Which tag creates the largest heading?</strong></p>
+                                    <label><input type="radio" name="htmlQ2" value="A"> A) &lt;h6&gt;</label>
+                                    <label><input type="radio" name="htmlQ2" value="B"> B) &lt;heading&gt;</label>
+                                    <label><input type="radio" name="htmlQ2" value="C"> C) &lt;h1&gt;</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>3. True or False:</strong> HTML is a programming language.</p>
+                                    <label><input type="radio" name="htmlQ3" value="True"> True</label>
+                                    <label><input type="radio" name="htmlQ3" value="False"> False</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>4. Which tag creates a hyperlink?</strong></p>
+                                    <label><input type="radio" name="htmlQ4" value="A"> A) &lt;link&gt;</label>
+                                    <label><input type="radio" name="htmlQ4" value="B"> B) &lt;a&gt;</label>
+                                    <label><input type="radio" name="htmlQ4" value="C"> C) &lt;href&gt;</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>5. What can HTML NOT do on its own?</strong></p>
+                                    <label><input type="radio" name="htmlQ5" value="A"> A) Create forms</label>
+                                    <label><input type="radio" name="htmlQ5" value="B"> B) Perform calculations</label>
+                                    <label><input type="radio" name="htmlQ5" value="C"> C) Display images</label>
+                                </div>
+                                <button class="quiz-submit-btn" onclick="checkQuiz('html')">SUBMIT ANSWERS</button>
+                                <div class="quiz-results hidden" id="htmlResults"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="reward-info-footer">
-                    <p class="mt-3 mb-2"><strong>✨ Rewards ✨</strong></p>
-                    <div class="reward-icons-footer">
-                        <span>❤️ +1 Heart</span>
-                        <span>💡 +1 Hint</span>
+                
+                <!-- CSS Section -->
+                <div class="learn-topic-card" id="cssSection">
+                    <button class="topic-dropdown-btn" onclick="toggleTopic('css')">
+                        <span class="topic-icon">🎨</span>
+                        <span class="topic-name">CSS</span>
+                        <span class="topic-arrow" id="cssArrow">▼</span>
+                    </button>
+                    <div class="topic-content hidden" id="cssContent">
+                        <div class="topic-inner">
+                            <h4>CSS — Cascading Style Sheets</h4>
+                            <p><strong>CSS</strong> is the language that <strong>styles</strong> HTML. If HTML is the skeleton, CSS is the skin, clothes, and makeup — it controls how everything looks.</p>
+                            
+                            <h4>How It Works</h4>
+                            <p>CSS uses <strong>selectors</strong> to target HTML elements, then applies <strong>properties</strong> and <strong>values</strong>:</p>
+                            <div class="code-example"><code>h1 {<br>&nbsp;&nbsp;color: blue;<br>&nbsp;&nbsp;font-size: 24px;<br>}</code></div>
+                            
+                            <h4>What CSS Can Do</h4>
+                            <ul>
+                                <li><strong>Colors & backgrounds</strong> — text color, background images, gradients</li>
+                                <li><strong>Typography</strong> — fonts, sizes, spacing, alignment</li>
+                                <li><strong>Layout</strong> — grids, flexbox, positioning, margins, padding</li>
+                                <li><strong>Spacing</strong> — control the space inside and around elements</li>
+                                <li><strong>Responsive design</strong> — adapt layouts to different screen sizes</li>
+                                <li><strong>Animations</strong> — transitions, keyframe animations, hover effects</li>
+                                <li><strong>Borders & shadows</strong> — box shadows, text shadows, rounded corners</li>
+                                <li><strong>Visibility</strong> — show/hide elements, opacity</li>
+                            </ul>
+                            
+                            <h4>What CSS Cannot Do</h4>
+                            <ul>
+                                <li>Cannot create or add content (that's HTML)</li>
+                                <li>Cannot perform logic or calculations</li>
+                                <li>Cannot interact with users beyond hover effects (needs JavaScript)</li>
+                            </ul>
+                            
+                            <!-- CSS Quiz -->
+                            <div class="quiz-section" id="cssQuiz">
+                                <h4 class="quiz-title">🧠 CSS Quiz</h4>
+                                <div class="quiz-question">
+                                    <p><strong>1. What does CSS stand for?</strong></p>
+                                    <label><input type="radio" name="cssQ1" value="A"> A) Computer Style Sheets</label>
+                                    <label><input type="radio" name="cssQ1" value="B"> B) Cascading Style Sheets</label>
+                                    <label><input type="radio" name="cssQ1" value="C"> C) Creative Styling System</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>2. Which property changes text color?</strong></p>
+                                    <label><input type="radio" name="cssQ2" value="A"> A) font-color</label>
+                                    <label><input type="radio" name="cssQ2" value="B"> B) text-color</label>
+                                    <label><input type="radio" name="cssQ2" value="C"> C) color</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>3. True or False:</strong> CSS can create animations.</p>
+                                    <label><input type="radio" name="cssQ3" value="True"> True</label>
+                                    <label><input type="radio" name="cssQ3" value="False"> False</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>4. Which selector targets an element with </strong>id="header"<strong>?</strong></p>
+                                    <label><input type="radio" name="cssQ4" value="A"> A) .header</label>
+                                    <label><input type="radio" name="cssQ4" value="B"> B) #header</label>
+                                    <label><input type="radio" name="cssQ4" value="C"> C) header</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>5. What does </strong>margin: 0 auto;<strong> do?</strong></p>
+                                    <label><input type="radio" name="cssQ5" value="A"> A) Centers a block element horizontally</label>
+                                    <label><input type="radio" name="cssQ5" value="B"> B) Removes all spacing</label>
+                                    <label><input type="radio" name="cssQ5" value="C"> C) Aligns text to the right</label>
+                                </div>
+                                <button class="quiz-submit-btn" onclick="checkQuiz('css')">SUBMIT ANSWERS</button>
+                                <div class="quiz-results hidden" id="cssResults"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- JS Section -->
+                <div class="learn-topic-card" id="jsSection">
+                    <button class="topic-dropdown-btn" onclick="toggleTopic('js')">
+                        <span class="topic-icon">⚡</span>
+                        <span class="topic-name">JavaScript</span>
+                        <span class="topic-arrow" id="jsArrow">▼</span>
+                    </button>
+                    <div class="topic-content hidden" id="jsContent">
+                        <div class="topic-inner">
+                            <h4>JavaScript — The Programming Language of the Web</h4>
+                            <p><strong>JavaScript (JS)</strong> is what makes web pages <strong>interactive and dynamic</strong>. If HTML is the skeleton and CSS is the appearance, JavaScript is the brain and muscles — it brings the page to life.</p>
+                            
+                            <h4>How It Works</h4>
+                            <p>JS runs in the browser and reacts to events, manipulates the page, and communicates with servers:</p>
+                            <div class="code-example"><code>document.querySelector('.btn')<br>.addEventListener('click', () => {<br>&nbsp;&nbsp;alert('Clicked!');<br>});</code></div>
+                            
+                            <h4>What JavaScript Can Do</h4>
+                            <ul>
+                                <li><strong>React to user actions</strong> — clicks, typing, scrolling, mouse movement</li>
+                                <li><strong>Update content live</strong> — change text, images, styles without reloading</li>
+                                <li><strong>Validate forms</strong> — check inputs before submission</li>
+                                <li><strong>Handle data</strong> — store, retrieve, and manipulate information</li>
+                                <li><strong>Fetch data</strong> — load content from APIs/servers in the background</li>
+                                <li><strong>Create complex features</strong> — image sliders, dropdown menus, modals, tabs</li>
+                                <li><strong>Build full applications</strong> — games, chat apps, interactive tools</li>
+                                <li><strong>Run on servers too</strong> — via Node.js, not just browsers</li>
+                            </ul>
+                            
+                            <h4>What JavaScript Cannot Do (in the browser)</h4>
+                            <ul>
+                                <li>Cannot access files on your computer directly (security restriction)</li>
+                                <li>Cannot read data from other websites unless they allow it</li>
+                                <li>Cannot run by itself — it needs a browser or Node.js environment</li>
+                            </ul>
+                            
+                            <!-- JS Quiz -->
+                            <div class="quiz-section" id="jsQuiz">
+                                <h4 class="quiz-title">🧠 JavaScript Quiz</h4>
+                                <div class="quiz-question">
+                                    <p><strong>1. Which keyword declares a variable in JavaScript?</strong></p>
+                                    <label><input type="radio" name="jsQ1" value="A"> A) var</label>
+                                    <label><input type="radio" name="jsQ1" value="B"> B) let</label>
+                                    <label><input type="radio" name="jsQ1" value="C"> C) const</label>
+                                    <label><input type="radio" name="jsQ1" value="D"> D) All of the above</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>2. What does </strong>document.querySelector(".box")<strong> do?</strong></p>
+                                    <label><input type="radio" name="jsQ2" value="A"> A) Selects the first element with class "box"</label>
+                                    <label><input type="radio" name="jsQ2" value="B"> B) Creates a new element</label>
+                                    <label><input type="radio" name="jsQ2" value="C"> C) Selects all elements with class "box"</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>3. True or False:</strong> JavaScript can only run in a web browser.</p>
+                                    <label><input type="radio" name="jsQ3" value="True"> True</label>
+                                    <label><input type="radio" name="jsQ3" value="False"> False</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>4. What will </strong>console.log(2 + "2")<strong> output?</strong></p>
+                                    <label><input type="radio" name="jsQ4" value="A"> A) 4</label>
+                                    <label><input type="radio" name="jsQ4" value="B"> B) "22"</label>
+                                    <label><input type="radio" name="jsQ4" value="C"> C) Error</label>
+                                </div>
+                                <div class="quiz-question">
+                                    <p><strong>5. What is an event listener used for?</strong></p>
+                                    <label><input type="radio" name="jsQ5" value="A"> A) Adding colors to a page</label>
+                                    <label><input type="radio" name="jsQ5" value="B"> B) Waiting for user actions like clicks</label>
+                                    <label><input type="radio" name="jsQ5" value="C"> C) Creating HTML elements</label>
+                                </div>
+                                <button class="quiz-submit-btn" onclick="checkQuiz('js')">SUBMIT ANSWERS</button>
+                                <div class="quiz-results hidden" id="jsResults"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+   
+
+    <!-- Warning Modal for Incomplete Quiz -->
+    <div class="quiz-modal-overlay hidden" id="warningModal">
+        <div class="quiz-modal-box warning-modal-box">
+            <h3 id="warningModalTitle">⚠️ INCOMPLETE QUIZ</h3>
+            <p id="warningModalMessage" style="color: #ffffff; font-size: 1rem; line-height: 1.6; text-align: center; white-space: pre-line;"></p>
+            <button class="quiz-modal-close-btn warning-close-btn" onclick="closeWarningModal()">OK, I'LL ANSWER ALL</button>
+        </div>
+    </div>
+
+    <!-- Quiz Results Modal -->
+    <div class="quiz-modal-overlay hidden" id="quizModal">
+        <div class="quiz-modal-box">
+            <h3 id="quizModalTitle">QUIZ RESULTS</h3>
+            <div id="quizModalContent"></div>
+            <button class="quiz-modal-close-btn" onclick="closeQuizModal()">CLOSE</button>
         </div>
     </div>
 
     <script src="js/account.js"></script>
     <script src="js/script.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script src="js/learn.js"></script>
     <script>
-    
+
     function updateNavbarAvatar() {
         const savedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
         const navProfileIcon = document.getElementById('navProfileIcon');
@@ -182,20 +408,9 @@
             navProfileIcon.style.width = '40px';
             navProfileIcon.style.height = '40px';
             navProfileIcon.style.borderRadius = '50%';
-            navProfileIcon.style.objectFit = 'cover';
+            navProfileIcon.style.objectFit = 'none';
             navProfileIcon.style.border = '2px solid #FFD700';
-            navProfileIcon.style.imageRendering = 'auto';
-        }
-        
-        
-        const profTriggerImg = document.querySelector('#profTrigger img');
-        if (profTriggerImg && profTriggerImg.id !== 'navProfileIcon') {
-            profTriggerImg.src = savedAvatar;
-            profTriggerImg.style.width = '40px';
-            profTriggerImg.style.height = '40px';
-            profTriggerImg.style.borderRadius = '50%';
-            profTriggerImg.style.objectFit = 'cover';
-            profTriggerImg.style.border = '2px solid #FFD700';
+            navProfileIcon.style.backgroundColor = '#1a2d45';
         }
     }
 
@@ -210,21 +425,13 @@
             updateNavbarAvatar();
         }
     });
+    
     function navigateToSettings() {
-            if (window.location.pathname.includes('profile.html')) {
-                if (isEditing) {
-                    saveProfileUpdates();
-                }
-                document.getElementById('profileContainerPanel').classList.add('hidden');
-                document.getElementById('settingsPanel').classList.remove('hidden');
-                window.location.hash = 'settings';
-            } else {
-                window.location.href = 'profile.html#settings';
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
+        window.location.href = 'profile.html#settings';
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
-        
         const pageMap = {
             'home': 'home',
             'char-select': 'play',
@@ -232,7 +439,6 @@
             'learn': 'learn',
             'leaderboard': 'leaderboard'
         };
-        
         const destination = pageMap[currentPage];
         if (destination) {
             const activeBtn = document.querySelector(`[onclick*="navigate('${destination}'"]`);
