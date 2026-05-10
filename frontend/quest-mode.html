@@ -127,10 +127,9 @@
     <script src="js/audio-manager.js"></script>
     <script>
         
-        // Helper to safely build HTML strings without </ confusing the HTML parser
         function h(parts) { return parts.join(''); }
 
-        // Level Data - encoded to prevent HTML parsing issues
+        // Level Data 
         const levels = [
             {
                 id: 1,
@@ -363,7 +362,6 @@
                 badge.className = 'difficulty-badge hard';
             }
             
-            // Set up editor with starter boilerplate
             const editor = document.getElementById('codeInput');
             editor.value = generateStarter(level.html);
             
@@ -439,7 +437,7 @@
             const normalizedUser = normalizeHTML(userCode);
             const normalizedTarget = normalizeHTML(level.html);
             
-            // Check if code matches (allowing some flexibility)
+            // Check if code matches
             const isMatch = normalizedUser === normalizedTarget || checkSimilarity(userCode, level.html);
             
             if (isMatch) {
@@ -456,7 +454,6 @@
         }
 
         function checkSimilarity(user, target) {
-            // Must have basic HTML structure
             const userLower = user.toLowerCase();
             const targetLower = target.toLowerCase();
             
@@ -465,7 +462,6 @@
                 if (!userLower.includes(tag)) return false;
             }
             
-            // Check for key elements from target
             const targetTags = targetLower.match(/<[a-z]+[^>]*>/g) || [];
             const userTags = userLower.match(/<[a-z]+[^>]*>/g) || [];
             
@@ -477,7 +473,6 @@
                 }
             }
             
-            // Must have at least 70% of the target tags
             return matchCount >= targetTags.length * 0.7;
         }
 
@@ -520,7 +515,7 @@
             if (currentLevel < levels.length) {
                 startLevel(currentLevel + 1);
             } else {
-                // Quest complete - redirect to play modes
+                // Quest complete
                 window.location.href = 'play-modes.html';
             }
         }

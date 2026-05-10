@@ -200,32 +200,25 @@ window.addEventListener("load", () => {
     const authToken = localStorage.getItem('authToken');
     const introAlreadyShown = sessionStorage.getItem('introShown');
 
-    // If user is already authenticated, skip intro and show home page
     if (authToken) {
         introOverlay.style.display = 'none';
-        // Update navbar avatar on load
         if (typeof updateNavbarAvatar === 'function') {
             updateNavbarAvatar();
         }
         return;
     }
     
-
-    // If intro has already been shown in this session, skip it
     if (introAlreadyShown) {
         introOverlay.style.display = 'none';
-        // Update navbar avatar on load
         if (typeof updateNavbarAvatar === 'function') {
             updateNavbarAvatar();
         }
         return;
     }
 
-    // Show intro only once per session (first visit without auth)
     const GIF_DURATION = 1000;
     const FADE_DURATION = 300;
 
-    // Mark that intro has been shown in this session
     sessionStorage.setItem('introShown', 'true');
 
     const originalSrc = introLogoImg.getAttribute("src");
@@ -240,9 +233,7 @@ window.addEventListener("load", () => {
     }, GIF_DURATION + FADE_DURATION);
 });
 
-// Fade in/out combat preview section on scroll
 document.addEventListener('DOMContentLoaded', function() {
-    // Update navbar avatar
     if (typeof updateNavbarAvatar === 'function') {
         updateNavbarAvatar();
     }
@@ -251,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!combatSection) return;
     
-    // Set initial state
     combatSection.style.opacity = '0';
     combatSection.style.transition = 'opacity 0.6s ease';
     
@@ -260,7 +250,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const sectionBottom = combatSection.getBoundingClientRect().bottom;
         const windowHeight = window.innerHeight;
         
-        // Fade in when section enters viewport
         if (sectionTop < windowHeight - 100 && sectionBottom > 0) {
             combatSection.style.opacity = '1';
         } else {
@@ -268,13 +257,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Check on scroll
     window.addEventListener('scroll', checkScroll);
     
-    // Check on page load
     checkScroll();
     
-    // Slide-in animation for combat preview rows
     const cpRows = document.querySelectorAll('.cp-row');
     const rowObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -359,7 +345,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Typing Animation for MOTD
     const textToType = "The End of Bugs Reign";
     const typingElement = document.getElementById('typing-text');
     let charIndex = 0;
@@ -372,10 +357,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start typing animation after a short delay
     setTimeout(typeText, 500);
 
-    // Particle Background
     function createParticles() {
         const container = document.getElementById('particles');
         const symbols = ['{ }', '</>', '01', '10', '#', '<>', '//', '&&', '||', '!=', '===', '=>'];

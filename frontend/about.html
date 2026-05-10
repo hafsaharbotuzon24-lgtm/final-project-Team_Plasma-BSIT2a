@@ -331,14 +331,12 @@
     <script src="js/audio-manager.js"></script>
 
     <script>
-        // Update navbar avatar on page load
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof updateNavbarAvatar === 'function') {
                 updateNavbarAvatar();
             }
         });
 
-        // Initialize flip card functionality for team member cards
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', function() {
                 const content = this.querySelector('.content');
@@ -419,7 +417,6 @@
     });
     // =============================================
 // UNIVERSAL NAV AVATAR FALLBACK
-// Copy this to any page with the profile nav icon
 // =============================================
 (function initNavAvatar() {
     const navProfileIcon = document.getElementById('navProfileIcon');
@@ -446,7 +443,6 @@
 
     const existingAvatar = localStorage.getItem('playerAvatar');
     
-    // Only set a random avatar if none exists (first-time player)
     if (!existingAvatar || existingAvatar === 'img/player-profile.png' || existingAvatar === '') {
         const randomAvatar = getRandomPreset();
         localStorage.setItem('playerAvatar', randomAvatar);
@@ -457,7 +453,6 @@
 
     applyAvatarStyles();
 
-    // Fallback if image fails to load
     navProfileIcon.onerror = function() {
         const fallback = getRandomPreset();
         this.src = fallback;

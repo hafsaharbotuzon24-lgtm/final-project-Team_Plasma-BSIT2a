@@ -6,7 +6,6 @@
     <title>Combat Coders</title>
     <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
     <script>
-        // Redirect BEFORE page renders if animation already played or authenticated
         const authToken = localStorage.getItem('authToken');
         const animationPlayed = sessionStorage.getItem('animationPlayed');
         
@@ -85,21 +84,17 @@ window.addEventListener("load", () => {
     const GIF_DURATION = 1000; 
     const FADE_DURATION = 100;
 
-    // Show the logo
     logoWrapper.classList.add('show');
 
     const originalSrc = logoImg.getAttribute("src");
     logoImg.src = originalSrc + "?t=" + Date.now();
 
-    // Mark animation as played
     sessionStorage.setItem('animationPlayed', 'true');
 
-    // After animation ends, fade out
     setTimeout(() => {
         logoWrapper.style.opacity = "0";
     }, GIF_DURATION);
     
-    // Then redirect to login
     setTimeout(() => {
         window.location.replace("login.html");
     }, GIF_DURATION + FADE_DURATION);

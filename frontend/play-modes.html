@@ -92,19 +92,15 @@
     <script>
         
         function selectMode(mode) {
-            // Save selected mode
             localStorage.setItem('selectedGameMode', mode);
             
             if (mode === 'adventure') {
-                // Navigate to adventure mode (load slot selection)
                 window.location.href = 'load-slot.html';
             } else if (mode === 'quest') {
-                // Navigate to quest mode
                 window.location.href = 'quest-mode.html';
             }
         }
 
-        // Check if user was already in a mode and redirect back
         document.addEventListener('DOMContentLoaded', function() {
             const currentMode = localStorage.getItem('selectedGameMode');
             if (currentMode === 'adventure' && window.location.hash === '#resume') {

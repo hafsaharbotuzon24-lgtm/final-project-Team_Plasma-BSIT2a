@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/learn.css">
     <style>
-        /* Topic icon image styling */
         .topic-icon-img {
             width: 24px;
             height: 24px;
@@ -23,7 +22,6 @@
             background: transparent;
         }
         
-        /* Adjust topic dropdown button to accommodate image */
         .topic-dropdown-btn {
             display: flex;
             align-items: center;
@@ -423,7 +421,6 @@
                 </div>
             </div>
    
-    <!-- Warning Modal for Incomplete Quiz -->
     <div class="quiz-modal-overlay hidden" id="warningModal">
         <div class="quiz-modal-box warning-modal-box">
             <h3 id="warningModalTitle">⚠️ INCOMPLETE QUIZ</h3>
@@ -432,7 +429,6 @@
         </div>
     </div>
 
-    <!-- Quiz Results Modal -->
     <div class="quiz-modal-overlay hidden" id="quizModal">
         <div class="quiz-modal-box">
             <h3 id="quizModalTitle">QUIZ RESULTS</h3>
@@ -447,9 +443,7 @@
     <script src="js/audio-manager.js"></script>
     <script src="js/learn.js"></script>
     <script>
-    // Add to all pages for seamless navigation
 function navigateTo(url) {
-    // Save the audio frame reference
     const audioFrame = document.getElementById('persistentAudioFrame');
     
     // Navigate

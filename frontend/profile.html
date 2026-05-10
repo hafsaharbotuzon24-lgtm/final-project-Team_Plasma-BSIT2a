@@ -149,7 +149,7 @@
             </div>
         </div>
 
-        <!-- Settings Panel (hidden by default, same size as profile container) -->
+        <!-- Settings Panel -->
         <div class="settings-panel hidden" id="settingsPanel">
             <h1 class="settings-header">SETTINGS</h1>
             
@@ -195,7 +195,6 @@
                 <button class="close-modal-btn" onclick="closeAllAchievementsModal()">CLOSE</button>
             </div>
             <div class="achievements-grid" id="allAchievementsGrid">
-                <!-- Achievements will be populated here by JavaScript -->
             </div>
         </div>
     </div>
@@ -262,10 +261,9 @@
         </div>
     </div>
 
-    <!-- Hidden canvas for capturing avatar -->
     <canvas id="avatarCaptureCanvas" style="display:none;" width="200" height="200"></canvas>
 
-    <!-- Custom Change Name Modal (replaces browser prompt) -->
+    <!-- Custom Change Name Modal -->
     <div class="custom-modal-overlay" id="customNameModal">
         <div class="custom-modal-box">
             <h3>CHANGE USERNAME</h3>
@@ -310,14 +308,6 @@
     <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
-        
-        // =============================================
-        // PROFILE PAGE SCRIPT - PRESERVES ALL BACKEND
-        // Avatar saves ONLY on Update Profile click
-        // Settings panel integration
-        // Avatar Editor Modal with presets
-        // RANK DISPLAY FROM LEADERBOARD
-        // =============================================
         
         let isEditing = false;
         let tempAvatarPreview = null;
@@ -408,10 +398,9 @@
                 history.pushState("", document.title, window.location.pathname);
             }
             loadProfileData();
-            fetchAndDisplayPlayerRank(); // Refresh rank data when closing settings
+            fetchAndDisplayPlayerRank(); 
         }
         
-        // Apply the current transforms to the preview image
         function updateAvatarPreview() {
             const preview = document.getElementById('avatarEditorPreview');
             const frame = document.getElementById('avatarEditorFrame');
@@ -422,11 +411,9 @@
             const imgNaturalWidth = preview.naturalWidth;
             const imgNaturalHeight = preview.naturalHeight;
             
-            // Calculates base size based on size slider (percentage of frame)
             const baseSizePercent = avatarSize / 100;
             let baseWidth, baseHeight;
             
-            // Maintains aspect ratio based on image's natural dimensions
             if (imgNaturalWidth > imgNaturalHeight) {
                 baseWidth = frameWidth * baseSizePercent;
                 baseHeight = (imgNaturalHeight / imgNaturalWidth) * baseWidth;
@@ -453,7 +440,6 @@
             preview.style.transformOrigin = 'top left';
         }
         
-        // Avatar Editor Functions
         function openAvatarEditor() {
             if (!isEditing) {
                 alert("Enter Edit Mode first (click Edit Profile).");
@@ -464,7 +450,6 @@
             currentEditorAvatar = currentAvatar;
             document.getElementById('avatarEditorPreview').src = currentAvatar;
             
-            // Reset sliders and position
             avatarZoom = 100;
             avatarSize = 100;
             avatarOffsetX = 0;
@@ -474,7 +459,6 @@
             document.getElementById('zoomValue').textContent = '100%';
             document.getElementById('sizeValue').textContent = '100%';
             
-            // Wait for image to load before applying transform
             const previewImg = document.getElementById('avatarEditorPreview');
             previewImg.onload = function() {
                 updateAvatarPreview();
@@ -492,7 +476,6 @@
             removeDragListeners();
             removeFrameScrollZoom();
             
-            // If user clicked CANCEL (no tempAvatarPreview), revert to saved avatar
             if (!tempAvatarPreview) {
                 const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
                 document.getElementById('profileAvatar').src = savedAvatar;
@@ -500,7 +483,6 @@
                 document.getElementById('profileAvatar').style.width = '100%';
                 document.getElementById('profileAvatar').style.height = '100%';
             }
-            // If tempAvatarPreview exists, the preview stays visible in the profile circle
         }
         
         function setupDragListeners() {
@@ -568,7 +550,6 @@
             document.getElementById('avatarEditorFrame').classList.remove('dragging');
         }
         
-        // Scroll wheel zoom on the preview frame
         function setupFrameScrollZoom() {
             const frame = document.getElementById('avatarEditorFrame');
             if (frame) {
@@ -599,7 +580,6 @@
             const previewImg = document.getElementById('avatarEditorPreview');
             previewImg.src = avatarPath;
             
-            // Reset all values
             avatarZoom = 100;
             avatarSize = 100;
             avatarOffsetX = 0;
@@ -627,28 +607,22 @@
             const frameWidth = frame.clientWidth;
             const frameHeight = frame.clientHeight;
             
-            // Set canvas to match frame size
             canvas.width = frameWidth;
             canvas.height = frameHeight;
             
             const ctx = canvas.getContext('2d');
             
-            // Clear canvas
             ctx.clearRect(0, 0, frameWidth, frameHeight);
             
-            // Draw the circular clip
             ctx.save();
             ctx.beginPath();
             ctx.arc(frameWidth / 2, frameHeight / 2, frameWidth / 2, 0, Math.PI * 2);
             ctx.clip();
             
-            // Get the image element and its computed styles
             const img = preview;
             
-            // Get the transform values from the inline styles
             const transform = img.style.transform;
             
-            // Parse transform: translate(Xpx, Ypx) scale(Z)
             let translateX = 0, translateY = 0, scaleVal = 1;
             
             if (transform) {
@@ -664,27 +638,22 @@
                 }
             }
             
-            // Get the base dimensions from the image's natural size or current display size
             const imgNaturalWidth = img.naturalWidth;
             const imgNaturalHeight = img.naturalHeight;
             const displayWidth = parseFloat(img.style.width) || img.offsetWidth;
             const displayHeight = parseFloat(img.style.height) || img.offsetHeight;
             
-            // Calculate the scale factor between natural size and display size
             const displayScaleX = displayWidth / imgNaturalWidth;
             const displayScaleY = displayHeight / imgNaturalHeight;
             
-            // Apply transforms in correct order: translate then scale
             ctx.translate(translateX, translateY);
             ctx.scale(scaleVal, scaleVal);
             ctx.scale(displayScaleX, displayScaleY);
             
-            // Draw the image at the calculated position
             ctx.drawImage(img, 0, 0, imgNaturalWidth, imgNaturalHeight);
             
             ctx.restore();
             
-            // Return the data URL
             return canvas.toDataURL('image/png');
         }
         
@@ -704,16 +673,13 @@
                 profileImg.style.height = '100%';
                 document.getElementById('avatarCircle').classList.add('temp-preview');
                 
-                // Close the editor modal
                 document.getElementById('avatarEditorModal').classList.remove('show');
                 removeDragListeners();
                 removeFrameScrollZoom();
             }, 50);
         }
         
-        // =============================================
         // RANK FETCHING FROM LEADERBOARD
-        // =============================================
         
         async function fetchAndDisplayPlayerRank() {
             const rankBadgeContainer = document.getElementById('rankBadgeContainer');
@@ -749,7 +715,6 @@
                 
                 players.sort((a, b) => a.time - b.time);
                 
-                // Finds current player's rank
                 const playerIndex = players.findIndex(p => String(p.playerId) === String(currentPlayerId));
                 
                 if (playerIndex !== -1) {
@@ -781,9 +746,7 @@
             }
         }
         
-        // =============================================
         // ACHIEVEMENTS FUNCTIONS
-        // =============================================
         
         function loadMedals() {
             const level1Completed = localStorage.getItem('level1Completed') === 'true';
@@ -915,7 +878,6 @@
     }
 }
         
-        // Avatar Editor Slider Events with scroll wheel support
         function initAvatarEditorSliders() {
             const zoomSlider = document.getElementById('avatarZoomSlider');
             const sizeSlider = document.getElementById('avatarSizeSlider');
@@ -1075,7 +1037,6 @@
                 document.getElementById('displayUserName').innerText = newName;
             }
             
-            // NOW save the avatar to localStorage when Update Profile is clicked
             if (tempAvatarPreview) {
                 localStorage.setItem('playerAvatar', tempAvatarPreview);
                 updateNavbarProfileIcon(tempAvatarPreview);
@@ -1110,7 +1071,6 @@
             editNameInput.classList.remove('visible');
             avatarCircle.onclick = null;
             
-            // Only reset to saved avatar if there's NO temp preview pending
             if (!tempAvatarPreview) {
                 const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
                 const profileImg = document.getElementById('profileAvatar');
@@ -1120,7 +1080,6 @@
                 profileImg.style.width = '100%';
                 profileImg.style.height = '100%';
             }
-            // If tempAvatarPreview exists, keep showing it (user hasn't saved yet)
             document.getElementById('avatarInput').value = '';
         }
         

@@ -21,7 +21,6 @@
             flex-wrap: wrap;
         }
 
-        /* Dark blue arrow buttons */
         .arrow-btn {
             background-color: #0b1a30;
             border: 2px solid #000000;
@@ -54,7 +53,6 @@
             box-shadow: 0 2px 0 #03070e;
         }
 
-        /* Current panel indicator badge */
         .panel-label-badge {
             font-family: 'Silkscreen', sans-serif;
             font-size: 1.2rem;
@@ -68,7 +66,6 @@
             text-align: center;
         }
 
-        /* Panel visibility control */
         .leaderboard-panel {
             display: block;
         }
@@ -77,12 +74,10 @@
             display: none;
         }
 
-        /* Second title box variant for quest mode */
         .lb-title-box.quest-title-box {
-            /* identical to .lb-title-box, just used as selector target */
+            /* used as selector target */
         }
 
-        /* Responsive adjustments */
         @media (max-width: 500px) {
             .panel-label-badge {
                 font-size: 1rem;
@@ -157,10 +152,7 @@
         </div>
 
         <div class="lb-container">
-            <!-- 
-              PANEL 1: ADVENTURE MODE LEADERBOARD 
-              (initial version - the original leaderboard panel)
-            -->
+            <!-- PANEL 1: ADVENTURE MODE LEADERBOARD -->
             <div id="adventurePanel" class="leaderboard-panel">
                 <div class="lb-row lb-header">
                     <span class="lb-col-rank" style="text-align:center;">RANK</span>
@@ -168,14 +160,10 @@
                     <span class="lb-col-score" style="text-align:center;">TIME</span>
                 </div>
                 <div id="leaderboard-content" class="lb-scroll-area">
-                    <!-- Adventure leaderboard entries will be populated here -->
                 </div>
             </div>
 
-            <!-- 
-              PANEL 2: QUEST MODE LEADERBOARD 
-              (quest-mode.html leaderboard panel)
-            -->
+            <!-- PANEL 2: QUEST MODE LEADERBOARD -->
             <div id="questPanel" class="leaderboard-panel hidden-panel">
                 <div class="lb-row lb-header">
                     <span class="lb-col-rank">RANK</span>
@@ -183,7 +171,6 @@
                     <span class="lb-col-score">LEVELS</span>
                 </div>
                 <div id="quest-leaderboard-content" class="lb-scroll-area">
-                    <!-- Quest leaderboard entries will be populated here -->
                 </div>
             </div>
 
@@ -203,9 +190,7 @@
     <script src="js/game-timer.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
-    // Add to all pages for seamless navigation
 function navigateTo(url) {
-    // Save the audio frame reference
     const audioFrame = document.getElementById('persistentAudioFrame');
     
     // Navigate
@@ -300,33 +285,27 @@ function navigateTo(url) {
         const nextBtn = document.getElementById('nextPanelBtn');
 
         // Current panel state
-        let currentPanel = 'adventure'; // 'adventure' or 'quest'
+        let currentPanel = 'adventure'; 
 
         function updateUIForPanel(panelType) {
             if (panelType === 'adventure') {
-                // Show adventure, hide quest
                 adventurePanel.classList.remove('hidden-panel');
                 questPanel.classList.add('hidden-panel');
                 
-                // Update badge and title
                 panelNameDisplay.textContent = 'ADVENTURE';
                 dynamicTitleText.textContent = 'LEADERBOARD';
             } else {
-                // Show quest, hide adventure
                 questPanel.classList.remove('hidden-panel');
                 adventurePanel.classList.add('hidden-panel');
                 
-                // Update badge and title
                 panelNameDisplay.textContent = 'QUEST MODE';
                 dynamicTitleText.textContent = 'LEADERBOARD';
             }
             currentPanel = panelType;
         }
 
-        // Initialize with ADVENTURE visible
         updateUIForPanel('adventure');
 
-        // Left arrow click → toggle to the OTHER panel
         prevBtn.addEventListener('click', function() {
             if (currentPanel === 'adventure') {
                 updateUIForPanel('quest');
@@ -335,7 +314,6 @@ function navigateTo(url) {
             }
         });
 
-        // Right arrow click → toggle to the OTHER panel
         nextBtn.addEventListener('click', function() {
             if (currentPanel === 'adventure') {
                 updateUIForPanel('quest');
@@ -344,7 +322,6 @@ function navigateTo(url) {
             }
         });
 
-        // Optional: keyboard arrow support
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowLeft') {
                 e.preventDefault();
@@ -356,7 +333,6 @@ function navigateTo(url) {
         });
     })();
 
-    // Fallback for navigate function (if not defined by external scripts)
     if (typeof navigate !== 'function') {
         window.navigate = function(page) {
             const pages = {
@@ -368,10 +344,8 @@ function navigateTo(url) {
         };
     }
 
-    // Fallback for playSFX (if not defined)
     if (typeof playSFX !== 'function') {
         window.playSFX = function(src) {
-            // Audio placeholder - no logic added
         };
     }
 </script>

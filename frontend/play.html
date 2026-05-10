@@ -45,7 +45,6 @@
             background: #152040;
         }
 
-        /* Back Confirmation Modal Styles */
         #backConfirmModal .modal-content {
             background: linear-gradient(135deg, #1a2744 0%, #1c3554 100%);
             border: 3px solid #2a4a7f;
@@ -146,7 +145,7 @@
         <div id="selectionRow" class="d-flex justify-content-center gap-4"></div>
     </div>
 
-    <!-- Back Button - Only visible during card selection -->
+    <!-- Back Button -->
     <button class="back-btn" id="backButton" style="display: none;" onclick="showBackConfirmModal()">
         ← BACK
     </button>
@@ -230,27 +229,22 @@
     <script src="js/audio-manager.js"></script>
     <script>
         
-        // Back button functionality
         function showBackConfirmModal() {
             const backConfirmModal = new bootstrap.Modal(document.getElementById('backConfirmModal'));
             backConfirmModal.show();
         }
 
         function goBackToLoadSlot() {
-            // Stop game timer if running
             if (typeof stopGameTimerAndClear === 'function') {
                 stopGameTimerAndClear();
             }
-            // Hide modal
             const backConfirmModal = bootstrap.Modal.getInstance(document.getElementById('backConfirmModal'));
             if (backConfirmModal) {
                 backConfirmModal.hide();
             }
-            // Navigate to load-slot.html
             window.location.href = 'load-slot.html';
         }
 
-        // Show back button when card selection is visible
         function showBackButton() {
             document.getElementById('backButton').style.display = 'block';
         }
@@ -259,9 +253,7 @@
             document.getElementById('backButton').style.display = 'none';
         }
 
-        // Monitor for card selection visibility
         document.addEventListener('DOMContentLoaded', function() {
-            // Create observer to watch for selection row content
             const observer = new MutationObserver(function(mutations) {
                 const selectionRow = document.getElementById('selectionRow');
                 if (selectionRow && selectionRow.children.length > 0) {
@@ -278,7 +270,6 @@
                     subtree: true 
                 });
                 
-                // Initial check
                 if (selectionRow.children.length > 0) {
                     showBackButton();
                 }
@@ -307,9 +298,7 @@
         return localStorage.getItem('loadSaveSlot');
     }
 
-    // NOW gameState exists - sync character and level immediately from save
     (function() {
-        // Check if loading from save first (save data takes priority)
         const savedData = getScopedLoadSaveSlot();
         if (savedData) {
             try {
@@ -344,7 +333,7 @@
             }
         }
         
-        // No save data - use localStorage character
+        // No save data 
         const savedChar = localStorage.getItem('selectedCharacter');
         if (savedChar && typeof gameState !== 'undefined') {
             gameState.character = savedChar;
@@ -352,7 +341,6 @@
         }
     })();
     
-    // Check for saved game data on page load BEFORE timer initializes
     (function() {
         const savedData = getScopedLoadSaveSlot();
         if (savedData) {
@@ -384,7 +372,6 @@
     if (typeof show === 'undefined') {
         window.show = function() {};
     }
-    // Clear timer state when navigating away from play.html
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.home-btn, .play-btn, .leaderboard-btn, .learn-btn, .settings-btn, .prof-icon').forEach(btn => {
             if (btn) {
