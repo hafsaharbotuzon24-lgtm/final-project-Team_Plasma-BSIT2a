@@ -22,6 +22,8 @@ async function sendOtpEmail(toAddress, otp) {
   const secure =
     String(process.env.SMTP_SECURE || '').toLowerCase() === 'true' || port === 465;
 
+  console.log('[SMTP] Connecting to:', process.env.SMTP_HOST, 'port:', port, 'secure:', secure);
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port,
@@ -31,6 +33,15 @@ async function sendOtpEmail(toAddress, otp) {
       pass: process.env.SMTP_PASS
     }
   });
+
+  // Verify connection configuration
+  try {
+    await transporter.verify();
+    console.log('[SMTP] Transporter verified successfully');
+  } catch (verifyErr) {
+    console.error('[SMTP] Transporter verification failed:', verifyErr.message);
+    throw verifyErr;
+  }
 
   const from =
     process.env.EMAIL_FROM || `"Combat Coders" <${process.env.SMTP_USER}>`;
