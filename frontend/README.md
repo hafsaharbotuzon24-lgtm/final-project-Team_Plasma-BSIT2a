@@ -30,7 +30,7 @@ The frontend is built using static pages (`HTML`), styling (`CSS` + `Bootstrap`)
 - Win/lose state modals and retry flow are included.
 
 ### 4) Rewards and Resource UI
-- Chest and room rewards are implemented in `js/chest1-logic.js` and `js/room1-logic.js`.
+- Chest and room rewards are implemented in `js/chest-logic.js` and `js/room-logic.js`.
 - Reward events update resource counters in the UI:
   - Chest: `+1 hint`
   - Room: `+1 heart`
