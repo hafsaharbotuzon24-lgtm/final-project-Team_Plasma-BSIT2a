@@ -1,7 +1,11 @@
 const nodemailer = require('nodemailer');
 
 function isSmtpConfigured() {
-  return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+  const hasHost = !!process.env.SMTP_HOST;
+  const hasUser = !!process.env.SMTP_USER;
+  const hasPass = !!process.env.SMTP_PASS;
+  console.log('[SMTP] Config check:', { host: hasHost, user: hasUser, pass: hasPass });
+  return !!(hasHost && hasUser && hasPass);
 }
 
 /**
@@ -10,6 +14,7 @@ function isSmtpConfigured() {
  */
 async function sendOtpEmail(toAddress, otp) {
   if (!isSmtpConfigured()) {
+    console.log('[SMTP] Not configured - skipping email');
     return false;
   }
 
@@ -30,17 +35,22 @@ async function sendOtpEmail(toAddress, otp) {
   const from =
     process.env.EMAIL_FROM || `"Combat Coders" <${process.env.SMTP_USER}>`;
 
-  await transporter.sendMail({
-    from,
-    to: toAddress,
-    subject: 'Combat Coders — Password reset code',
-    text: `Your verification code is: ${otp}\n\nIt expires in 10 minutes.`,
-    html: `<p>Your verification code is:</p>
+  try {
+    const info = await transporter.sendMail({
+      from,
+      to: toAddress,
+      subject: 'Combat Coders — Password reset code',
+      text: `Your verification code is: ${otp}\n\nIt expires in 10 minutes.`,
+      html: `<p>Your verification code is:</p>
 <p style="font-size:28px;font-weight:bold;letter-spacing:6px;font-family:monospace;">${otp}</p>
 <p style="color:#666;font-size:13px;">This code expires in 10 minutes. If you did not request a reset, ignore this email.</p>`
-  });
-
-  return true;
+    });
+    console.log('[SMTP] Email sent successfully:', info.messageId);
+    return true;
+  } catch (err) {
+    console.error('[SMTP] Email send failed:', err.message);
+    throw err;
+  }
 }
 
 module.exports = {
