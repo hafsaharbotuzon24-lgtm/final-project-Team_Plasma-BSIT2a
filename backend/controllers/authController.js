@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const xss = require('xss');
 const { OAuth2Client } = require('google-auth-library');
-const { sendOtpEmail, isSmtpConfigured } = require('../utils/sendOtpEmail');
+const { sendOtpEmail, isEmailConfigured } = require('../utils/sendOtpEmail');
 
 const googleClient = new OAuth2Client();
 
@@ -177,8 +177,8 @@ exports.forgotPassword = async (req, res) => {
       return res.status(404).json({ message: 'No account found with this email' });
     }
 
-    console.log('[Auth] Player found, checking SMTP config...');
-    console.log('[Auth] SMTP Configured:', isSmtpConfigured());
+    console.log('[Auth] Player found, checking email config...');
+    console.log('[Auth] Email Configured:', isEmailConfigured());
 
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -190,8 +190,8 @@ exports.forgotPassword = async (req, res) => {
     await OTP.create({ email: email.toLowerCase(), otp });
 
     let emailed = false;
-    if (isSmtpConfigured()) {
-      console.log('[Auth] SMTP is configured, attempting to send email...');
+    if (isEmailConfigured()) {
+      console.log('[Auth] Email is configured, attempting to send...');
       try {
         emailed = await sendOtpEmail(email.toLowerCase(), otp);
         console.log('[Auth] Email send result:', emailed);
@@ -201,7 +201,7 @@ exports.forgotPassword = async (req, res) => {
         return res.status(500).json({ message: 'Failed to send email. Please try again later.' });
       }
     } else {
-      console.log('[Auth] SMTP not configured, skipping email send');
+      console.log('[Auth] Email not configured, skipping email send');
     }
 
     console.log('[Auth] NODE_ENV:', process.env.NODE_ENV, '| emailed:', emailed);
@@ -209,16 +209,16 @@ exports.forgotPassword = async (req, res) => {
       await OTP.deleteMany({ email: email.toLowerCase() });
       return res.status(500).json({
         message:
-          'Email delivery is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.'
+          'Email delivery is not configured. Set BREVO_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS on the server.'
       });
     }
 
-    console.log(`OTP for ${email}: ${otp}${emailed ? ' (sent via SMTP)' : ' (dev / no SMTP)'}`);
+    console.log(`OTP for ${email}: ${otp}${emailed ? ' (sent via email)' : ' (dev / no email config)'}`);
 
     const payload = {
       message: emailed
         ? 'OTP sent successfully. Check your email.'
-        : 'OTP generated. Configure SMTP on the server to send email; in development the code may be returned below.'
+        : 'OTP generated. Configure email delivery (Brevo API or SMTP) on the server; in development the code may be returned below.'
     };
     if (process.env.NODE_ENV !== 'production' && !emailed) {
       payload.otp = otp;
