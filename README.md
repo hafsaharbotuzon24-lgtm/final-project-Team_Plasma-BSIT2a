@@ -128,11 +128,11 @@ npm run dev / npm start
 
 ## 🤝 Contributors
 
-* **Sophia Mae Alodia J. Balmaceda** — 🐶
-* **Dwayne Lester O. Diaz** — 🦝
-* **Joshua Cedric B. Velitario** — 🧀
-* **Kian Carlo O. Matutina** — 🍂
-* **Hafsah A. Tuzon** — ❤️‍🔥
+* **Project Manager & Backend Developer** — Sophia Mae Alodia J. Balmaceda 🐶
+* **Frontend Developer** — Dwayne Lester O. Diaz 🦝
+* **Database Manager** — Joshua Cedric B. Velitario 🧀
+* **Documentation Officer** — Kian Carlo O. Matutina 🍂
+* **GitHub Manager** — Hafsah A. Tuzon ❤️‍🔥
 
 ---
 
