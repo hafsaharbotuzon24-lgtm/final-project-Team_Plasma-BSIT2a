@@ -140,5 +140,6 @@ async function sendOtpEmail(toAddress, otp) {
 
 module.exports = {
   isSmtpConfigured,
+  isEmailConfigured,
   sendOtpEmail
 };
