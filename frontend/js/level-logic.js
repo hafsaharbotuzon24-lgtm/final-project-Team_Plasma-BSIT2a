@@ -9,6 +9,38 @@ let gameState = {
     currentQuestionIndex: 0
 };
 
+// Sync completed quest levels to backend so quest leaderboard works
+async function syncQuestLevelToServer(completedLevel) {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+    try {
+        // Merge with existing server data
+        const meRes = await fetch(`${API_BASE}/api/players/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: 'include'
+        });
+        let existing = [];
+        if (meRes.ok) {
+            const meData = await meRes.json();
+            existing = Array.isArray(meData.questCompletedLevels) ? meData.questCompletedLevels : [];
+        }
+        const merged = Array.from(new Set([...existing, completedLevel])).sort((a, b) => a - b);
+        await fetch(`${API_BASE}/api/players/me/learning-progress`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            credentials: 'include',
+            body: JSON.stringify({ questCompletedLevels: merged })
+        });
+        console.log('✓ Quest level', completedLevel, 'synced to server');
+    } catch (e) {
+        console.warn('Quest level sync failed:', e);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     if (gameState.currentLevel === 1 && gameState.currentSite === 1) {
@@ -17,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateUI() {
-    // Cap hearts at 3 maximum, but don't set a minimum
+    // Cap hearts at 3 maximum
     if (gameState.hearts > 3) gameState.hearts = 3;
     
     const heartCountEl = document.getElementById('heartCount');
@@ -34,7 +66,7 @@ function renderCards() {
     if (!row) return;
     row.innerHTML = "";
     
-    // Make the row responsive - flex column on mobile, row on desktop
+    // Make the row responsive 
     row.style.display = "flex";
     row.style.flexDirection = "column";
     row.style.alignItems = "center";
@@ -268,7 +300,7 @@ function proceedFromBossVictory() {
         }
     }
     
-    // Fallback
+    
     gameState.currentSite++;
     if (gameState.currentSite > 5 && gameState.currentLevel === 3) {
         showGameCompleteModal();
@@ -285,6 +317,9 @@ function showLevelCompleteModal() {
     
     // SAVE LEVEL COMPLETION TO LOCAL STORAGE (fallback if battle logic didn't save)
     localStorage.setItem('level' + gameState.currentLevel + 'Completed', 'true');
+    
+    // Sync to backend for quest leaderboard
+    syncQuestLevelToServer(gameState.currentLevel);
     
     // For Level 3, use the game complete modal with timer
     if (isGameComplete) {
@@ -315,7 +350,11 @@ function showLevelCompleteModal() {
 function showGameCompleteModal() {
     const VICTORY_DIAL = ["That fight burned my shoe!", "Victory served hot!", "Keep up the heat! Bring it on!"];
     
-    // Stop the timer and get final time
+    // Sync level 3 completion to backend for quest leaderboard
+    localStorage.setItem('level3Completed', 'true');
+    syncQuestLevelToServer(3);
+    
+    // Stops the timer and gets final time
     let finalTime = 0;
     let formattedTime = '0:00';
     
@@ -354,7 +393,7 @@ function showGameCompleteModal() {
 function advanceToNextLevel() {
     const modalEl = document.getElementById('gameModal');
     
-    // Force remove any lingering backdrops first
+    
     document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
         backdrop.remove();
     });
@@ -381,7 +420,7 @@ function advanceToNextLevel() {
                 gameState.lastChoice = null;
                 gameState.currentQuestionIndex = 0;
                 
-                // Keep hearts and hints as they are - they carry over to next level
+                // This keep hearts and hints as they are and carry over to next level
                 updateUI();
                 
                 if (typeof openInstructionsModal === 'function') {
@@ -391,7 +430,7 @@ function advanceToNextLevel() {
             
             modalInstance.hide();
             
-            // Also force hide the modal immediately as backup
+            // This force hide the modal immediately as backup
             setTimeout(() => {
                 modalEl.classList.remove('show');
                 modalEl.style.display = 'none';
@@ -470,7 +509,7 @@ function restartGame() {
 
 // Force fix for heart and hint alignment
 function fixHeartHintAlignment() {
-    // Get the container that holds both heart and hint (the status-container)
+    // Get the container that holds both heart and hint 
     const statusContainer = document.querySelector('.status-container');
     
     if (statusContainer) {
@@ -489,7 +528,7 @@ function fixHeartHintAlignment() {
         statusContainer.style.backgroundColor = 'transparent !important';
     }
     
-    // Fix each individual stat box
+    // This fix each individual stat box
     const statBoxes = document.querySelectorAll('.stat-box');
     statBoxes.forEach(box => {
         box.style.display = 'flex !important';
@@ -503,14 +542,14 @@ function fixHeartHintAlignment() {
         box.style.border = 'none !important';
     });
     
-    // Fix the images
+    // Fix images
     const images = document.querySelectorAll('.stat-box img');
     images.forEach(img => {
         img.style.display = 'inline-block !important';
         img.style.verticalAlign = 'middle !important';
     });
     
-    // Fix the text spans
+    // Fix text spans
     const spans = document.querySelectorAll('.stat-box span');
     spans.forEach(span => {
         span.style.display = 'inline-block !important';
@@ -528,14 +567,14 @@ function fixHeartHintAlignment() {
         quote.style.width = '100% !important';
     }
     
-    // Fix the main container
+    // Fix main container
     const mainContainer = document.querySelector('.container.text-center');
     if (mainContainer) {
         mainContainer.style.marginTop = '5px !important';
         mainContainer.style.paddingTop = '0 !important';
     }
     
-    // Fix the title
+    // Fix title
     const title = document.querySelector('h1.pixel-font');
     if (title) {
         title.style.marginTop = '0 !important';

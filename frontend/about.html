@@ -20,7 +20,8 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
+                <img src="img/nav-logo.png" alt="Logo" class="brainrot-logo"onclick="navigate('home')"></button>
+                <span style="font-family: 'Silkscreen', sans-serif; color: white; margin-left: 6px; font-size: 1.5rem;letter-spacing: 1px; ">Combat Coders</span> 
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -416,6 +417,54 @@
             }
         }
     });
+    // =============================================
+// UNIVERSAL NAV AVATAR FALLBACK
+// Copy this to any page with the profile nav icon
+// =============================================
+(function initNavAvatar() {
+    const navProfileIcon = document.getElementById('navProfileIcon');
+    if (!navProfileIcon) return;
+
+    const presetAvatars = [
+        'img/avatar-penguin.png',
+        'img/avatar-raccoon.png', 
+        'img/avatar-kitty.png',
+        'img/avatar-koala.png',
+        'img/avatar-cat.png'
+    ];
+
+    function getRandomPreset() {
+        return presetAvatars[Math.floor(Math.random() * presetAvatars.length)];
+    }
+
+    function applyAvatarStyles() {
+        navProfileIcon.style.width = '40px';
+        navProfileIcon.style.height = '40px';
+        navProfileIcon.style.borderRadius = '50%';
+        navProfileIcon.style.objectFit = 'cover';
+    }
+
+    const existingAvatar = localStorage.getItem('playerAvatar');
+    
+    // Only set a random avatar if none exists (first-time player)
+    if (!existingAvatar || existingAvatar === 'img/player-profile.png' || existingAvatar === '') {
+        const randomAvatar = getRandomPreset();
+        localStorage.setItem('playerAvatar', randomAvatar);
+        navProfileIcon.src = randomAvatar;
+    } else {
+        navProfileIcon.src = existingAvatar;
+    }
+
+    applyAvatarStyles();
+
+    // Fallback if image fails to load
+    navProfileIcon.onerror = function() {
+        const fallback = getRandomPreset();
+        this.src = fallback;
+        localStorage.setItem('playerAvatar', fallback);
+        this.onerror = null;
+    };
+})();
 </script>
 
 </body>

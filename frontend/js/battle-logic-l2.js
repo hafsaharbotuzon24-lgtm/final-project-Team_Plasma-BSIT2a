@@ -138,6 +138,30 @@ const QUESTIONS_L2 = {
     ]
 };
 
+// Override QUESTIONS_L2 from API if available
+(async function loadQuestL2Overrides() {
+    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+    try {
+        const res = await fetch(`${API_BASE}/api/game-settings/quest`);
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                const level2 = data.find(l => l.level === 2);
+                if (level2 && level2.sites) {
+                    for (const siteKey of Object.keys(level2.sites)) {
+                        if (level2.sites[siteKey] && level2.sites[siteKey].questions && level2.sites[siteKey].questions.length > 0) {
+                            QUESTIONS_L2[siteKey] = level2.sites[siteKey].questions;
+                        }
+                    }
+                    console.log('✓ Quest L2 questions loaded from API');
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Could not fetch quest L2 questions from API, using defaults');
+    }
+})();
+
 let battleQIndex_L2 = 0;
 let isTyping_L2 = false;
 

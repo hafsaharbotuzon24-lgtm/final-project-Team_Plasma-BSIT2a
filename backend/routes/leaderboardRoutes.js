@@ -4,6 +4,7 @@ const controller = require('../controllers/leaderboardController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.get('/', protect, controller.getLeaderboard);
+router.get('/quest', protect, controller.getQuestLeaderboard);
 router.post('/submit', protect, controller.submitLeaderboardEntry);
 
 module.exports = router;

@@ -52,7 +52,7 @@ app.use(cors({
 
       if (isLocalhost) return callback(null, true);
     } catch (_) {
-      // ignore parse errors and fall back to explicit allowlist
+  
     }
 
     if (corsOrigins.includes(origin)) return callback(null, true);
@@ -61,7 +61,6 @@ app.use(cors({
   credentials: true
 }));
 
-// Return a clear error when CORS blocks a request
 app.use((err, req, res, next) => {
   if (err && String(err.message || '').startsWith('Not allowed by CORS')) {
     return res.status(403).json({ message: err.message });
@@ -73,7 +72,6 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
 app.use('/api', responseCache(Number(process.env.RESPONSE_CACHE_TTL || 30)));
 
-// Basic health routes (so opening http://127.0.0.1:5000 doesn't show "Cannot GET /")
 app.get('/', (req, res) => {
   res.status(200).send('Combat Coders backend is running. Try /api/auth or other /api routes.');
 });
@@ -103,7 +101,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rate limiting middleware - Auth endpoints (strict: 5 requests per 15 minutes)
+// Rate limiting middleware 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: Number(
@@ -111,16 +109,16 @@ const authLimiter = rateLimit({
     (process.env.NODE_ENV === 'production' ? 20 : 200)
   ),
   message: 'Too many login/register attempts, please try again later',
-  // Avoid locking out users due to normal successful flows (e.g. register -> login).
+ 
   skipSuccessfulRequests: true,
-  standardHeaders: true, // Return rate limit info in RateLimit-* headers
-  legacyHeaders: false, // Disable X-RateLimit-* headers
+  standardHeaders: true, 
+  legacyHeaders: false, 
 });
 
-// Rate limiting middleware - General API (moderate: 100 requests per 15 minutes)
+// Rate limiting middleware 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100, 
   message: 'Too many requests from this IP, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
@@ -145,6 +143,7 @@ app.use('/api/chests', apiLimiter, require('./routes/chestRoutes'));
 app.use('/api/final-battle', apiLimiter, require('./routes/finalBattleRoutes'));
 app.use('/api/save-slots', apiLimiter, require('./routes/saveSlotRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/game-settings', require('./routes/gameSettingsRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 
 // Start server
@@ -153,3 +152,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

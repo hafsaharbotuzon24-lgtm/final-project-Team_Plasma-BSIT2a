@@ -30,7 +30,7 @@ function updateTimerDisplay() {
     if (!timerElement) return;
     
     if (!isGameActive || gameStartTime === null) {
-        // If we have a stored final time, show it
+        
         if (finalStoredTime > 0) {
             const mins = Math.floor(finalStoredTime / 60);
             const secs = finalStoredTime % 60;
@@ -69,7 +69,7 @@ function startGameTimer() {
 
 // Stop the timer and return final duration (for game completion)
 function stopGameTimer() {
-    // Save the duration BEFORE clearing anything
+    
     const duration = getGameDuration();
     finalStoredTime = duration;
     
@@ -78,8 +78,7 @@ function stopGameTimer() {
         timerInterval = null;
     }
     isGameActive = false;
-    // Keep gameStartTime so getFormattedDuration() still works
-    // DO NOT set gameStartTime = null here
+    
     
     updateTimerDisplay();
     logTimer(`Timer STOPPED - Final duration: ${duration}s (${getFormattedDuration()})`);
@@ -172,7 +171,7 @@ function initGameTimer() {
         return;
     }
     
-    // Check if there's a saved game to load
+    
     const savedData = getScopedLoadSaveSlot();
     if (savedData) {
         try {
@@ -251,7 +250,7 @@ window.addEventListener('popstate', function() {
     setTimeout(checkAndStopTimerOnNavigate, 50);
 });
 
-// Also check when clicking navigation buttons
+// Check when clicking navigation buttons
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.home-btn, .play-btn, .leaderboard-btn, .learn-btn, .settings-btn');
     if (btn) {

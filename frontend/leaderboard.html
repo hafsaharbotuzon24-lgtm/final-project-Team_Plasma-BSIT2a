@@ -101,8 +101,8 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
-                </button>
+                <img src="img/nav-logo.png" alt="Logo" class="brainrot-logo"onclick="navigate('home')"></button>
+                <span style="font-family: 'Silkscreen', sans-serif; color: white; margin-left: 6px; font-size: 1.5rem;letter-spacing: 1px; ">Combat Coders</span> 
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -180,7 +180,7 @@
                 <div class="lb-row lb-header">
                     <span class="lb-col-rank">RANK</span>
                     <span class="lb-col-name">PLAYER</span>
-                    <span class="lb-col-score">TIME</span>
+                    <span class="lb-col-score">LEVELS</span>
                 </div>
                 <div id="quest-leaderboard-content" class="lb-scroll-area">
                     <!-- Quest leaderboard entries will be populated here -->
@@ -203,7 +203,14 @@
     <script src="js/game-timer.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
+    // Add to all pages for seamless navigation
+function navigateTo(url) {
+    // Save the audio frame reference
+    const audioFrame = document.getElementById('persistentAudioFrame');
     
+    // Navigate
+    window.location.href = url;
+}
     function updateNavbarAvatar() {
         const savedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
         const navProfileIcon = document.getElementById('navProfileIcon');

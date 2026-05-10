@@ -19,7 +19,7 @@ The frontend is built using static pages (`HTML`), styling (`CSS` + `Bootstrap`)
 
 ### 2) Game Navigation and Core Flow
 - Main menu and page navigation are handled in `js/script.js`.
-- Game progression UI is centered in `play.html` with flow logic in `js/level1-logic.js`.
+- Game progression UI is centered in `play.html` with flow logic in `js/level-logic.js`.
 - The player moves through event cards (`chest`, `room`, `battle`, `boss`) based on current site/state.
 - Character choice is read from `localStorage` and applied during gameplay.
 
@@ -57,11 +57,11 @@ The frontend implementation aligns with the game system use case by covering the
 - **Register/Login Player**
   - Implemented through auth modals and API calls in `js/login.js`.
 - **Play Through Game Events**
-  - Implemented in `js/level1-logic.js` using site-based event progression.
+  - Implemented in `js/level-logic.js` using site-based event progression.
 - **Answer Coding Challenges**
   - Implemented in `js/battle1-logic.js` with battle questions and answer checking.
 - **Gain Rewards (Hints/Hearts)**
-  - Implemented in reward modals and resource updates (`js/chest1-logic.js`, `js/room1-logic.js`).
+  - Implemented in reward modals and resource updates (`js/chest-logic.js`, `js/room-logic.js`).
 - **View Leaderboard**
   - Implemented in `js/leaderboard-logic.js` with live API fetch and rendering.
 

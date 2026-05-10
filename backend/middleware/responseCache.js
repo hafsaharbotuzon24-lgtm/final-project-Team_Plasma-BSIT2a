@@ -41,7 +41,6 @@ function responseCache(ttlSeconds = 30) {
       return next();
     }
 
-    // Save-slot reads must always reflect latest PUT/DELETE writes.
     if (req.path.startsWith('/save-slots')) {
       return next();
     }

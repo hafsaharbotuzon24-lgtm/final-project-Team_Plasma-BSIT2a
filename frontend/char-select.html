@@ -20,8 +20,8 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
-                </button>
+                <img src="img/nav-logo.png" alt="Logo" class="brainrot-logo"onclick="navigate('home')"></button>
+                <span style="font-family: 'Silkscreen', sans-serif; color: white; margin-left: 6px; font-size: 1.5rem;letter-spacing: 1px; ">Combat Coders</span> 
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
@@ -115,6 +115,7 @@
     <script src="js/char-catalogue.js"></script>
     <script>
     
+        
     function updateNavbarAvatar() {
         const savedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
         const navProfileIcon = document.getElementById('navProfileIcon');
@@ -184,6 +185,7 @@
             }
         }
     });
+    
 </script>
 </body>
 </html>

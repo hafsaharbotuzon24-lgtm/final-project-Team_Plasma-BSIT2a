@@ -8,51 +8,69 @@ var API_BASE = window.API_BASE || window.API_BASE_URL || 'http://localhost:5000'
 async function initLeaderboard() {
     const adventureEl = document.getElementById('leaderboard-content');
     const questEl = document.getElementById('quest-leaderboard-content');
-    const containers = [adventureEl, questEl].filter(Boolean);
-    if (containers.length === 0) return;
+    if (!adventureEl && !questEl) return;
 
     const emptyMsg = '<div class="text-center py-4 text-warning">Login first to view leaderboard.</div>';
-    containers.forEach((el) => {
-        el.innerHTML = '';
-    });
+
+    if (adventureEl) adventureEl.innerHTML = '';
+    if (questEl) questEl.innerHTML = '';
 
     const token = localStorage.getItem('authToken');
 
     if (!token) {
-        containers.forEach((el) => {
-            el.innerHTML = emptyMsg;
-        });
+        if (adventureEl) adventureEl.innerHTML = emptyMsg;
+        if (questEl) questEl.innerHTML = emptyMsg;
         return;
     }
 
-    try {
-        const response = await fetch(`${API_BASE}/api/leaderboard`, {
-            headers: { Authorization: `Bearer ${token}` },
-            credentials: 'include'
-        });
+    const currentPlayerId = localStorage.getItem('playerId');
 
-        const board = await response.json();
-        if (!response.ok) {
-            throw new Error(board.message || 'Unable to fetch leaderboard');
+    // Fetch adventure leaderboard
+    if (adventureEl) {
+        try {
+            const response = await fetch(`${API_BASE}/api/leaderboard`, {
+                headers: { Authorization: `Bearer ${token}` },
+                credentials: 'include'
+            });
+
+            const board = await response.json();
+            if (!response.ok) {
+                throw new Error(board.message || 'Unable to fetch leaderboard');
+            }
+
+            const players = (Array.isArray(board) ? board : [])
+                .map((entry) => ({
+                    name: entry.player_id?.username || entry.username || 'Unknown Player',
+                    time: Number(entry.time_seconds) || Number(entry.score) || 999999,
+                    playerId: entry.player_id?._id || entry.player_id?.id || entry.player_id
+                }))
+                .filter((p) => p.time > 0 && p.time < 999999);
+
+            players.sort((a, b) => a.time - b.time);
+            renderAdventurePlayers(adventureEl, players, currentPlayerId);
+        } catch (err) {
+            adventureEl.innerHTML = `<div class="text-center py-4 text-danger">${escapeHtml(err.message)}</div>`;
         }
+    }
 
-        const currentPlayerId = localStorage.getItem('playerId');
+    // Fetch quest leaderboard
+    if (questEl) {
+        try {
+            const response = await fetch(`${API_BASE}/api/leaderboard/quest`, {
+                headers: { Authorization: `Bearer ${token}` },
+                credentials: 'include'
+            });
 
-        // Sort by time (lower is better)
-        const players = (Array.isArray(board) ? board : [])
-            .map((entry) => ({
-                name: entry.player_id?.username || entry.username || 'Unknown Player',
-                time: Number(entry.time_seconds) || Number(entry.score) || 999999,
-                playerId: entry.player_id?._id || entry.player_id?.id || entry.player_id
-            }))
-            .filter((p) => p.time > 0 && p.time < 999999);
+            const questBoard = await response.json();
+            if (!response.ok) {
+                throw new Error(questBoard.message || 'Unable to fetch quest leaderboard');
+            }
 
-        players.sort((a, b) => a.time - b.time);
-        containers.forEach((el) => renderPlayers(el, players, currentPlayerId));
-    } catch (err) {
-        containers.forEach((el) => {
-            el.innerHTML = `<div class="text-center py-4 text-danger">${escapeHtml(err.message)}</div>`;
-        });
+            const questPlayers = Array.isArray(questBoard) ? questBoard : [];
+            renderQuestPlayers(questEl, questPlayers, currentPlayerId);
+        } catch (err) {
+            questEl.innerHTML = `<div class="text-center py-4 text-danger">${escapeHtml(err.message)}</div>`;
+        }
     }
 }
 
@@ -72,7 +90,7 @@ function rankBadgeUrls(rank) {
     return { rankImgSrc, rankAlt };
 }
 
-function renderPlayers(container, players, currentPlayerId) {
+function renderAdventurePlayers(container, players, currentPlayerId) {
     if (players.length === 0) {
         container.innerHTML = '<div class="text-center py-4 text-muted">No times recorded yet. Complete the game to appear on leaderboard!</div>';
         return;
@@ -97,11 +115,43 @@ function renderPlayers(container, players, currentPlayerId) {
 
         row.innerHTML = `
             <span class="lb-col-rank lb-col-rank-img-wrap">
+              <span class="lb-rank-num">${rank}</span>
               <img class="lb-rank-img" src="${rankImgSrc}" alt="${rankAlt}" width="48" height="48" loading="lazy">
-              <span class="lb-rank-num visually-hidden">${rank}</span>
             </span>
             <span class="lb-col-name text-uppercase">${escapeHtml(player.name)}</span>
             <span class="lb-col-score text-warning fw-bold">⏱️ ${formattedTime}</span>
+        `;
+
+        container.appendChild(row);
+    });
+}
+
+function renderQuestPlayers(container, players, currentPlayerId) {
+    if (players.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-muted">No quest levels completed yet. Play quest mode to appear here!</div>';
+        return;
+    }
+
+    players.forEach((player, index) => {
+        const rank = index + 1;
+        const row = document.createElement('div');
+        row.className = 'lb-row lb-player-row';
+
+        if (String(player._id) === String(currentPlayerId)) {
+            row.classList.add('current-player-row');
+            row.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+            row.style.border = '1px solid gold';
+        }
+
+        const { rankImgSrc, rankAlt } = rankBadgeUrls(rank);
+
+        row.innerHTML = `
+            <span class="lb-col-rank lb-col-rank-img-wrap">
+              <span class="lb-rank-num">${rank}</span>
+              <img class="lb-rank-img" src="${rankImgSrc}" alt="${rankAlt}" width="48" height="48" loading="lazy">
+            </span>
+            <span class="lb-col-name text-uppercase">${escapeHtml(player.username)}</span>
+            <span class="lb-col-score text-warning fw-bold">🏆 ${player.completedLevels} level${player.completedLevels !== 1 ? 's' : ''}</span>
         `;
 
         container.appendChild(row);

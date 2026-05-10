@@ -1,5 +1,4 @@
-// motd-logic.js
-// Dynamic MOTD system - Safe, non-interfering version
+
 
 (function() {
     'use strict';
@@ -8,7 +7,7 @@
     let prevLevel = null;
     let prevSite = null;
     let prevChoice = null;
-    let choiceStack = []; // Track choices for combination messages
+    let choiceStack = []; 
     
     // MOTD database
     const MOTD = {
@@ -139,13 +138,12 @@
         } else {
             // Fallback if gameState not ready
             if (motdEl.textContent === "Give it your best shot, Adventurer!") {
-                // Keep default, don't change
+                
             }
         }
     }
     
     // Hook into the existing updateUI function from level-logic.js
-    // This is the SAFEST way - no polling, just piggyback on existing updates
     function hookIntoLevelLogic() {
         // Wait for the original updateUI to be defined
         const checkInterval = setInterval(function() {
@@ -168,7 +166,7 @@
             }
         }, 50);
         
-        // Also hook into proceed function if it exists
+        // Hook into proceed function if it exists
         setTimeout(function() {
             if (typeof proceed === 'function') {
                 const originalProceed = proceed;
@@ -199,12 +197,12 @@
     
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
-        // Apply font styling (keep pixel-font but ensure white color)
+        
         const motdEl = getMotdElement();
         if (motdEl) {
             motdEl.style.color = "#ffffff";
             motdEl.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
-            // Keep the existing pixel-font class, don't change it
+        
         }
         
         hookIntoLevelLogic();

@@ -20,10 +20,9 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
-                </button>
+                <img src="img/nav-logo.png" alt="Logo" class="brainrot-logo"onclick="navigate('home')"></button>
+                <span style="font-family: 'Silkscreen', sans-serif; color: white; margin-left: 6px; font-size: 1.5rem;letter-spacing: 1px; ">Combat Coders</span> 
             </div>
-
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
                 <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
                 <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); window.location.href='play-modes.html'">Play</button>
@@ -311,6 +310,7 @@
     <script src="js/account.js"></script>
     <script src="js/audio-manager.js"></script>
     <script>
+        
         // =============================================
         // PROFILE PAGE SCRIPT - PRESERVES ALL BACKEND
         // Avatar saves ONLY on Update Profile click
@@ -418,15 +418,15 @@
             const frameWidth = frame.clientWidth;
             const frameHeight = frame.clientHeight;
             
-            // Get the image's natural dimensions
+            
             const imgNaturalWidth = preview.naturalWidth;
             const imgNaturalHeight = preview.naturalHeight;
             
-            // Calculate base size based on size slider (percentage of frame)
+            // Calculates base size based on size slider (percentage of frame)
             const baseSizePercent = avatarSize / 100;
             let baseWidth, baseHeight;
             
-            // Maintain aspect ratio based on image's natural dimensions
+            // Maintains aspect ratio based on image's natural dimensions
             if (imgNaturalWidth > imgNaturalHeight) {
                 baseWidth = frameWidth * baseSizePercent;
                 baseHeight = (imgNaturalHeight / imgNaturalWidth) * baseWidth;
@@ -435,11 +435,11 @@
                 baseWidth = (imgNaturalWidth / imgNaturalHeight) * baseHeight;
             }
             
-            // Apply width and height
+            
             preview.style.width = baseWidth + 'px';
             preview.style.height = baseHeight + 'px';
             
-            // Calculate centered position, then apply offset
+            
             const startX = (frameWidth - baseWidth) / 2;
             const startY = (frameHeight - baseHeight) / 2;
             
@@ -609,11 +609,11 @@
             document.getElementById('zoomValue').textContent = '100%';
             document.getElementById('sizeValue').textContent = '100%';
             
-            // Wait for image to load before updating preview
+            
             previewImg.onload = function() {
                 updateAvatarPreview();
             };
-            // If already loaded, update immediately
+            
             if (previewImg.complete) {
                 updateAvatarPreview();
             }
@@ -689,13 +689,13 @@
         }
         
         function applyAvatarChanges() {
-            // Wait a tiny bit for any pending transforms to settle
+            
             setTimeout(() => {
-                // Capture the exact preview with all transforms
+                
                 const capturedAvatar = captureAvatarPreview();
                 tempAvatarPreview = capturedAvatar;
                 
-                // Show preview in profile circle
+                
                 const profileImg = document.getElementById('profileAvatar');
                 profileImg.src = capturedAvatar;
                 profileImg.style.objectFit = 'cover';
@@ -738,7 +738,7 @@
                 const board = await response.json();
                 if (!response.ok) throw new Error(board.message || 'Unable to fetch leaderboard');
                 
-                // Sort by time (lower is better)
+                // Sorts by time
                 const players = (Array.isArray(board) ? board : [])
                     .map((entry) => ({
                         name: entry.player_id?.username || entry.username || 'Unknown Player',
@@ -749,7 +749,7 @@
                 
                 players.sort((a, b) => a.time - b.time);
                 
-                // Find current player's rank
+                // Finds current player's rank
                 const playerIndex = players.findIndex(p => String(p.playerId) === String(currentPlayerId));
                 
                 if (playerIndex !== -1) {
@@ -774,7 +774,7 @@
                 
             } catch (err) {
                 console.error('Error fetching rank:', err);
-                // Show error state
+                
                 rankIcon.src = 'img/unranked.png';
                 rankNumberSpan.textContent = 'Unranked';
                 rankBadgeContainer.style.display = 'flex';
@@ -823,10 +823,16 @@
                 const item = document.createElement('div');
                 item.className = `all-achievement-item ${!isUnlocked ? 'locked' : ''}`;
                 
+                let medalContent = '';
+                if (isUnlocked) {
+                    // Show the correct badge image for each achievement
+                    medalContent = `<img src="${achievement.medalImg}" alt="${achievement.name}" style="width:48px;height:48px;object-fit:contain;">`;
+                } else {
+                    medalContent = '<div class="medal-placeholder" style="width:48px;height:48px;border:2px dashed #2a4a6e;border-radius:50%;"></div>';
+                }
+                
                 item.innerHTML = `
-                    <div class="medal-slot">
-                        ${isUnlocked ? `<img src="${achievement.medalImg}" alt="${achievement.name}">` : '<div class="medal-placeholder" style="width:48px;height:48px;border:2px dashed #2a4a6e;border-radius:50%;"></div>'}
-                    </div>
+                    <div class="medal-slot">${medalContent}</div>
                     <div class="all-achievement-info">
                         <div class="all-achievement-name">${achievement.name}</div>
                         <div class="all-achievement-desc">${achievement.desc}</div>
@@ -846,51 +852,68 @@
         
         // Audio Settings Initialization (from audio-manager.js)
         function initAudioSettings() {
-            const sfxSlider = document.getElementById('sfx-slider');
-            const musicSlider = document.getElementById('music-slider');
-            const sfxBtn = document.getElementById('toggle-sfx');
-            const musicBtn = document.getElementById('toggle-music');
+    const sfxSlider = document.getElementById('sfx-slider');
+    const musicSlider = document.getElementById('music-slider');
+    const sfxBtn = document.getElementById('toggle-sfx');
+    const musicBtn = document.getElementById('toggle-music');
+    
+    const savedSfx = localStorage.getItem('sfxVolume') || '80';
+    const savedMusic = localStorage.getItem('musicVolume') || '50';
+    
+    if (sfxSlider) {
+        sfxSlider.value = savedSfx;
+        sfxSlider.addEventListener('input', function(e) {
+            const value = e.target.value;
+            localStorage.setItem('sfxVolume', value);
             
-            const savedSfx = localStorage.getItem('sfxVolume') || '80';
-            const savedMusic = localStorage.getItem('musicVolume') || '50';
+            window.dispatchEvent(new CustomEvent('sfxVolumeChanged'));
             
-            if (sfxSlider) {
-                sfxSlider.value = savedSfx;
-                sfxSlider.addEventListener('input', (e) => {
-                    localStorage.setItem('sfxVolume', e.target.value);
-                });
+            if (window.updateSFXVolume) {
+                window.updateSFXVolume();
             }
+        });
+    }
+    
+    if (musicSlider) {
+        musicSlider.value = savedMusic;
+        musicSlider.addEventListener('input', function(e) {
+            const value = e.target.value;
+            localStorage.setItem('musicVolume', value);
             
-            if (musicSlider) {
-                musicSlider.value = savedMusic;
-                musicSlider.addEventListener('input', (e) => {
-                    const val = e.target.value;
-                    localStorage.setItem('musicVolume', val);
-                    if (window.bgm) {
-                        window.bgm.volume = val / 100;
-                    }
-                });
-            }
+            window.dispatchEvent(new CustomEvent('musicVolumeChanged'));
             
-            if (sfxBtn) {
-                sfxBtn.addEventListener('click', () => {
-                    const current = localStorage.getItem('sfxVolume') || '80';
-                    const target = current > '0' ? '0' : '80';
-                    localStorage.setItem('sfxVolume', target);
-                    if (sfxSlider) sfxSlider.value = target;
-                });
+            if (window.updateMusicVolume) {
+                window.updateMusicVolume();
             }
-            
-            if (musicBtn) {
-                musicBtn.addEventListener('click', () => {
-                    const current = localStorage.getItem('musicVolume') || '50';
-                    const target = current > '0' ? '0' : '50';
-                    localStorage.setItem('musicVolume', target);
-                    if (musicSlider) musicSlider.value = target;
-                    if (window.bgm) window.bgm.volume = target / 100;
-                });
+        });
+    }
+    
+    if (sfxBtn) {
+        sfxBtn.addEventListener('click', function() {
+            const current = parseInt(localStorage.getItem('sfxVolume') || '80');
+            const target = current > 0 ? 0 : 80;
+            localStorage.setItem('sfxVolume', target.toString());
+            if (sfxSlider) sfxSlider.value = target;
+            window.dispatchEvent(new CustomEvent('sfxVolumeChanged'));
+            if (window.updateSFXVolume) {
+                window.updateSFXVolume();
             }
-        }
+        });
+    }
+    
+    if (musicBtn) {
+        musicBtn.addEventListener('click', function() {
+            const current = parseInt(localStorage.getItem('musicVolume') || '50');
+            const target = current > 0 ? 0 : 50;
+            localStorage.setItem('musicVolume', target.toString());
+            if (musicSlider) musicSlider.value = target;
+            window.dispatchEvent(new CustomEvent('musicVolumeChanged'));
+            if (window.updateMusicVolume) {
+                window.updateMusicVolume();
+            }
+        });
+    }
+}
         
         // Avatar Editor Slider Events with scroll wheel support
         function initAvatarEditorSliders() {
@@ -963,10 +986,10 @@
             
             loadMedals();
             
-            // Fetch and display player rank
+            
             fetchAndDisplayPlayerRank();
             
-            // Animate XP bar
+            
             animateXPBar();
         }
         

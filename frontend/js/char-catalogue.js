@@ -1,31 +1,40 @@
-const enterBtn = document.querySelector('.scroll-btn-enter');
+const desktopEnterBtn = document.querySelector('#charCarousel .scroll-btn-enter');
+const mobileEnterBtn = document.querySelector('.bottom-nav .scroll-btn-enter');
 
-if (enterBtn) {
-    enterBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+function handleEnterClick(e) {
+    e.preventDefault();
 
-        // Get the current character index from the carousel
-        let selectedChar = characters[currentIndex].roleScroll;
-        
-        // Determine character based on roleScroll image
-        if (selectedChar.includes('witch')) {
-            selectedChar = 'witch';
-        } else if (selectedChar.includes('knight')) {
-            selectedChar = 'knight';
-        } else if (selectedChar.includes('rogue')) {
-            selectedChar = 'rogue';
-        } else {
-            selectedChar = 'witch'; 
-        }
+    // Get the current character index from the carousel
+    let selectedChar = characters[currentIndex].roleScroll;
+    
+    // Determine character based on roleScroll image
+    if (selectedChar.includes('witch')) {
+        selectedChar = 'witch';
+    } else if (selectedChar.includes('knight')) {
+        selectedChar = 'knight';
+    } else if (selectedChar.includes('rogue')) {
+        selectedChar = 'rogue';
+    } else {
+        selectedChar = 'witch'; 
+    }
 
-        console.log('Character selected:', selectedChar);
-        
-        // Save to LocalStorage
-        localStorage.setItem('selectedCharacter', selectedChar);
+    console.log('Character selected:', selectedChar);
+    
+    
+    localStorage.setItem('selectedCharacter', selectedChar);
 
-        // Move to play page
-        window.location.href = 'play.html';
-    });
+    
+    window.location.href = 'play.html';
+}
+
+
+if (desktopEnterBtn) {
+    desktopEnterBtn.addEventListener('click', handleEnterClick);
+}
+
+
+if (mobileEnterBtn) {
+    mobileEnterBtn.addEventListener('click', handleEnterClick);
 }
 const characters = [
     {
@@ -91,25 +100,25 @@ function prevChar() {
     updateDisplay();
 }
 
-// Initialize on load
+
 window.onload = updateDisplay;
 
 // Listen for keyboard arrow keys
 const carouselElement = document.getElementById('charCarousel');
     const bsCarousel = bootstrap.Carousel.getOrCreateInstance(carouselElement);
 
-    // 2. Add the Global Keyboard Listener
+    
     window.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowLeft') {
-            // Move the visual slide to the left
+            
             bsCarousel.prev();
-            // Call your existing function to update text/stats
+            
             if (typeof prevChar === "function") prevChar();
         } 
         else if (event.key === 'ArrowRight') {
-            // Move the visual slide to the right
+            
             bsCarousel.next();
-            // Call your existing function to update text/stats
+            
             if (typeof nextChar === "function") nextChar();
         }
     });

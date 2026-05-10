@@ -122,9 +122,9 @@ const QUESTIONS_L3 = {
             h: "Use &lt;ul&gt;, class attribute, &lt;li&gt; tags."
         },
         {
-            q: "Boss Q3. Create a webpage with header 'Feedback Portal', main with section containing two details elements. First: summary 'Helpful tips', p 'Tips that are helpful'. Second: summary 'More Information', p 'Additional information unavailable'.<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n&lt;body&gt;\n  &lt;header&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:180px;'>&lt;/h1&gt;\n  &lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:80px;'>&gt;\n  &lt;main&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:80px;'>&gt;\n      &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:80px;'>&gt;\n        &lt;summary&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:80px;'>&gt;\n        &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n      &lt;/details&gt;\n      &lt;details&gt;\n        &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:180px;'>&lt;/summary&gt;\n        &lt;p&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:280px;'>&lt;/p&gt;\n      &lt;/<input type='text' id='fillBlank14' class='blank-input' style='width:80px;'>&gt;\n    &lt;/section&gt;\n  &lt;/<input type='text' id='fillBlank15' class='blank-input' style='width:80px;'>&gt;\n&lt;/body&gt;\n&lt;/<input type='text' id='fillBlank16' class='blank-input' style='width:60px;'>&gt;</pre>",
-            a: ["html", "h1", "Feedback Portal", "header", "section", "details", "Helpful tips", "summary", "p", "Tips that are helpful", "summary", "More Information", "Additional information unavailable", "details", "main", "html"],
-            h: "First details: summary 'Helpful tips', p 'Tips that are helpful'. Second: summary 'More Information', p 'Additional information unavailable'."
+            q: "Boss Q3. Create a webpage with header 'Details Page', main with section containing two details elements. First summary: 'Helpful Tips', p 'Tips that are helpful'. Second summary: 'More Information', p 'Additional information unavailable'.<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n&lt;body&gt;\n  &lt;header&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:180px;'>&lt;/h1&gt;\n  &lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:80px;'>&gt;\n  &lt;main&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:80px;'>&gt;\n      &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:80px;'>&gt;\n        &lt;summary&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:80px;'>&gt;\n        &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:200px;'>&lt;/p&gt;\n      &lt;/details&gt;\n      &lt;details&gt;\n        &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:180px;'>&lt;/summary&gt;\n        &lt;p&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:280px;'>&lt;/p&gt;\n      &lt;/<input type='text' id='fillBlank14' class='blank-input' style='width:80px;'>&gt;\n    &lt;/section&gt;\n  &lt;/<input type='text' id='fillBlank15' class='blank-input' style='width:80px;'>&gt;\n&lt;/body&gt;\n&lt;/<input type='text' id='fillBlank16' class='blank-input' style='width:60px;'>&gt;</pre>",
+            a: ["html", "h1", "Details Page", "header", "section", "details", "Helpful Tips", "summary", "p", "Tips that are helpful", "summary", "More Information", "Additional information unavailable", "details", "main", "html"],
+            h: "First details: summary 'Helpful Tips', p 'Tips that are helpful'. Second: summary 'More Information', p 'Additional information unavailable'."
         },
         {
             q: "Boss Q4. Create a webpage with header 'Feedback Portal', main with form, section 'User Preferences', label 'Level:', select with options 'Low' and 'High', submit button 'Submit Info'.<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:80px;'>&gt;\n      &lt;h1&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:40px;'>&gt;\n    &lt;/header&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:60px;'>&gt;\n      &lt;form&gt;\n        &lt;section&gt;\n          &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:180px;'>&lt;/h3&gt;\n          &lt;label&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:80px;'>&lt;/<input type='text' id='fillBlank9' class='blank-input' style='width:60px;'>&gt;\n          &lt;<input type='text' id='fillBlank10' class='blank-input' style='width:80px;'>&gt;\n            &lt;option&gt;<input type='text' id='fillBlank11' class='blank-input' style='width:60px;'>&lt;/<input type='text' id='fillBlank12' class='blank-input' style='width:80px;'>&gt;\n            &lt;<input type='text' id='fillBlank13' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank14' class='blank-input' style='width:60px;'>&lt;/option&gt;\n          &lt;/select&gt;\n        &lt;/section&gt;\n        &lt;button type=\"submit\"&gt;<input type='text' id='fillBlank15' class='blank-input' style='width:140px;'>&lt;/<input type='text' id='fillBlank16' class='blank-input' style='width:80px;'>&gt;\n      &lt;/form&gt;\n    &lt;/main&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>",
@@ -138,6 +138,30 @@ const QUESTIONS_L3 = {
         }
     ]
 };
+
+// Override QUESTIONS_L3 from API if available
+(async function loadQuestL3Overrides() {
+    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+    try {
+        const res = await fetch(`${API_BASE}/api/game-settings/quest`);
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                const level3 = data.find(l => l.level === 3);
+                if (level3 && level3.sites) {
+                    for (const siteKey of Object.keys(level3.sites)) {
+                        if (level3.sites[siteKey] && level3.sites[siteKey].questions && level3.sites[siteKey].questions.length > 0) {
+                            QUESTIONS_L3[siteKey] = level3.sites[siteKey].questions;
+                        }
+                    }
+                    console.log('✓ Quest L3 questions loaded from API');
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Could not fetch quest L3 questions from API, using defaults');
+    }
+})();
 
 let battleQIndex_L3 = 0;
 let isTyping_L3 = false;

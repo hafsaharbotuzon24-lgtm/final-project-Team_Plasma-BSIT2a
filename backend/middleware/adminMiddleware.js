@@ -17,7 +17,6 @@ const adminProtect = async (req, res, next) => {
 
     const decoded = jwt.verify(token, ADMIN_SECRET);
 
-    // Check if this is an admin session (issued by admin login)
     if (decoded.role !== 'admin') {
       return res.status(403).json({ message: 'Access denied. Admin role required.' });
     }

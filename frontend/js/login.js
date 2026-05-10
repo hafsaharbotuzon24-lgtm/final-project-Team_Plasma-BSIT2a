@@ -493,7 +493,7 @@ function devLogin(username = 'DevTester', email = 'dev@plasma.com') {
 // INITIALIZATION
 // =============================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Only run this on login.html page - check if element specific to login page exists
+    // Check if element specific to login page exists
     const loginModal = document.getElementById('loginExistingModal');
     const regModal = document.getElementById('regModal');
     

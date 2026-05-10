@@ -742,7 +742,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     left: 0;
     width: 100%; 
     background-color: #020722; 
-    border-bottom: 6px solid #132a41; 
+    border-bottom: 4px solid #132a41; 
     height: 10px;
     min-height: 70px; 
     image-rendering: pixelated;
@@ -755,10 +755,11 @@ label[onclick]:active, [data-clickable="true"]:active,
 
 .brainrot-logo {
     display: block; 
-    width: 300px;
+    width: 30px;
     height: auto;
     background: transparent;
     margin-top: -5px; 
+    margin-right: 0;
 }
 
 .nav-btn-logo {
@@ -766,17 +767,26 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 0;
     margin: 0;
+    margin-right: 8px; /* Space between logo and text */
     outline: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: visible; 
-
 }
 
+.nav-logo-text {
+    font-family: 'Silkscreen', sans-serif !important;
+    color: #ffffff !important;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+/* Keep this for when span is inside button */
 .nav-btn-logo span {
-    font-family: 'Silkscreen', sans-serif;
+    font-family: 'Silkscreen', sans-serif !important;
+    color: #ffffff !important;
 }
 .main-menu-container {
     display: flex;

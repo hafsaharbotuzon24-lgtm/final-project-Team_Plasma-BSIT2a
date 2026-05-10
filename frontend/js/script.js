@@ -44,7 +44,8 @@ function navigate(destination) {
         'char-select': '.play-btn',
         'leaderboard': '.leaderboard-btn',
         'learn': '.learn-btn',
-        'about': '.home-btn'
+        'about': '.home-btn',
+        'play-modes': '.play-btn'
     };
     
     function applyTextGlow() {
@@ -73,7 +74,7 @@ function navigate(destination) {
         activeButton.style.setProperty('border-color', '#ffc107', 'important');
         activeButton.style.setProperty('box-shadow', 'none', 'important');
         
-        // Also style any span inside the button
+        // Style any span inside the button
         const innerSpan = activeButton.querySelector('span');
         if (innerSpan) {
             innerSpan.style.setProperty('color', '#ffc107', 'important');
@@ -401,7 +402,7 @@ function handleLogout() {
     // 2. Target the unique ID we created
     const modal = document.getElementById('ccLogoutModal');
     if (modal) {
-        modal.style.display = 'flex'; // This brings it to the front
+        modal.style.display = 'flex';
     } else {
         console.error("Modal with ID 'ccLogoutModal' not found.");
     }
@@ -416,3 +417,50 @@ function confirmCcLogout() {
     window.location.href = 'login.html';
 }
 
+// =============================================
+// UNIVERSAL NAV AVATAR FALLBACK
+// =============================================
+(function initNavAvatar() {
+    const navProfileIcon = document.getElementById('navProfileIcon');
+    if (!navProfileIcon) return;
+
+    const presetAvatars = [
+        'img/avatar-penguin.png',
+        'img/avatar-raccoon.png', 
+        'img/avatar-kitty.png',
+        'img/avatar-koala.png',
+        'img/avatar-cat.png'
+    ];
+
+    function getRandomPreset() {
+        return presetAvatars[Math.floor(Math.random() * presetAvatars.length)];
+    }
+
+    function applyAvatarStyles() {
+        navProfileIcon.style.width = '40px';
+        navProfileIcon.style.height = '40px';
+        navProfileIcon.style.borderRadius = '50%';
+        navProfileIcon.style.objectFit = 'cover';
+    }
+
+    const existingAvatar = localStorage.getItem('playerAvatar');
+    
+    // Only set a random avatar if none exists (first-time player)
+    if (!existingAvatar || existingAvatar === 'img/player-profile.png' || existingAvatar === '') {
+        const randomAvatar = getRandomPreset();
+        localStorage.setItem('playerAvatar', randomAvatar);
+        navProfileIcon.src = randomAvatar;
+    } else {
+        navProfileIcon.src = existingAvatar;
+    }
+
+    applyAvatarStyles();
+
+    // Fallback if image fails to load
+    navProfileIcon.onerror = function() {
+        const fallback = getRandomPreset();
+        this.src = fallback;
+        localStorage.setItem('playerAvatar', fallback);
+        this.onerror = null;
+    };
+})();

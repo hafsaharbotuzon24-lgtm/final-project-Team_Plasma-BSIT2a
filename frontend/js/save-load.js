@@ -160,7 +160,7 @@ function createSaveData(slotNumber) {
     // Get avatar - extract just the filename if it's base64 encoded
     let playerAvatarValue = localStorage.getItem('playerAvatar') || 'img/player-profile.png';
     if (playerAvatarValue.startsWith('data:')) {
-        playerAvatarValue = 'img/player-profile.png'; // Use default if it's base64
+        playerAvatarValue = 'img/player-profile.png'; 
     }
     
     return {
@@ -168,7 +168,7 @@ function createSaveData(slotNumber) {
         playerId: localStorage.getItem('playerId') || '',
         playerName: localStorage.getItem('playerUserName') || 'CombatCoder_01',
         playerEmail: localStorage.getItem('playerEmail') || 'player@plasma.com',
-        playerAvatar: playerAvatarValue,  // Now only stores the path, not base64 data
+        playerAvatar: playerAvatarValue, 
         character: gameState ? gameState.character : localStorage.getItem('selectedCharacter') || 'witch',
         hearts: gameState ? gameState.hearts : 3,
         hints: gameState ? gameState.hints : 1,
@@ -226,11 +226,11 @@ async function loadGameFromSlot(slotNumber) {
     
     console.log(`Game data prepared for loading from slot ${slotNumber}`, saveData);
     
-    // Show success modal
+    
     const successModal = new bootstrap.Modal(document.getElementById('loadSuccessModal'));
     successModal.show();
     
-    // Redirect to play page after short delay
+    
     setTimeout(() => {
         window.location.href = 'play.html';
     }, 1500);
@@ -245,7 +245,7 @@ function applyLoadedSave() {
     try {
         const saveData = JSON.parse(savedData);
         
-        // Apply saved data to gameState
+        // This apply saved data to gameState
         if (typeof gameState !== 'undefined') {
             gameState.character = saveData.character || 'witch';
             gameState.hearts = saveData.hearts || 3;
@@ -325,18 +325,18 @@ async function deleteSaveSlot(slotNumber) {
         </div>
     `;
     
-    // Remove existing modal if present
+    
     const existingModal = document.getElementById('deleteConfirmModal');
     if (existingModal) existingModal.remove();
     
-    // Add to body
+    
     document.body.insertAdjacentHTML('beforeend', modalHtml);
     
-    // Show modal
+    
     const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
     modal.show();
     
-    // Clean up when hidden
+    
     document.getElementById('deleteConfirmModal').addEventListener('hidden.bs.modal', function() {
         this.remove();
     });

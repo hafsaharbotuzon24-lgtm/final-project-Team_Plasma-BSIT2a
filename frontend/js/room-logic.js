@@ -47,7 +47,7 @@ function openRoomModal() {
 }
 
 function renderReward(type, text, reward, color) {
-    // Select the background image based on the reward type (chest or room)
+    // This select the background image based on the reward type (chest or room)
     const bgImage = type === 'chest' ? 'img/bg-chest.png' : 'img/bg-room.png';
 
     document.getElementById('modalContentWrapper').innerHTML = `
@@ -64,7 +64,7 @@ function renderReward(type, text, reward, color) {
     
     new bootstrap.Modal(document.getElementById('gameModal')).show();
     
-    // Ensure the typewriter runs after the modal is rendered
+    // This ensures the typewriter runs after the modal is rendered
     setTimeout(() => {
         if (typeof runTypewriter === "function") {
             runTypewriter(text, 'rewardTypewriter');

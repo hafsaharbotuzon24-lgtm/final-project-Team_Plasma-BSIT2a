@@ -1,4 +1,4 @@
-// save.js - Updated with visibility control
+
 let saveIconTimeout = null;
 
 function toggleSaveButton(isVisible) {
@@ -6,7 +6,7 @@ function toggleSaveButton(isVisible) {
     if (btn) {
         btn.style.display = isVisible ? 'block' : 'none';
         
-        // Add pulse animation when visible
+        
         if (isVisible) {
             btn.classList.add('save-pulse');
             if (saveIconTimeout) clearTimeout(saveIconTimeout);
@@ -17,7 +17,7 @@ function toggleSaveButton(isVisible) {
     }
 }
 
-// Show save button only during card selection (not in battles/chests/rooms)
+// Shows the save button only during card selection
 function updateSaveButtonVisibility() {
     const modalEl = document.getElementById('gameModal');
     const isModalOpen = modalEl && modalEl.classList.contains('show');
@@ -25,7 +25,7 @@ function updateSaveButtonVisibility() {
     const isInChest = document.querySelector('.chest-container') !== null;
     const isInRoom = document.querySelector('.room-container') !== null;
     
-    // Show save button only when on main game screen (cards visible) and no modals open
+    
     const shouldShow = !isModalOpen && !isInBattle && !isInChest && !isInRoom;
     toggleSaveButton(shouldShow);
 }
@@ -61,14 +61,14 @@ function triggerSaveFlow() {
     const existingModal = document.getElementById('saveSlotModal');
     if (existingModal) existingModal.remove();
     
-    // Add to body
+    
     document.body.insertAdjacentHTML('beforeend', slotsHtml);
     
-    // Show modal
+    
     const modal = new bootstrap.Modal(document.getElementById('saveSlotModal'));
     modal.show();
     
-    // Clean up when hidden
+    
     document.getElementById('saveSlotModal').addEventListener('hidden.bs.modal', function() {
         this.remove();
     });
@@ -115,14 +115,14 @@ function executeGameSave() {
     const modal = bootstrap.Modal.getInstance(confirmEl);
     if(modal) modal.hide();
     
-    // Show slot selection instead of direct save
+    
     triggerSaveFlow();
 }
 
-// Monitor for save button visibility
+
 setInterval(updateSaveButtonVisibility, 500);
 
-// Also check when modals open/close
+
 document.addEventListener('shown.bs.modal', () => {
     setTimeout(updateSaveButtonVisibility, 100);
 });
@@ -131,7 +131,7 @@ document.addEventListener('hidden.bs.modal', () => {
     setTimeout(updateSaveButtonVisibility, 100);
 });
 
-// Add pulse animation CSS
+
 const style = document.createElement('style');
 style.textContent = `
     .save-pulse {

@@ -60,11 +60,6 @@
 }
 
 /* 5. Scroll Area & Row Styling */
-.lb-scroll-area {
-    max-height: 500px; 
-    overflow-y: auto;
-    padding: 8px;
-}
 
 .lb-row {
     background-color: #1c3554; 
@@ -101,6 +96,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+}
+
+.lb-rank-num {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffc107;
+    min-width: 30px;
+    text-align: center;
 }
 
 .lb-rank-img {
@@ -209,4 +214,36 @@
 
 .lb-header {
     animation: lbGlow 3s ease-in-out infinite;
+}
+/* Adjust info container size and add internal scrollbar */
+.lb-scroll-area {
+    max-height: 520px;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* Custom scrollbar styling */
+.lb-scroll-area::-webkit-scrollbar {
+    width: 8px;
+}
+
+.lb-scroll-area::-webkit-scrollbar-track {
+    background: #0b1a30;
+    border-radius: 10px;
+}
+
+.lb-scroll-area::-webkit-scrollbar-thumb {
+    background: #ffc107;
+    border-radius: 10px;
+    border: 1px solid #000;
+}
+
+.lb-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: #ffd700;
+}
+
+/* Firefox scrollbar */
+.lb-scroll-area {
+    scrollbar-width: thin;
+    scrollbar-color: #ffc107 #0b1a30;
 }

@@ -24,9 +24,9 @@
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
                 <button class="nav-btn-logo">
-                <span>Combat Coders</span>
-                </button>
-            </div>
+                <img src="img/nav-logo.png" alt="Logo" class="brainrot-logo"onclick="navigate('home')"></button>
+                <span style="font-family: 'Silkscreen', sans-serif; color: white; margin-left: 6px; font-size: 1.5rem;letter-spacing: 1px; ">Combat Coders</span> 
+            </div> 
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
                 <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
@@ -209,6 +209,7 @@ window.addEventListener("load", () => {
         }
         return;
     }
+    
 
     // If intro has already been shown in this session, skip it
     if (introAlreadyShown) {

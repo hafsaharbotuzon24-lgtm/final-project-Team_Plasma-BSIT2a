@@ -2,6 +2,28 @@
 // HTML LEARNING MODULES DATA
 // =============================================
 
+// Fetch module quiz overrides from the API and merge into modulesData
+(async function loadModuleQuizOverrides() {
+    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+    try {
+        const res = await fetch(`${API_BASE}/api/game-settings/modules`);
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                for (const mod of data) {
+                    const target = modulesData.find(m => m.id === mod.moduleId);
+                    if (target && mod.questions && mod.questions.length > 0) {
+                        target.quiz.questions = mod.questions;
+                    }
+                }
+                console.log('✓ Module quiz overrides loaded from API');
+            }
+        }
+    } catch (e) {
+        console.warn('Could not fetch module quiz overrides, using defaults');
+    }
+})();
+
 const modulesData = [
     {
         id: 1,

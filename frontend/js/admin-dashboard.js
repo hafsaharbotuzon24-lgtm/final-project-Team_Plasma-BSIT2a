@@ -110,6 +110,8 @@ function loadSectionData(sectionName) {
         case 'overview': loadOverviewData(); break;
         case 'users': loadUsersData(); break;
         case 'leaderboard': loadLeaderboardData(); break;
+        case 'questions': loadQuestionsData(); break;
+        case 'music': loadMusicData(); break;
         case 'settings': loadSettingsData(); break;
     }
 }
@@ -625,6 +627,589 @@ function resetSettings() {
     }
 }
 
+// =============================================
+// QUESTIONS MANAGEMENT
+// =============================================
+
+let cachedQuestLevels = [];
+let cachedModuleQuizzes = [];
+
+// Undo state for deleted questions
+let lastDeletedQuest = null; // { level, site, index, question }
+let lastDeletedModule = null; // { moduleId, index, question }
+let lastDeletedMusic = null; // { index, track }
+
+// Pending delete callback for the question delete modal
+let pendingDeleteCallback = null;
+
+function openQuestionDeleteModal(title, message, preview, onConfirm) {
+    document.getElementById('questionDeleteTitle').textContent = title || 'Confirm Deletion';
+    document.getElementById('questionDeleteMessage').textContent = message || 'Are you sure you want to delete this item?';
+    document.getElementById('questionDeletePreview').innerHTML = preview || '';
+    pendingDeleteCallback = onConfirm;
+    document.getElementById('questionDeleteModal').style.display = 'flex';
+}
+
+function closeQuestionDeleteModal() {
+    document.getElementById('questionDeleteModal').style.display = 'none';
+    pendingDeleteCallback = null;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('confirmQuestionDeleteBtn');
+    if (btn) {
+        btn.addEventListener('click', function() {
+            if (typeof pendingDeleteCallback === 'function') {
+                pendingDeleteCallback();
+            }
+            closeQuestionDeleteModal();
+        });
+    }
+});
+
+async function loadQuestionsData() {
+    const questData = await adminFetch('/api/game-settings/quest');
+    if (questData && !questData.parseError) {
+        cachedQuestLevels = questData;
+    }
+    const moduleData = await adminFetch('/api/game-settings/modules');
+    if (moduleData && !moduleData.parseError) {
+        cachedModuleQuizzes = moduleData;
+    }
+}
+
+// --- Quest Questions ---
+
+function loadQuestQuestions() {
+    const level = parseInt(document.getElementById('questLevelSelect').value);
+    const site = parseInt(document.getElementById('questSiteSelect').value);
+    const container = document.getElementById('questQuestionsList');
+
+    const levelData = cachedQuestLevels.find(l => l.level === level);
+    if (!levelData || !levelData.sites || !levelData.sites[site]) {
+        container.innerHTML = '<p class="no-data">No questions found for this level/site. Add one below.</p>';
+        return;
+    }
+
+    const questions = levelData.sites[site].questions || [];
+    if (!questions.length) {
+        container.innerHTML = '<p class="no-data">No questions yet. Click "Add Question" to create one.</p>';
+        return;
+    }
+
+    renderQuestQuestionsList(questions, container);
+}
+
+function renderQuestQuestionsList(questions, container) {
+    container.innerHTML = questions.map((q, i) => `
+        <div class="question-card" data-index="${i}">
+            <div class="question-card-header">
+                <span class="question-number">Q${i + 1}</span>
+                <div class="question-card-actions">
+                    <button class="action-btn edit-btn" onclick="editQuestQuestion(${i})" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete-btn" onclick="deleteQuestQuestion(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="question-card-body">
+                <div class="question-field">
+                    <label>Question (HTML):</label>
+                    <textarea class="admin-textarea" data-field="q" rows="3">${escapeHtml(q.q)}</textarea>
+                </div>
+                <div class="question-field">
+                    <label>Answer (string or JSON array):</label>
+                    <input type="text" class="admin-input" data-field="a" value="${Array.isArray(q.a) ? escapeHtml(JSON.stringify(q.a)) : escapeHtml(q.a)}">
+                </div>
+                <div class="question-field">
+                    <label>Hint:</label>
+                    <input type="text" class="admin-input" data-field="h" value="${escapeHtml(q.h || '')}">
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function addQuestQuestion() {
+    const level = parseInt(document.getElementById('questLevelSelect').value);
+    const site = parseInt(document.getElementById('questSiteSelect').value);
+
+    // Ensure level exists
+    let levelData = cachedQuestLevels.find(l => l.level === level);
+    if (!levelData) {
+        levelData = { level, name: '', sites: {} };
+        cachedQuestLevels.push(levelData);
+    }
+    // Ensure site exists
+    if (!levelData.sites[site]) {
+        levelData.sites[site] = { questions: [] };
+    }
+
+    levelData.sites[site].questions.push({
+        q: 'New question...',
+        a: 'answer',
+        h: 'Hint text'
+    });
+
+    loadQuestQuestions();
+}
+
+function deleteQuestQuestion(index) {
+    const level = parseInt(document.getElementById('questLevelSelect').value);
+    const site = parseInt(document.getElementById('questSiteSelect').value);
+    const levelData = cachedQuestLevels.find(l => l.level === level);
+    if (!levelData || !levelData.sites[site]) return;
+
+    const question = levelData.sites[site].questions[index];
+    if (!question) return;
+
+    const preview = `<strong>Q:</strong> ${question.q ? question.q.replace(/<[^>]*>/g, ' ').substring(0, 120) : ''}<br><strong>A:</strong> ${Array.isArray(question.a) ? question.a.join(', ') : question.a}`;
+    openQuestionDeleteModal(
+        'Delete Quest Question',
+        `Delete question #${index + 1} from Level ${level}, Site ${site}?`,
+        preview,
+        async function() {
+            lastDeletedQuest = { level, site, index, question: JSON.parse(JSON.stringify(question)) };
+            levelData.sites[site].questions.splice(index, 1);
+            loadQuestQuestions();
+            showUndoNotification('Quest question deleted.', 'undoDeleteQuestQuestion');
+
+            const result = await adminFetch('/api/game-settings/quest', {
+                method: 'PUT',
+                body: JSON.stringify({ questLevels: cachedQuestLevels })
+            });
+            if (result && !result.parseError) {
+                cachedQuestLevels = result.questLevels || cachedQuestLevels;
+            }
+        }
+    );
+}
+
+async function undoDeleteQuestQuestion() {
+    if (!lastDeletedQuest) return;
+    const { level, site, index, question } = lastDeletedQuest;
+    let levelData = cachedQuestLevels.find(l => l.level === level);
+    if (!levelData) {
+        levelData = { level, name: '', sites: {} };
+        cachedQuestLevels.push(levelData);
+    }
+    if (!levelData.sites[site]) {
+        levelData.sites[site] = { questions: [] };
+    }
+    levelData.sites[site].questions.splice(index, 0, question);
+    lastDeletedQuest = null;
+    loadQuestQuestions();
+
+    // Persist undo to MongoDB
+    const result = await adminFetch('/api/game-settings/quest', {
+        method: 'PUT',
+        body: JSON.stringify({ questLevels: cachedQuestLevels })
+    });
+    if (result && !result.parseError) {
+        cachedQuestLevels = result.questLevels || cachedQuestLevels;
+        showNotification('Question restored!', 'success');
+    }
+}
+
+function editQuestQuestion(index) {
+    // Read current values from the DOM for this card
+    const level = parseInt(document.getElementById('questLevelSelect').value);
+    const site = parseInt(document.getElementById('questSiteSelect').value);
+    const levelData = cachedQuestLevels.find(l => l.level === level);
+    if (!levelData || !levelData.sites[site]) return;
+
+    const card = document.querySelector(`.question-card[data-index="${index}"]`);
+    if (!card) return;
+
+    const qVal = card.querySelector('[data-field="q"]').value;
+    const aVal = card.querySelector('[data-field="a"]').value;
+    const hVal = card.querySelector('[data-field="h"]').value;
+
+    let parsedA;
+    try {
+        parsedA = JSON.parse(aVal);
+        if (!Array.isArray(parsedA)) parsedA = aVal;
+    } catch {
+        parsedA = aVal;
+    }
+
+    levelData.sites[site].questions[index] = { q: qVal, a: parsedA, h: hVal };
+    showNotification('Question updated locally. Click Save to persist.', 'info');
+}
+
+async function saveQuestQuestions() {
+    // Sync all DOM edits first
+    const cards = document.querySelectorAll('#questQuestionsList .question-card');
+    const level = parseInt(document.getElementById('questLevelSelect').value);
+    const site = parseInt(document.getElementById('questSiteSelect').value);
+    const levelData = cachedQuestLevels.find(l => l.level === level);
+    if (levelData && levelData.sites[site]) {
+        cards.forEach((card, i) => {
+            if (levelData.sites[site].questions[i]) {
+                const qVal = card.querySelector('[data-field="q"]').value;
+                const aVal = card.querySelector('[data-field="a"]').value;
+                const hVal = card.querySelector('[data-field="h"]').value;
+                let parsedA;
+                try { parsedA = JSON.parse(aVal); if (!Array.isArray(parsedA)) parsedA = aVal; } catch { parsedA = aVal; }
+                levelData.sites[site].questions[i] = { q: qVal, a: parsedA, h: hVal };
+            }
+        });
+    }
+
+    const result = await adminFetch('/api/game-settings/quest', {
+        method: 'PUT',
+        body: JSON.stringify({ questLevels: cachedQuestLevels })
+    });
+    if (result && !result.parseError) {
+        cachedQuestLevels = result.questLevels || cachedQuestLevels;
+        showNotification('Quest questions saved successfully!', 'success');
+    } else {
+        showNotification('Failed to save quest questions.', 'error');
+    }
+}
+
+// --- Module Quiz Questions ---
+
+function loadModuleQuestions() {
+    const moduleId = parseInt(document.getElementById('moduleSelect').value);
+    const container = document.getElementById('moduleQuestionsList');
+
+    const moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (!moduleData || !moduleData.questions || !moduleData.questions.length) {
+        container.innerHTML = '<p class="no-data">No questions found for this module. Add one below.</p>';
+        return;
+    }
+
+    renderModuleQuestionsList(moduleData.questions, container);
+}
+
+function renderModuleQuestionsList(questions, container) {
+    container.innerHTML = questions.map((q, i) => `
+        <div class="question-card module-question-card" data-index="${i}">
+            <div class="question-card-header">
+                <span class="question-number">Q${i + 1}</span>
+                <div class="question-card-actions">
+                    <button class="action-btn edit-btn" onclick="editModuleQuestion(${i})" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete-btn" onclick="deleteModuleQuestion(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="question-card-body">
+                <div class="question-field">
+                    <label>Question:</label>
+                    <textarea class="admin-textarea" data-field="question" rows="2">${escapeHtml(q.question)}</textarea>
+                </div>
+                <div class="question-field">
+                    <label>Options (one per line):</label>
+                    <textarea class="admin-textarea" data-field="options" rows="4">${(q.options || []).map(o => escapeHtml(o)).join('\n')}</textarea>
+                </div>
+                <div class="question-field">
+                    <label>Correct option index (0-based):</label>
+                    <input type="number" class="admin-input" data-field="correct" value="${q.correct}" min="0">
+                </div>
+                <div class="question-field">
+                    <label>Explanation:</label>
+                    <input type="text" class="admin-input" data-field="explanation" value="${escapeHtml(q.explanation || '')}">
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function addModuleQuestion() {
+    const moduleId = parseInt(document.getElementById('moduleSelect').value);
+
+    let moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (!moduleData) {
+        moduleData = { moduleId, title: '', questions: [] };
+        cachedModuleQuizzes.push(moduleData);
+    }
+
+    moduleData.questions.push({
+        question: 'New question...',
+        options: ['Option A', 'Option B', 'Option C', 'Option D'],
+        correct: 0,
+        explanation: 'Answer: <strong>Option A</strong>'
+    });
+
+    loadModuleQuestions();
+}
+
+function deleteModuleQuestion(index) {
+    const moduleId = parseInt(document.getElementById('moduleSelect').value);
+    const moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (!moduleData) return;
+
+    const question = moduleData.questions[index];
+    if (!question) return;
+
+    const preview = `<strong>Q:</strong> ${question.question || ''}<br><strong>Options:</strong> ${(question.options || []).join(' | ')}<br><strong>Correct:</strong> ${(question.options || [])[question.correct] || question.correct}`;
+    openQuestionDeleteModal(
+        'Delete Module Question',
+        `Delete question #${index + 1} from Module ${moduleId}?`,
+        preview,
+        async function() {
+            lastDeletedModule = { moduleId, index, question: JSON.parse(JSON.stringify(question)) };
+            moduleData.questions.splice(index, 1);
+            loadModuleQuestions();
+            showUndoNotification('Module question deleted.', 'undoDeleteModuleQuestion');
+
+            const result = await adminFetch('/api/game-settings/modules', {
+                method: 'PUT',
+                body: JSON.stringify({ moduleQuizzes: cachedModuleQuizzes })
+            });
+            if (result && !result.parseError) {
+                cachedModuleQuizzes = result.moduleQuizzes || cachedModuleQuizzes;
+            }
+        }
+    );
+}
+
+async function undoDeleteModuleQuestion() {
+    if (!lastDeletedModule) return;
+    const { moduleId, index, question } = lastDeletedModule;
+    let moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (!moduleData) {
+        moduleData = { moduleId, title: '', questions: [] };
+        cachedModuleQuizzes.push(moduleData);
+    }
+    moduleData.questions.splice(index, 0, question);
+    lastDeletedModule = null;
+    loadModuleQuestions();
+
+    // Persist undo to MongoDB
+    const result = await adminFetch('/api/game-settings/modules', {
+        method: 'PUT',
+        body: JSON.stringify({ moduleQuizzes: cachedModuleQuizzes })
+    });
+    if (result && !result.parseError) {
+        cachedModuleQuizzes = result.moduleQuizzes || cachedModuleQuizzes;
+        showNotification('Module question restored!', 'success');
+    }
+}
+
+function editModuleQuestion(index) {
+    const moduleId = parseInt(document.getElementById('moduleSelect').value);
+    const moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (!moduleData) return;
+
+    const card = document.querySelector(`.module-question-card[data-index="${index}"]`);
+    if (!card) return;
+
+    const questionVal = card.querySelector('[data-field="question"]').value;
+    const optionsVal = card.querySelector('[data-field="options"]').value.split('\n').filter(s => s.trim());
+    const correctVal = parseInt(card.querySelector('[data-field="correct"]').value);
+    const explanationVal = card.querySelector('[data-field="explanation"]').value;
+
+    moduleData.questions[index] = {
+        question: questionVal,
+        options: optionsVal,
+        correct: isNaN(correctVal) ? 0 : correctVal,
+        explanation: explanationVal
+    };
+    showNotification('Question updated locally. Click Save to persist.', 'info');
+}
+
+async function saveModuleQuestions() {
+    // Sync DOM edits first
+    const cards = document.querySelectorAll('#moduleQuestionsList .module-question-card');
+    const moduleId = parseInt(document.getElementById('moduleSelect').value);
+    const moduleData = cachedModuleQuizzes.find(m => m.moduleId === moduleId);
+    if (moduleData) {
+        cards.forEach((card, i) => {
+            if (moduleData.questions[i]) {
+                const questionVal = card.querySelector('[data-field="question"]').value;
+                const optionsVal = card.querySelector('[data-field="options"]').value.split('\n').filter(s => s.trim());
+                const correctVal = parseInt(card.querySelector('[data-field="correct"]').value);
+                const explanationVal = card.querySelector('[data-field="explanation"]').value;
+                moduleData.questions[i] = {
+                    question: questionVal,
+                    options: optionsVal,
+                    correct: isNaN(correctVal) ? 0 : correctVal,
+                    explanation: explanationVal
+                };
+            }
+        });
+    }
+
+    const result = await adminFetch('/api/game-settings/modules', {
+        method: 'PUT',
+        body: JSON.stringify({ moduleQuizzes: cachedModuleQuizzes })
+    });
+    if (result && !result.parseError) {
+        cachedModuleQuizzes = result.moduleQuizzes || cachedModuleQuizzes;
+        showNotification('Module questions saved successfully!', 'success');
+    } else {
+        showNotification('Failed to save module questions.', 'error');
+    }
+}
+
+// =============================================
+// MUSIC MANAGEMENT
+// =============================================
+
+let cachedMusicConfig = [];
+
+async function loadMusicData() {
+    const data = await adminFetch('/api/game-settings/music');
+    if (data && !data.parseError) {
+        cachedMusicConfig = data;
+        renderMusicConfigList();
+    } else {
+        document.getElementById('musicConfigList').innerHTML = '<p class="no-data">Failed to load music config.</p>';
+    }
+}
+
+function renderMusicConfigList() {
+    const container = document.getElementById('musicConfigList');
+    if (!cachedMusicConfig.length) {
+        container.innerHTML = '<p class="no-data">No music tracks configured. Click "Add Music Track" to add one.</p>';
+        return;
+    }
+
+    container.innerHTML = cachedMusicConfig.map((track, i) => `
+        <div class="music-card" data-index="${i}">
+            <div class="music-card-header">
+                <span class="music-track-number"><i class="fas fa-music"></i> Track ${i + 1}</span>
+                <div class="question-card-actions">
+                    <button class="action-btn edit-btn" onclick="previewMusicTrack(${i})" title="Preview"><i class="fas fa-play"></i></button>
+                    <button class="action-btn delete-btn" onclick="deleteMusicEntry(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="music-card-body">
+                <div class="question-field">
+                    <label>Key (e.g. bg1, bg2, bg3):</label>
+                    <input type="text" class="admin-input" data-field="key" value="${escapeHtml(track.key)}">
+                </div>
+                <div class="question-field">
+                    <label>Label (display name):</label>
+                    <input type="text" class="admin-input" data-field="label" value="${escapeHtml(track.label || '')}">
+                </div>
+                <div class="question-field">
+                    <label>Music File Path (e.g. sound-fx/bg1.mp3):</label>
+                    <input type="text" class="admin-input" data-field="file" value="${escapeHtml(track.file)}">
+                </div>
+                <div class="question-field">
+                    <label>Pages (comma-separated, e.g. home.html,learn.html):</label>
+                    <input type="text" class="admin-input" data-field="pages" value="${(track.pages || []).map(p => escapeHtml(p)).join(',')}">
+                </div>
+                <div class="question-field">
+                    <label>Default Volume (0–100):</label>
+                    <input type="number" class="admin-input" data-field="volume" value="${track.volume ?? 50}" min="0" max="100">
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+let musicPreviewPlayer = null;
+
+function previewMusicTrack(index) {
+    // Read from DOM
+    syncMusicCardToCache(index);
+    const track = cachedMusicConfig[index];
+    if (!track) return;
+
+    if (musicPreviewPlayer) {
+        musicPreviewPlayer.pause();
+        musicPreviewPlayer = null;
+    }
+    musicPreviewPlayer = new Audio(track.file);
+    musicPreviewPlayer.volume = (track.volume ?? 50) / 100;
+    musicPreviewPlayer.loop = true;
+    musicPreviewPlayer.play().catch(() => {
+        showNotification('Browser blocked autoplay. Click anywhere first.', 'error');
+    });
+    showNotification(`Playing: ${track.label || track.key}`, 'info');
+}
+
+function stopMusicPreview() {
+    if (musicPreviewPlayer) {
+        musicPreviewPlayer.pause();
+        musicPreviewPlayer = null;
+    }
+}
+
+function addMusicEntry() {
+    cachedMusicConfig.push({
+        key: 'bg_new',
+        label: 'New Track',
+        file: 'sound-fx/bg1.mp3',
+        pages: [],
+        volume: 50
+    });
+    renderMusicConfigList();
+}
+
+function deleteMusicEntry(index) {
+    const track = cachedMusicConfig[index];
+    if (!track) return;
+
+    const preview = `<strong>Key:</strong> ${track.key}<br><strong>Label:</strong> ${track.label || '—'}<br><strong>File:</strong> ${track.file}<br><strong>Pages:</strong> ${(track.pages || []).join(', ') || '—'}<br><strong>Volume:</strong> ${track.volume ?? 50}`;
+    openQuestionDeleteModal(
+        'Delete Music Track',
+        `Delete music track "${track.label || track.key}"?`,
+        preview,
+        async function() {
+            lastDeletedMusic = { index, track: JSON.parse(JSON.stringify(track)) };
+            cachedMusicConfig.splice(index, 1);
+            renderMusicConfigList();
+            showUndoNotification('Music track deleted.', 'undoDeleteMusicEntry');
+
+            const result = await adminFetch('/api/game-settings/music', {
+                method: 'PUT',
+                body: JSON.stringify({ musicConfig: cachedMusicConfig })
+            });
+            if (result && !result.parseError) {
+                cachedMusicConfig = result.musicConfig || cachedMusicConfig;
+            }
+        }
+    );
+}
+
+async function undoDeleteMusicEntry() {
+    if (!lastDeletedMusic) return;
+    const { index, track } = lastDeletedMusic;
+    cachedMusicConfig.splice(index, 0, track);
+    lastDeletedMusic = null;
+    renderMusicConfigList();
+
+    // Persist undo to MongoDB
+    const result = await adminFetch('/api/game-settings/music', {
+        method: 'PUT',
+        body: JSON.stringify({ musicConfig: cachedMusicConfig })
+    });
+    if (result && !result.parseError) {
+        cachedMusicConfig = result.musicConfig || cachedMusicConfig;
+        showNotification('Music track restored!', 'success');
+    }
+}
+
+function syncMusicCardToCache(index) {
+    const card = document.querySelector(`.music-card[data-index="${index}"]`);
+    if (!card || !cachedMusicConfig[index]) return;
+    cachedMusicConfig[index].key = card.querySelector('[data-field="key"]').value;
+    cachedMusicConfig[index].label = card.querySelector('[data-field="label"]').value;
+    cachedMusicConfig[index].file = card.querySelector('[data-field="file"]').value;
+    cachedMusicConfig[index].pages = card.querySelector('[data-field="pages"]').value.split(',').map(s => s.trim()).filter(Boolean);
+    cachedMusicConfig[index].volume = parseInt(card.querySelector('[data-field="volume"]').value) || 50;
+}
+
+async function saveMusicConfig() {
+    // Sync all DOM edits to cache
+    document.querySelectorAll('.music-card').forEach((card, i) => {
+        syncMusicCardToCache(i);
+    });
+
+    const result = await adminFetch('/api/game-settings/music', {
+        method: 'PUT',
+        body: JSON.stringify({ musicConfig: cachedMusicConfig })
+    });
+    if (result && !result.parseError) {
+        cachedMusicConfig = result.musicConfig || cachedMusicConfig;
+        showNotification('Music config saved successfully!', 'success');
+    } else {
+        showNotification('Failed to save music config.', 'error');
+    }
+}
+
 // --- Utilities ---
 
 function escapeHtml(str) {
@@ -657,4 +1242,20 @@ function showNotification(message, type = 'info') {
         notification.classList.remove('show');
         setTimeout(() => { if (notification.parentNode) notification.parentNode.removeChild(notification); }, 300);
     }, 3000);
+}
+
+function showUndoNotification(message, undoFnName) {
+    const notification = document.createElement('div');
+    notification.className = 'admin-notification info undo-notification';
+    notification.innerHTML = `
+        <i class="fas fa-trash"></i>
+        <span>${message}</span>
+        <button class="undo-btn" onclick="${undoFnName}(); this.closest('.undo-notification').remove();">Undo</button>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.classList.add('show'), 100);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => { if (notification.parentNode) notification.parentNode.removeChild(notification); }, 300);
+    }, 8000);
 }
