@@ -33,7 +33,8 @@ const defaultOrigins = [
   'http://127.0.0.1:5500',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'https://combat-coders-team-plasma.onrender.com' 
+  'https://combat-coders-team-plasma.onrender.com',
+  'https://combat-coders-team-plasma-frontend.onrender.com'
 ];
 
 const corsOrigins = allowedOrigins.length ? allowedOrigins : defaultOrigins;

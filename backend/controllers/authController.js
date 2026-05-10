@@ -164,18 +164,25 @@ exports.googleLogin = async (req, res) => {
 // Forgot Password - Generate and send OTP
 exports.forgotPassword = async (req, res) => {
   try {
+    console.log('[Auth] forgotPassword called with email:', req.body?.email);
     const { email } = req.body;
     if (!email) {
+      console.log('[Auth] No email provided');
       return res.status(400).json({ message: 'Email is required' });
     }
 
     const player = await Player.findOne({ email: email.toLowerCase() });
     if (!player) {
+      console.log('[Auth] No player found for email:', email);
       return res.status(404).json({ message: 'No account found with this email' });
     }
 
+    console.log('[Auth] Player found, checking SMTP config...');
+    console.log('[Auth] SMTP Configured:', isSmtpConfigured());
+
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log('[Auth] Generated OTP for', email);
 
     // Save OTP to database
     const OTP = require('../models/OTP');
@@ -184,15 +191,20 @@ exports.forgotPassword = async (req, res) => {
 
     let emailed = false;
     if (isSmtpConfigured()) {
+      console.log('[Auth] SMTP is configured, attempting to send email...');
       try {
         emailed = await sendOtpEmail(email.toLowerCase(), otp);
+        console.log('[Auth] Email send result:', emailed);
       } catch (sendErr) {
-        console.error('OTP email send failed:', sendErr?.message || sendErr);
+        console.error('[Auth] OTP email send failed:', sendErr?.message || sendErr);
         await OTP.deleteMany({ email: email.toLowerCase() });
         return res.status(500).json({ message: 'Failed to send email. Please try again later.' });
       }
+    } else {
+      console.log('[Auth] SMTP not configured, skipping email send');
     }
 
+    console.log('[Auth] NODE_ENV:', process.env.NODE_ENV, '| emailed:', emailed);
     if (process.env.NODE_ENV === 'production' && !emailed) {
       await OTP.deleteMany({ email: email.toLowerCase() });
       return res.status(500).json({
