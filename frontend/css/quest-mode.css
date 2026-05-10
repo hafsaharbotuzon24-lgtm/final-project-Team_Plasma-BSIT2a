@@ -263,3 +263,352 @@
             margin-top: 30px;
             flex-wrap: wrap;
         }
+
+ 
+        @media (max-width: 1024px) {
+            .game-container {
+                height: calc(100vh - 60px);
+            }
+            
+            .game-main {
+                flex-direction: column;
+            }
+            
+            .code-panel {
+                width: 100%;
+                height: 55%;
+                border-right: none;
+                border-bottom: 3px solid #333;
+            }
+            
+            .preview-panel {
+                width: 100%;
+                height: 45%;
+            }
+            
+            .target-frame {
+                height: 100%;
+            }
+        }
+
+        /* Tablet Portrait */
+        @media (max-width: 768px) {
+            .quest-body {
+                padding-top: 60px;
+                background-attachment: scroll;
+            }
+            
+            .title-bar {
+                padding: 8px 15px;
+                font-size: 1rem;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .title-bar .difficulty-badge {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .game-container {
+                height: calc(100vh - 60px);
+            }
+            
+            .code-panel {
+                height: 60%;
+            }
+            
+            .preview-panel {
+                height: 40%;
+            }
+            
+            .panel-label {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+            
+            .editor-wrapper {
+                flex: 1;
+            }
+            
+            .line-numbers {
+                padding: 10px 8px;
+                font-size: 12px;
+                min-width: 35px;
+            }
+            
+            .code-editor {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            .panel-actions {
+                padding: 10px 12px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            
+            .action-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: 70px;
+            }
+        }
+
+        /* Mobile Phone */
+        @media (max-width: 480px) {
+            .quest-body {
+                padding-top: 55px;
+            }
+            
+            .title-bar {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                gap: 5px;
+            }
+            
+            .title-bar .difficulty-badge {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+            }
+            
+            #questName {
+                font-size: 0.8rem;
+                word-break: break-word;
+            }
+            
+            .game-container {
+                height: calc(100vh - 55px);
+            }
+            
+            .code-panel {
+                height: 55%;
+            }
+            
+            .preview-panel {
+                height: 45%;
+            }
+            
+            .panel-label {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+            
+            .line-numbers {
+                padding: 8px 5px;
+                font-size: 11px;
+                min-width: 30px;
+            }
+            
+            .code-editor {
+                padding: 8px;
+                font-size: 12px;
+            }
+            
+            .code-editor::placeholder {
+                font-size: 11px;
+            }
+            
+            .panel-actions {
+                padding: 8px;
+                gap: 5px;
+            }
+            
+            .action-btn {
+                padding: 8px 10px;
+                font-size: 0.75rem;
+                border-width: 1.5px;
+                flex: 1;
+                min-width: 60px;
+                border-radius: 4px;
+            }
+            
+            /* Result Modal */
+            .result-content {
+                padding: 30px 20px;
+                width: 95%;
+                border-radius: 15px;
+            }
+            
+            .result-icon {
+                font-size: 3.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .result-title {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+            
+            .result-content p {
+                font-size: 0.95rem;
+            }
+            
+            .result-actions {
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .result-actions .action-btn {
+                font-size: 0.85rem;
+                padding: 10px 15px;
+            }
+        }
+
+        /* Very Small Phones */
+        @media (max-width: 360px) {
+            .title-bar {
+                padding: 5px 8px;
+            }
+            
+            .title-bar .difficulty-badge {
+                display: none;
+            }
+            
+            .code-panel {
+                height: 50%;
+            }
+            
+            .preview-panel {
+                height: 50%;
+            }
+            
+            .panel-actions {
+                padding: 6px 4px;
+                gap: 4px;
+            }
+            
+            .action-btn {
+                padding: 6px 8px;
+                font-size: 0.7rem;
+                min-width: 50px;
+            }
+            
+            .result-content {
+                padding: 25px 15px;
+            }
+            
+            .result-title {
+                font-size: 1.4rem;
+            }
+            
+            .result-icon {
+                font-size: 3rem;
+            }
+        }
+
+        /* Landscape Mode on Mobile */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .game-container {
+                height: calc(100vh - 55px);
+            }
+            
+            .game-main {
+                flex-direction: row;
+            }
+            
+            .code-panel {
+                width: 50%;
+                height: 100%;
+                border-right: 2px solid #333;
+                border-bottom: none;
+            }
+            
+            .preview-panel {
+                width: 50%;
+                height: 100%;
+            }
+            
+            .title-bar {
+                padding: 5px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .panel-label {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+            
+            .panel-actions {
+                padding: 8px;
+                gap: 5px;
+            }
+            
+            .action-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Touch Target Improvements */
+        @media (pointer: coarse) {
+            .action-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .code-editor {
+                -webkit-text-size-adjust: none;
+            }
+            
+            /* Prevent zoom on focus in iOS */
+            .code-editor:focus {
+                font-size: 16px;
+            }
+        }
+
+        /* Prevent text selection on buttons */
+        .action-btn {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Smooth scrolling for editor */
+        .editor-wrapper {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Custom scrollbar for mobile */
+        .code-editor::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .code-editor::-webkit-scrollbar-track {
+            background: #1a1a28;
+        }
+
+        .code-editor::-webkit-scrollbar-thumb {
+            background: #5a7a9a;
+            border-radius: 2px;
+        }
+
+        /* Result modal responsive close */
+        @media (max-width: 480px) {
+            .result-modal {
+                align-items: flex-end;
+            }
+            
+            .result-content {
+                border-radius: 20px 20px 0 0;
+                padding-bottom: 40px;
+                animation: slideUp 0.3s ease-out;
+            }
+            
+            @keyframes slideUp {
+                0% { transform: translateY(100%); }
+                100% { transform: translateY(0); }
+            }
+        }
+
+        /* Fix navbar spacing */
+        @media (max-width: 768px) {
+            .plasma-navbar {
+                height: 55px;
+            }
+            
+            .plasma-navbar .navbar-brand span {
+                font-size: 1.2rem !important;
+            }
+        }

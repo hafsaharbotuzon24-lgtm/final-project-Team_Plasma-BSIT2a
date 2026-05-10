@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Combat Coders - Quest Mode</title>
     <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -129,7 +129,99 @@
         
         function h(parts) { return parts.join(''); }
 
-        // Level Data 
+        (function() {
+     
+    function handleOrientationChange() {
+        const editor = document.getElementById('codeInput');
+        if (editor) {
+            editor.style.height = 'auto';
+            setTimeout(() => {
+                const wrapper = editor.parentElement;
+                if (wrapper) {
+                    editor.style.height = (wrapper.clientHeight - 40) + 'px';
+                }
+            }, 100);
+        }
+    }
+    
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    
+     
+    const resultModal = document.getElementById('resultModal');
+    const skipModal = document.getElementById('skipModal');
+    
+    function lockScroll(modal) {
+        if (modal && modal.style.display === 'flex') {
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+        }
+    }
+    
+    function unlockScroll() {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+    }
+   
+    const originalShowResult = showResult;
+    showResult = function(success, message) {
+        originalShowResult(success, message);
+        lockScroll(document.getElementById('resultModal'));
+    };
+    
+
+    const originalCloseResult = closeResult;
+    closeResult = function() {
+        originalCloseResult();
+        unlockScroll();
+    };
+    
+   
+    const originalSkipLevel = skipLevel;
+    skipLevel = function() {
+        originalSkipLevel();
+        lockScroll(document.getElementById('skipModal'));
+    };
+    
+    const originalCancelSkip = cancelSkip;
+    cancelSkip = function() {
+        originalCancelSkip();
+        unlockScroll();
+    };
+    
+    const originalConfirmSkip = confirmSkip;
+    confirmSkip = function() {
+        originalConfirmSkip();
+        unlockScroll();
+    };
+    
+    let touchStartY = 0;
+    const gameMain = document.querySelector('.game-main');
+    
+    if (gameMain) {
+        gameMain.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+        }, {passive: true});
+        
+        gameMain.addEventListener('touchend', function(e) {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchEndY - touchStartY;
+          
+        }, {passive: true});
+    }
+    
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        }, {passive: true});
+        
+        btn.addEventListener('touchend', function() {
+            this.style.transform = '';
+        }, {passive: true});
+    });
+})();
         const levels = [
             {
                 id: 1,

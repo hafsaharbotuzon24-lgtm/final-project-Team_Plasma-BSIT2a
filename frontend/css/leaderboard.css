@@ -247,3 +247,249 @@
     scrollbar-width: thin;
     scrollbar-color: #ffc107 #0b1a30;
 }
+
+/* Fix container expanding too high - add top margin for mobile */
+@media (max-width: 768px) {
+    .lb-wrapper {
+        margin-top: 80px; /* Push container down */
+    }
+    
+    .lb-body {
+        padding-top: 90px; /* Extra padding to prevent navbar overlap */
+    }
+}
+
+@media (max-width: 480px) {
+    .lb-wrapper {
+        margin-top: 90px;
+    }
+    
+    .lb-body {
+        padding-top: 100px;
+    }
+}
+    
+    .lb-title-box h2.pixel-font {
+        font-size: 1.5rem;
+    }
+
+
+@media (max-width: 480px) {
+    .lb-title-box {
+        width: 200px;
+        margin: -35px auto 15px auto;
+        padding: 6px;
+    }
+    
+    .lb-title-box h2.pixel-font {
+        font-size: 1.2rem;
+    }
+}
+
+/* Fix panel switcher for mobile */
+@media (max-width: 480px) {
+    .panel-switcher-wrap {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .arrow-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+    }
+    
+    .panel-label-badge {
+        font-size: 0.9rem;
+        padding: 6px 15px;
+        min-width: 120px;
+    }
+}
+
+/* Fix lb-container padding */
+@media (max-width: 768px) {
+    .lb-container {
+        padding: 10px 5px;
+    }
+}
+
+/* Fix row layout for mobile - keep horizontal, don't stack */
+@media (max-width: 600px) {
+    .lb-row {
+        font-size: 0.9rem;
+        padding: 10px 8px;
+        display: flex;
+        flex-direction: row; /* Keep horizontal */
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .lb-header {
+        font-size: 0.85rem;
+        padding: 10px 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .lb-col-rank { 
+        flex: 0 0 15%;
+        text-align: center;
+    }
+    
+    .lb-col-name { 
+        flex: 1;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    
+    .lb-col-score { 
+        flex: 0 0 20%;
+        text-align: center;
+    }
+}
+    
+    /* Show as table-like layout on very small screens */
+    .lb-row:not(.lb-header) {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 5px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .lb-header {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 5px;
+        text-align: center;
+    }
+
+
+/* Fix rank image size on mobile */
+@media (max-width: 480px) {
+    .lb-rank-img {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .lb-rank-num {
+        font-size: 1.1rem;
+        min-width: 25px;
+    }
+    
+    .lb-col-rank-img-wrap {
+        gap: 5px;
+    }
+}
+
+/* Fix scroll area height for mobile */
+@media (max-width: 768px) {
+    .lb-scroll-area {
+        max-height: 400px;
+        padding: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lb-scroll-area {
+        max-height: 350px;
+    }
+}
+
+/* Fix button sizing for mobile */
+@media (max-width: 768px) {
+    .btn-pixel {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-pixel {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+}
+
+/* Fix row hover effect for touch devices */
+@media (hover: none) {
+    .lb-row:not(.lb-header):hover {
+        transform: none;
+    }
+    
+    .lb-row:not(.lb-header):active {
+        transform: scale(0.98);
+        background-color: #1f3a5a;
+    }
+}
+
+/* Ensure text doesn't overflow on small screens */
+@media (max-width: 480px) {
+    .lb-col-name,
+    .lb-col-score,
+    .lb-col-rank {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .lb-row span {
+        font-size: 0.9rem;
+    }
+}
+
+/* Fix panel badge text overflow */
+@media (max-width: 380px) {
+    .panel-label-badge {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        min-width: 100px;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Fix navbar collision with content */
+@media (max-width: 768px) {
+    .plasma-navbar {
+        height: 60px;
+    }
+    
+    .lb-body {
+        padding-top: 70px;
+    }
+}
+
+/* Fix for landscape mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+    .lb-wrapper {
+        max-width: 90%;
+        margin: 15px auto;
+    }
+    
+    .lb-scroll-area {
+        max-height: 300px;
+    }
+}
+
+/* Fix for very small devices */
+@media (max-width: 320px) {
+    .lb-title-box {
+        width: 180px;
+    }
+    
+    .lb-title-box h2.pixel-font {
+        font-size: 1rem;
+    }
+    
+    .arrow-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .lb-row {
+        font-size: 0.8rem;
+        padding: 8px 6px;
+    }
+}

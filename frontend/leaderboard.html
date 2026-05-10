@@ -146,9 +146,9 @@
 
         <!-- Panel Switcher with dark blue clickable arrows -->
         <div class="panel-switcher-wrap">
-            <button class="arrow-btn" id="prevPanelBtn" title="Previous leaderboard" type="button">◀</button>
+            <button class="arrow-btn" id="prevPanelBtn" title="Previous leaderboard" type="button" aria-label="Previous panel">◀</button>
             <span class="panel-label-badge text-center" id="panelNameDisplay">ADVENTURE</span>
-            <button class="arrow-btn" id="nextPanelBtn" title="Next leaderboard" type="button">▶</button>
+            <button class="arrow-btn" id="nextPanelBtn" title="Next leaderboard" type="button" aria-label="Next panel">▶</button>
         </div>
 
         <div class="lb-container">
@@ -267,15 +267,50 @@ function navigateTo(url) {
     });
 
     // =============================================
-    // PANEL SWITCHER LOGIC
-    // =============================================
-    // Handles: 
-    //   - Clicking ◀ / ▶ to cycle between ADVENTURE and QUEST MODE panels
-    //   - Updating the golden title box text:
-    //       ADVENTURE → "LEADERBOARD"
-    //       QUEST     → "LEADERBOARD - QUEST MODE"
-    //   - Updating the indicator badge text
-    // =============================================
+// MOBILE TOUCH SWIPE SUPPORT
+// =============================================
+(function() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lbContainer = document.querySelector('.lb-container');
+    
+    if (lbContainer) {
+        lbContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+        
+        lbContainer.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+    }
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;  
+        const swipeDistance = touchEndX - touchStartX;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+            const prevBtn = document.getElementById('prevPanelBtn');
+            const nextBtn = document.getElementById('nextPanelBtn');
+            
+            if (swipeDistance > 0 && prevBtn) {
+                // Swipe right - go to previous panel
+                prevBtn.click();
+            } else if (swipeDistance < 0 && nextBtn) {
+                // Swipe left - go to next panel
+                nextBtn.click();
+            }
+        }
+    }
+})();
+
+           
+            document.querySelectorAll('.arrow-btn, .btn-pixel').forEach(function(btn) {
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    this.click();
+                });
+            });
     (function() {
         const adventurePanel = document.getElementById('adventurePanel');
         const questPanel = document.getElementById('questPanel');
