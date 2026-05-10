@@ -144,7 +144,6 @@ async function fetchAllBackendSaveSlots() {
 }
 
 // Save data structure
-// Save data structure
 function createSaveData(slotNumber) {
     // Get current game time from timer
     let currentTime = 0;
@@ -304,19 +303,19 @@ async function deleteSaveSlot(slotNumber) {
     const modalHtml = `
         <div class="modal fade" id="deleteConfirmModal" tabindex="-1" data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border border-4 border-danger bg-black rounded-0">
-                    <div class="modal-header border-bottom border-danger">
-                        <h3 class="pixel-font text-danger m-0">⚠️ DELETE SAVE ⚠️</h3>
+                <div class="modal-content border border-4 border-danger" style="background: #000000; border-radius: 20px; font-family: 'Pixelify Sans', sans-serif;">
+                    <div class="modal-header border-bottom border-danger" style="font-family: 'Pixelify Sans', sans-serif; border-radius: 20px 20px 0 0;">
+                        <h3 class="pixel-font text-danger m-0" style="font-family: 'Pixelify Sans', sans-serif;"> DELETE SAVE </h3>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body text-center p-4">
-                        <p class="text-white pixel-font fs-5 mb-3">Are you sure you want to delete this save file?</p>
-                        <p class="text-warning pixel-font mb-4">This action cannot be undone!</p>
+                    <div class="modal-body text-center p-4" style="font-family: 'Pixelify Sans', sans-serif;">
+                        <p class="text-white pixel-font fs-5 mb-3" style="font-family: 'Pixelify Sans', sans-serif;">Are you sure you want to delete this save file?</p>
+                        <p class="text-warning pixel-font mb-4" style="font-family: 'Pixelify Sans', sans-serif;">This action cannot be undone!</p>
                         <div class="d-flex gap-3 justify-content-center">
-                            <button class="btn btn-danger pixel-font px-4 py-2" onclick="confirmDeleteSlot(${slotNumber})">
+                            <button class="btn btn-danger pixel-font px-4 py-2" style="font-family: 'Pixelify Sans', sans-serif; border-radius: 10px;" onclick="confirmDeleteSlot(${slotNumber})">
                                 YES, DELETE
                             </button>
-                            <button class="btn btn-secondary pixel-font px-4 py-2" data-bs-dismiss="modal">
+                            <button class="btn btn-secondary pixel-font px-4 py-2" style="font-family: 'Pixelify Sans', sans-serif; border-radius: 10px;" data-bs-dismiss="modal">
                                 CANCEL
                             </button>
                         </div>
@@ -368,10 +367,10 @@ function confirmDeleteSlot(slotNumber) {
     const successHtml = `
         <div class="modal fade" id="deleteSuccessModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border border-4 border-success bg-black rounded-0">
-                    <div class="modal-body text-center p-4">
-                        <h2 class="pixel-font text-success">✓ SAVE DELETED!</h2>
-                        <p class="text-white mt-2">Slot ${slotNumber} has been cleared.</p>
+                <div class="modal-content border border-4 border-success" style="background: #000000; border-radius: 20px; font-family: 'Pixelify Sans', sans-serif;">
+                    <div class="modal-body text-center p-4" style="font-family: 'Pixelify Sans', sans-serif;">
+                        <h2 class="pixel-font text-success" style="font-family: 'Pixelify Sans', sans-serif;">✓ SAVE DELETED!</h2>
+                        <p class="text-white mt-2" style="font-family: 'Pixelify Sans', sans-serif;">Slot ${slotNumber} has been cleared.</p>
                     </div>
                 </div>
             </div>

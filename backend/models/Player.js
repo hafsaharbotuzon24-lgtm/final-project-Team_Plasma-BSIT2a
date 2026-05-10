@@ -9,7 +9,17 @@ const playerSchema = new mongoose.Schema({
 
   hearts: { type: Number, default: 3 },
   hints: { type: Number, default: 1 },
-  level: { type: Number, default: 0 }
+  level: { type: Number, default: 0 },
+
+  /** Quest Mode (HTML levels 1–25): completed level ids */
+  questCompletedLevels: { type: [Number], default: [] },
+  /** Learn → HTML Modules quiz attempts (best score per module kept server-side) */
+  moduleQuizzes: [{
+    moduleId: { type: Number, required: true },
+    correct: { type: Number, required: true },
+    total: { type: Number, required: true },
+    completedAt: { type: Date, default: Date.now }
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Player', playerSchema);

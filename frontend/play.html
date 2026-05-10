@@ -4,12 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Combat Coders - Game</title>
-    <link rel="icon" href="img/plasma-logo.png" type="image/x-icon">
+    <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/play.css">
     <link rel="stylesheet" href="css/style.css">
-     
+    <style> 
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+            background: #1c3554;
+            border: 2px solid #000;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 30px;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1.1rem;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #1f3058;
+            border-color: #17213a;
+            transform: scale(1.05);
+        }
+
+        .back-btn:active {
+            transform: scale(0.98);
+            background: #152040;
+        }
+
+        /* Back Confirmation Modal Styles */
+        #backConfirmModal .modal-content {
+            background: linear-gradient(135deg, #1a2744 0%, #1c3554 100%);
+            border: 3px solid #2a4a7f;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        #backConfirmModal .modal-body {
+            padding: 40px 30px;
+        }
+
+        #backConfirmModal .modal-title {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #backConfirmModal .btn {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 1.1rem;
+            padding: 12px 35px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            margin: 0 10px;
+        }
+
+        #backConfirmModal .btn-yes {
+            background: #4a90d9;
+            border: 2px solid #3a70b9;
+            color: #ffffff;
+        }
+
+        #backConfirmModal .btn-yes:hover {
+            background: #5aa0e9;
+            border-color: #4a80c9;
+            transform: scale(1.05);
+        }
+
+        #backConfirmModal .btn-no {
+            background: #2a3a5a;
+            border: 2px solid #1a2a4a;
+            color: #ffffff;
+        }
+
+        #backConfirmModal .btn-no:hover {
+            background: #3a4a6a;
+            border-color: #2a3a5a;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Back Button */
+        @media (max-width: 768px) {
+            .back-btn {
+                bottom: 20px;
+                left: 20px;
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .back-btn {
+                bottom: 15px;
+                left: 15px;
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body class="play-page container-fluid">
     <div class="status-container">
@@ -35,6 +144,26 @@
     <div class="container text-center mt-5">
         <h1 class="pixel-font text-white mb-5">Give it your best shot, Adventurer!</h1>
         <div id="selectionRow" class="d-flex justify-content-center gap-4"></div>
+    </div>
+
+    <!-- Back Button - Only visible during card selection -->
+    <button class="back-btn" id="backButton" style="display: none;" onclick="showBackConfirmModal()">
+        ← BACK
+    </button>
+
+    <!-- Back Confirmation Modal -->
+    <div class="modal fade" id="backConfirmModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h2 class="modal-title">Are you sure you want to go back?</h2>
+                    <div class="mt-4">
+                        <button class="btn btn-no" data-bs-dismiss="modal">NO</button>
+                        <button class="btn btn-yes" onclick="goBackToLoadSlot()">YES</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="gameModal" tabindex="-1" data-bs-backdrop="static">
@@ -97,6 +226,63 @@
             <button class="btn btn-light pixel-font fs-5 m-3" onclick="closeBattlePreviewModal()">CLOSE PREVIEW</button>
         </div>
     </div>
+
+    <script>
+        // Back button functionality
+        function showBackConfirmModal() {
+            const backConfirmModal = new bootstrap.Modal(document.getElementById('backConfirmModal'));
+            backConfirmModal.show();
+        }
+
+        function goBackToLoadSlot() {
+            // Stop game timer if running
+            if (typeof stopGameTimerAndClear === 'function') {
+                stopGameTimerAndClear();
+            }
+            // Hide modal
+            const backConfirmModal = bootstrap.Modal.getInstance(document.getElementById('backConfirmModal'));
+            if (backConfirmModal) {
+                backConfirmModal.hide();
+            }
+            // Navigate to load-slot.html
+            window.location.href = 'load-slot.html';
+        }
+
+        // Show back button when card selection is visible
+        function showBackButton() {
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        function hideBackButton() {
+            document.getElementById('backButton').style.display = 'none';
+        }
+
+        // Monitor for card selection visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create observer to watch for selection row content
+            const observer = new MutationObserver(function(mutations) {
+                const selectionRow = document.getElementById('selectionRow');
+                if (selectionRow && selectionRow.children.length > 0) {
+                    showBackButton();
+                } else {
+                    hideBackButton();
+                }
+            });
+
+            const selectionRow = document.getElementById('selectionRow');
+            if (selectionRow) {
+                observer.observe(selectionRow, { 
+                    childList: true,
+                    subtree: true 
+                });
+                
+                // Initial check
+                if (selectionRow.children.length > 0) {
+                    showBackButton();
+                }
+            }
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api-connection.js"></script>
@@ -188,6 +374,7 @@
     </script>
     <script src="js/battle-logic.js"></script>
     <script src="js/instructions-logic.js"></script>
+     <script src="js/motd-logic.js"></script>
     <script src="js/hint-logic.js"></script>
     <script src="js/room-logic.js"></script>
     <script src="js/save.js"></script>

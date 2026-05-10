@@ -49,7 +49,7 @@ const QUESTIONS_L3 = {
             h: "The semantic tag for footer content at the bottom of a page is &lt;footer&gt;."
         },
         {
-            q: "Fix the typos to create a functional checkbox for email updates.<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;input type=\"<input type='text' id='fillBlank' class='blank-input' style='width:120px;'>\" id=\"email\"&gt;\n&lt;<input type='text' id='fillBlank2' class='blank-input' style='width:80px;'> for=\"email\"&gt;Subscribe to updates&lt;/label&gt;</pre>",
+            q: "Fix the code to create a functional checkbox for email updates.<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;input type=\"<input type='text' id='fillBlank' class='blank-input' style='width:120px;'>\" id=\"email\"&gt;\n&lt;<input type='text' id='fillBlank2' class='blank-input' style='width:80px;'> for=\"email\"&gt;Subscribe to updates&lt;/label&gt;</pre>",
             a: ["checkbox", "label"],
             h: "The correct type is 'checkbox'. The tag before 'for' should be &lt;label&gt;."
         },
@@ -84,7 +84,7 @@ const QUESTIONS_L3 = {
         },
         {
             q: "Add a border property with blue color to &lt;details&gt;:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>details {\n  background-color: #e8f4fd;\n  padding: 10px;\n  border-radius: 5px;\n  margin-bottom: 20px;\n  <input type='text' id='fillBlank' class='blank-input' style='width:200px;'>\n}</pre>",
-            a: "border: 1px solid blue;",
+            a: "border: blue;",
             h: "Add a border property with blue color. Example: 'border: 1px solid blue;'"
         },
         {
@@ -149,46 +149,44 @@ function openBattleModal_L3(isBoss) {
     const introDialogue = isBoss ? [BOSS_DIAL_L3[Math.floor(Math.random() * BOSS_DIAL_L3.length)], PLAYER_DIAL_L3[Math.floor(Math.random() * PLAYER_DIAL_L3.length)]] : [ENEMY_DIAL_L3[Math.floor(Math.random() * ENEMY_DIAL_L3.length)], PLAYER_DIAL_L3[Math.floor(Math.random() * PLAYER_DIAL_L3.length)]];
 
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div class="battle-container border border-4 border-white bg-black position-relative overflow-hidden" style="font-family: 'Pixelify Sans', sans-serif; color: white;">
+        <div class="battle-container border border-3 border-white bg-black position-relative overflow-hidden" style="font-family: 'Pixelify Sans', sans-serif; color: white; border-radius: 15px;">
             <style>
-                .blank-input { background: #222; border: none; border-bottom: 2px solid #fff; color: #00ff00; font-family: 'Pixelify Sans', monospace; padding: 0 5px; margin: 2px; }
+                .blank-input { background: #222; border: none; border-bottom: 2px solid #00ff00; color: #00ff00; font-family: 'Pixelify Sans', monospace; padding: 0 5px; margin: 2px; font-size: 18px; }
                 .blank-input:focus { outline: none; background: #333; border-bottom: 2px solid #00ff00; }
-                .input-with-indicator {
-                    display: inline-block;
-                    position: relative;
-                    margin: 0 2px;
+                .boss-sprite {
+                    animation: boss-pulse 2.5s ease-in-out infinite;
+                    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
                 }
-                .input-indicator {
-                    width: 100%;
-                    height: 4px;
-                    background: #00ff00;
-                    border-radius: 0 0 2px 2px;
-                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3);
-                    animation: pulse-indicator 1.5s ease-in-out infinite;
-                }
-                @keyframes pulse-indicator {
-                    0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3); }
-                    50% { opacity: 1; box-shadow: 0 0 15px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.5); }
+                @keyframes boss-pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.12); }
                 }
             </style>
             <div id="heartLossBox" class="position-absolute top-0 start-50 translate-middle-x mt-2 d-none" style="z-index: 6000;"><div class="bg-danger border border-white p-3 text-white pixel-font shadow-lg"><h3 class="mb-0 text-uppercase">-1 Heart: System Corruption!</h3></div></div>
             <div id="errorFeedbackBox" class="position-absolute top-50 start-50 translate-middle mt-2 d-none" style="z-index: 6000; width: 90%;"><div class="bg-warning border border-white p-3 text-dark pixel-font shadow-lg"><p id="errorFeedbackText" class="mb-0"></p></div></div>
             <div class="hint-trigger position-absolute p-3" onclick="event.stopPropagation(); triggerBattleHint();" style="z-index: 5000; cursor:pointer; top:0; left:0;"><img src="img/icon-hint.png" width="50" style="filter: drop-shadow(0 0 5px gold);"><span id="modalHintCount" class="text-white fs-4">${gameState.hints}</span></div>
-            <div class="battle-screen d-flex justify-content-around align-items-end p-4" style="height:350px; background: url('${randomBG}') center/cover no-repeat;">
-                <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model" style="height:260px; object-fit:contain;">
+            <div class="battle-screen d-flex justify-content-around align-items-end p-4" style="height:350px; background: url('${randomBG}') center/cover no-repeat; border-radius: 15px 15px 0 0;">
+                <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model ${isBoss ? 'boss-sprite' : ''}" style="height:260px; object-fit:contain;">
             </div>
-            <div id="dialogueBox" class="p-4 bg-dark text-white border-top border-4 border-white" style="min-height: 200px; cursor: pointer;">
+            <div id="dialogueBox" class="p-4 bg-dark text-white border-top border-3 border-white" style="min-height: 200px; cursor: pointer; border-radius: 0 0 15px 15px;">
                 <p id="battleText" class="pixel-font fs-4 mb-0" style="line-height: 1.4; white-space: pre-wrap;"></p>
-                <div id="quizArea" class="d-none mt-3">
+                <div id="quizArea" class="d-none mt-0">
+                    <p class="pixel-font mb-2" style="color: #fff; font-size: 22px;">Question <span id="battleQuestionCounter"></span>:</p>
+                    <div id="battleQuestionContent" style="font-size: 18px;"></div>
+                    <br>
                     <button class="btn btn-warning w-100 pixel-font fw-bold" onclick="checkBattleAnswer_L3(${isBoss})">SUBMIT DATA</button>
                 </div>
             </div>
         </div>`;
 
     new bootstrap.Modal(document.getElementById('gameModal')).show();
-    setTimeout(() => { document.addEventListener('keydown', battleEnterHandler_L3); }, 100);
+    setTimeout(() => { 
+        document.addEventListener('keydown', battleEnterHandler_L3);
+        document.addEventListener('keydown', battleArrowKeyHandler_L3); 
+    }, 100);
     startSequence_L3(introDialogue, () => {
         document.getElementById('quizArea').classList.remove('d-none');
+        document.getElementById('battleText').style.display = 'none';
         loadQuestion_L3();
     });
 }
@@ -203,28 +201,53 @@ function battleEnterHandler_L3(e) {
     }
 }
 
+function battleArrowKeyHandler_L3(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const quizArea = document.getElementById('quizArea');
+        if (quizArea && !quizArea.classList.contains('d-none')) {
+            e.preventDefault();
+            const inputs = document.querySelectorAll('.blank-input');
+            if (inputs.length === 0) return;
+            const currentFocus = document.activeElement;
+            let currentIndex = -1;
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentFocus) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+            if (currentIndex === -1) {
+                inputs[0].focus();
+                return;
+            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                const nextIndex = (currentIndex + 1) % inputs.length;
+                inputs[nextIndex].focus();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                const prevIndex = (currentIndex - 1 + inputs.length) % inputs.length;
+                inputs[prevIndex].focus();
+            }
+        }
+    }
+}
+
 function loadQuestion_L3() {
     const qData = QUESTIONS_L3[gameState.currentSite][battleQIndex_L3];
-    document.getElementById('battleText').innerHTML = qData.q;
+    const totalQuestions = (gameState.currentSite === 5) ? 5 : 3;
     
-    // Wrap all inputs with green indicator
+    const questionCounter = document.getElementById('battleQuestionCounter');
+    if (questionCounter) {
+        questionCounter.innerText = (battleQIndex_L3 + 1) + '/' + totalQuestions;
+    }
+    
+    const questionContent = document.getElementById('battleQuestionContent');
+    if (questionContent) {
+        questionContent.innerHTML = qData.q;
+    } else {
+        document.getElementById('battleText').innerHTML = qData.q;
+    }
+    
     const inputs = document.querySelectorAll('.blank-input');
-    inputs.forEach((input) => {
-        if (!input.parentElement.classList.contains('input-with-indicator')) {
-            const wrapper = document.createElement('span');
-            wrapper.className = 'input-with-indicator';
-            wrapper.style.display = 'inline-block';
-            wrapper.style.margin = '0 2px';
-            
-            const indicator = document.createElement('div');
-            indicator.className = 'input-indicator';
-            
-            input.parentNode.insertBefore(wrapper, input);
-            wrapper.appendChild(input);
-            wrapper.appendChild(indicator);
-        }
-    });
-    
     if (inputs.length > 0) inputs[0].focus();
 }
 
@@ -307,14 +330,14 @@ function checkBattleAnswer_L3(isBoss) {
                 if (input.value.trim().toLowerCase() !== qData.a[index].toLowerCase()) {
                     input.style.borderBottom = '2px solid #ff0000';
                     input.style.backgroundColor = '#330000';
-                    setTimeout(() => { input.style.borderBottom = '2px solid #fff'; input.style.backgroundColor = '#222'; }, 2500);
+                    setTimeout(() => { input.style.borderBottom = '2px solid #00ff00'; input.style.backgroundColor = '#222'; }, 2500);
                 }
             });
         } else {
             if (inputs[0].value.trim().toLowerCase() !== qData.a.toLowerCase()) {
                 inputs[0].style.borderBottom = '2px solid #ff0000';
                 inputs[0].style.backgroundColor = '#330000';
-                setTimeout(() => { inputs[0].style.borderBottom = '2px solid #fff'; inputs[0].style.backgroundColor = '#222'; }, 2500);
+                setTimeout(() => { inputs[0].style.borderBottom = '2px solid #00ff00'; inputs[0].style.backgroundColor = '#222'; }, 2500);
             }
         }
         if (gameState.hearts <= 0) {
@@ -339,8 +362,12 @@ function startSequence_L3(lines, callback) {
 
 function showBattleResult_L3(won, isBoss) {
     document.removeEventListener('keydown', battleEnterHandler_L3);
+    document.removeEventListener('keydown', battleArrowKeyHandler_L3);
     const quizArea = document.getElementById('quizArea');
     if (quizArea) quizArea.classList.add('d-none');
+    
+    const battleText = document.getElementById('battleText');
+    if (battleText) battleText.style.display = 'block';
     
     // Add rewards for boss defeat
     if (won && isBoss) {
@@ -350,6 +377,10 @@ function showBattleResult_L3(won, isBoss) {
         const hintCountEl = document.getElementById('hintCount');
         if (heartCountEl) heartCountEl.innerText = gameState.hearts;
         if (hintCountEl) hintCountEl.innerText = gameState.hints;
+
+            localStorage.setItem('boss3Defeated', 'true');
+    localStorage.setItem('level3Completed', 'true');
+    
         console.log('BOSS REWARD - Hearts:', gameState.hearts, 'Hints:', gameState.hints);
     }
     
@@ -393,16 +424,16 @@ function renderVictoryModal_L3(isBoss) {
         }
         
         document.getElementById('modalContentWrapper').innerHTML = `
-            <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
-                <h1 class="text-white mb-3">✨ GAME COMPLETE! ✨</h1>
-                <p class="text-white fs-2 mb-2">⏱️ Completion Time: ${formattedTime}</p>
-                <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
-                <p class="text-light mb-4">Your time has been recorded on the leaderboard!</p>
-                <div class="d-flex gap-3 justify-content-center">
-                    <button class="btn btn-light pixel-font fs-4 px-4" onclick="location.href='leaderboard.html'">VIEW LEADERBOARD</button>
-                    <button class="btn btn-warning pixel-font fs-4 px-4" onclick="location.href='index.html'">MAIN MENU</button>
-                </div>
-            </div>`;
+    <div style="background: #0d1b30; padding: 40px 30px; text-align: center; border: 3px solid #2a4a6e; font-family: 'Pixelify Sans', sans-serif; box-shadow: 0 0 30px rgba(0,0,0,0.5); border-radius: 20px;">
+        <h1 style="color: #fff; margin-bottom: 15px; font-family: 'Pixelify Sans', sans-serif;">✨ GAME COMPLETE! ✨</h1>
+        <p style="color: #fff; font-size: 1.5rem; margin-bottom: 10px; font-family: 'Pixelify Sans', sans-serif;">⏱️ Completion Time: ${formattedTime}</p>
+        <p style="color: #fff; font-size: 1.2rem; margin-bottom: 20px; font-family: 'Pixelify Sans', sans-serif;">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
+        <p style="color: #8ab4d6; margin-bottom: 25px; font-family: 'Pixelify Sans', sans-serif;">Your time has been recorded on the leaderboard!</p>
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <button onclick="location.href='leaderboard.html'" style="background: #1a3a5c; color: #fff; border: 2px solid #2a4a6e; padding: 12px 24px; font-family: 'Pixelify Sans', sans-serif; font-size: 1.2rem; border-radius: 12px; cursor: pointer; transition: all 0.2s;">VIEW LEADERBOARD</button>
+            <button onclick="location.href='index.html'" style="background: #1a3a5c; color: #fff; border: 2px solid #2a4a6e; padding: 12px 24px; font-family: 'Pixelify Sans', sans-serif; font-size: 1.2rem; border-radius: 12px; cursor: pointer; transition: all 0.2s;">MAIN MENU</button>
+        </div>
+    </div>`;
     } else {
         document.getElementById('modalContentWrapper').innerHTML = `
             <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
@@ -416,7 +447,7 @@ function renderVictoryModal_L3(isBoss) {
 function renderDefeatModal_L3() {
     const DEFEAT_DIAL = ["The lava rose faster than my resolve...", "I underestimated a foe made of fire.", "The ruins claimed another wanderer.", "My final thought... was about a missing semicolon.", "The ash fills my lungs... the fire wins again..."];
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div style="background: #dc3545; padding: 40px 30px; text-align: center; border: 4px solid #fff; font-family: 'Pixelify Sans', sans-serif; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+        <div style="background: #dc3545; padding: 40px 30px; text-align: center; border: 4px solid #fff; font-family: 'Pixelify Sans', sans-serif; box-shadow: 0 0 30px rgba(0,0,0,0.5); border-radius: 20px;">
             <h1 style="color: #fff; margin-bottom: 10px; font-family: 'Pixelify Sans', sans-serif;">YOU DIED</h1>
             <p style="color: #fff; font-size: 1.2rem; margin-bottom: 20px; font-family: 'Pixelify Sans', sans-serif;">"${DEFEAT_DIAL[Math.floor(Math.random() * DEFEAT_DIAL.length)]}"</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">

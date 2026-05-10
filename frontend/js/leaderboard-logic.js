@@ -6,15 +6,22 @@ document.addEventListener("DOMContentLoaded", () => {
 var API_BASE = window.API_BASE || window.API_BASE_URL || 'http://localhost:5000';
 
 async function initLeaderboard() {
-    const container = document.getElementById('leaderboard-content');
-    if (!container) return;
-    
-    container.innerHTML = "";
+    const adventureEl = document.getElementById('leaderboard-content');
+    const questEl = document.getElementById('quest-leaderboard-content');
+    const containers = [adventureEl, questEl].filter(Boolean);
+    if (containers.length === 0) return;
+
+    const emptyMsg = '<div class="text-center py-4 text-warning">Login first to view leaderboard.</div>';
+    containers.forEach((el) => {
+        el.innerHTML = '';
+    });
 
     const token = localStorage.getItem('authToken');
 
     if (!token) {
-        container.innerHTML = '<div class="text-center py-4 text-warning">Login first to view leaderboard.</div>';
+        containers.forEach((el) => {
+            el.innerHTML = emptyMsg;
+        });
         return;
     }
 
@@ -30,7 +37,7 @@ async function initLeaderboard() {
         }
 
         const currentPlayerId = localStorage.getItem('playerId');
-        
+
         // Sort by time (lower is better)
         const players = (Array.isArray(board) ? board : [])
             .map((entry) => ({
@@ -38,13 +45,31 @@ async function initLeaderboard() {
                 time: Number(entry.time_seconds) || Number(entry.score) || 999999,
                 playerId: entry.player_id?._id || entry.player_id?.id || entry.player_id
             }))
-            .filter(p => p.time > 0 && p.time < 999999);
+            .filter((p) => p.time > 0 && p.time < 999999);
 
         players.sort((a, b) => a.time - b.time);
-        renderPlayers(container, players, currentPlayerId);
+        containers.forEach((el) => renderPlayers(el, players, currentPlayerId));
     } catch (err) {
-        container.innerHTML = `<div class="text-center py-4 text-danger">${err.message}</div>`;
+        containers.forEach((el) => {
+            el.innerHTML = `<div class="text-center py-4 text-danger">${escapeHtml(err.message)}</div>`;
+        });
     }
+}
+
+function rankBadgeUrls(rank) {
+    let rankImgSrc = 'img/standardRank.png';
+    let rankAlt = `#${rank}`;
+    if (rank === 1) {
+        rankImgSrc = 'img/rank1.png';
+        rankAlt = 'Rank 1';
+    } else if (rank === 2) {
+        rankImgSrc = 'img/rank2.png';
+        rankAlt = 'Rank 2';
+    } else if (rank === 3) {
+        rankImgSrc = 'img/rank3.png';
+        rankAlt = 'Rank 3';
+    }
+    return { rankImgSrc, rankAlt };
 }
 
 function renderPlayers(container, players, currentPlayerId) {
@@ -57,8 +82,8 @@ function renderPlayers(container, players, currentPlayerId) {
         const rank = index + 1;
         const row = document.createElement('div');
         row.className = 'lb-row lb-player-row';
-        
-        if (player.playerId === currentPlayerId) {
+
+        if (String(player.playerId) === String(currentPlayerId)) {
             row.classList.add('current-player-row');
             row.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
             row.style.border = '1px solid gold';
@@ -68,17 +93,17 @@ function renderPlayers(container, players, currentPlayerId) {
         const seconds = player.time % 60;
         const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-        let rankDisplay = rank;
-        if (rank === 1) rankDisplay = "🥇";
-        else if (rank === 2) rankDisplay = "🥈";
-        else if (rank === 3) rankDisplay = "🥉";
+        const { rankImgSrc, rankAlt } = rankBadgeUrls(rank);
 
         row.innerHTML = `
-            <span class="lb-col-rank">${rankDisplay}</span>
+            <span class="lb-col-rank lb-col-rank-img-wrap">
+              <img class="lb-rank-img" src="${rankImgSrc}" alt="${rankAlt}" width="48" height="48" loading="lazy">
+              <span class="lb-rank-num visually-hidden">${rank}</span>
+            </span>
             <span class="lb-col-name text-uppercase">${escapeHtml(player.name)}</span>
             <span class="lb-col-score text-warning fw-bold">⏱️ ${formattedTime}</span>
         `;
-        
+
         container.appendChild(row);
     });
 }
@@ -130,7 +155,7 @@ async function submitGameCompletionTime(timeSeconds) {
         if (!response.ok) {
             throw new Error(data.message || 'Failed to submit time');
         }
-        
+
         console.log('Time submitted successfully:', timeSeconds, 'seconds');
         return true;
     } catch (err) {

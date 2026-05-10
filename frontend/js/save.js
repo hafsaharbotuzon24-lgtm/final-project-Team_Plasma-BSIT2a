@@ -35,8 +35,8 @@ function triggerSaveFlow() {
     const slotsHtml = `
         <div class="modal fade" id="saveSlotModal" tabindex="-1" data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border border-4 border-warning bg-black rounded-0">
-                    <div class="modal-header border-bottom border-warning">
+                <div class="modal-content border border-4 border-warning bg-black rounded-0" style="border-radius: 20px !important;">
+                    <div class="modal-header border-bottom border-warning" style="border-radius: 20px 20px 0 0;">
                         <h3 class="pixel-font text-warning m-0">SELECT SAVE SLOT</h3>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
@@ -57,7 +57,6 @@ function triggerSaveFlow() {
             </div>
         </div>
     `;
-    
     // Remove existing modal if present
     const existingModal = document.getElementById('saveSlotModal');
     if (existingModal) existingModal.remove();
@@ -87,18 +86,17 @@ function saveToSlot(slotNumber) {
         
         // Show success message
         const successHtml = `
-            <div class="modal fade" id="saveSuccessModalTemp" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content border border-4 border-success bg-black rounded-0">
-                        <div class="modal-body text-center p-4">
-                            <h2 class="pixel-font text-success">✓ SAVED TO SLOT ${slotNumber}!</h2>
-                            <p class="text-white mt-2">Your progress has been saved.</p>
-                        </div>
-                    </div>
+    <div class="modal fade" id="saveSuccessModalTemp" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-4 border-success bg-black rounded-0" style="border-radius: 20px !important; overflow: hidden;">
+                <div class="modal-body text-center p-4">
+                    <h2 class="pixel-font text-success">✓ SAVED TO SLOT ${slotNumber}!</h2>
+                    <p class="pixel-font text-white mt-2">Your progress has been saved.</p>
                 </div>
             </div>
-        `;
-        
+        </div>
+    </div>
+`;
         document.body.insertAdjacentHTML('beforeend', successHtml);
         const successModal = new bootstrap.Modal(document.getElementById('saveSuccessModalTemp'));
         successModal.show();

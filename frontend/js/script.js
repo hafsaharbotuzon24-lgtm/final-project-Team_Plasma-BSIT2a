@@ -301,8 +301,32 @@ function openProfile() {
 
 function switchTheme() {
     console.log('Switch Theme');
-   
+    
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    // Set the new theme
+    html.setAttribute('data-theme', newTheme);
+    
+    // Save to localStorage
+    localStorage.setItem('combatCoders_theme', newTheme);
+    
+    console.log('Theme switched to:', newTheme);
+    
+    // Close the profile dropdown
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown) dropdown.classList.remove('show');
 }
+
+// Apply saved theme on page load
+(function applySavedTheme() {
+    const savedTheme = localStorage.getItem('combatCoders_theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        console.log('Applied saved theme:', savedTheme);
+    }
+})();
 
 function signOut() {
     var dropdown = document.getElementById('profileDropdown');

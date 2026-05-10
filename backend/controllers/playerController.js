@@ -36,6 +36,77 @@ exports.getPlayer = async (req, res) => {
   res.json(player);
 };
 
+/**
+ * PATCH body: { questCompletedLevels?: number[], moduleQuiz?: { moduleId, correct, total } }
+ * Merges quest levels; keeps best percentage per module quiz.
+ */
+exports.syncLearningProgress = async (req, res) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { questCompletedLevels, moduleQuiz } = req.body || {};
+    const hasQuestUpdate = Array.isArray(questCompletedLevels);
+    const hasModuleUpdate = moduleQuiz && typeof moduleQuiz === 'object';
+    if (!hasQuestUpdate && !hasModuleUpdate) {
+      return res.status(400).json({ message: 'Provide questCompletedLevels and/or moduleQuiz' });
+    }
+
+    const player = await Player.findById(playerId);
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    if (hasQuestUpdate) {
+      const nums = questCompletedLevels
+        .map(Number)
+        .filter((n) => Number.isFinite(n) && n >= 1 && n <= 500);
+      const merged = [...new Set([...(player.questCompletedLevels || []), ...nums])].sort((a, b) => a - b);
+      player.questCompletedLevels = merged;
+    }
+
+    if (hasModuleUpdate) {
+      const mid = Number(moduleQuiz.moduleId);
+      const correct = Number(moduleQuiz.correct);
+      const total = Number(moduleQuiz.total);
+      if (!Number.isFinite(mid) || !Number.isFinite(correct) || !Number.isFinite(total) || total < 1) {
+        return res.status(400).json({ message: 'Invalid moduleQuiz (need moduleId, correct, total)' });
+      }
+      if (correct < 0 || correct > total) {
+        return res.status(400).json({ message: 'Invalid moduleQuiz scores' });
+      }
+
+      const pct = correct / total;
+      const arr = player.moduleQuizzes || [];
+      const idx = arr.findIndex((m) => m.moduleId === mid);
+      const entry = {
+        moduleId: mid,
+        correct,
+        total,
+        completedAt: new Date()
+      };
+      if (idx === -1) {
+        arr.push(entry);
+      } else {
+        const oldPct = arr[idx].correct / arr[idx].total;
+        if (pct >= oldPct) {
+          arr[idx] = entry;
+        }
+      }
+      player.moduleQuizzes = arr;
+    }
+
+    await player.save();
+    const safe = player.toObject();
+    delete safe.password;
+    return res.json(safe);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 exports.updateMyResources = async (req, res) => {
   try {
     const playerId = req.player?.id;

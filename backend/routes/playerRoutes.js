@@ -6,6 +6,7 @@ const { protect } = require('../middleware/authMiddleware');
 router.post('/', controller.createPlayer);
 router.get('/', protect, controller.getPlayers);
 router.get('/me', protect, controller.getMyPlayer);
+router.patch('/me/learning-progress', protect, controller.syncLearningProgress);
 router.patch('/me/resources', protect, controller.updateMyResources);
 router.patch('/me/password', protect, controller.changePassword);
 router.delete('/me', protect, controller.deleteMyAccount);

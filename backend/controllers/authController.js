@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const xss = require('xss');
 const { OAuth2Client } = require('google-auth-library');
+const { sendOtpEmail, isSmtpConfigured } = require('../utils/sendOtpEmail');
 
 const googleClient = new OAuth2Client();
 
@@ -181,13 +182,36 @@ exports.forgotPassword = async (req, res) => {
     await OTP.deleteMany({ email: email.toLowerCase() }); // Clear old OTPs
     await OTP.create({ email: email.toLowerCase(), otp });
 
-    // For demo/development - log OTP to console instead of sending email
-    console.log(`OTP for ${email}: ${otp}`);
+    let emailed = false;
+    if (isSmtpConfigured()) {
+      try {
+        emailed = await sendOtpEmail(email.toLowerCase(), otp);
+      } catch (sendErr) {
+        console.error('OTP email send failed:', sendErr?.message || sendErr);
+        await OTP.deleteMany({ email: email.toLowerCase() });
+        return res.status(500).json({ message: 'Failed to send email. Please try again later.' });
+      }
+    }
 
-    res.json({ 
-      message: 'OTP sent successfully. Check your email.',
-      ...(process.env.NODE_ENV !== 'production' && { otp }) 
-    });
+    if (process.env.NODE_ENV === 'production' && !emailed) {
+      await OTP.deleteMany({ email: email.toLowerCase() });
+      return res.status(500).json({
+        message:
+          'Email delivery is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.'
+      });
+    }
+
+    console.log(`OTP for ${email}: ${otp}${emailed ? ' (sent via SMTP)' : ' (dev / no SMTP)'}`);
+
+    const payload = {
+      message: emailed
+        ? 'OTP sent successfully. Check your email.'
+        : 'OTP generated. Configure SMTP on the server to send email; in development the code may be returned below.'
+    };
+    if (process.env.NODE_ENV !== 'production' && !emailed) {
+      payload.otp = otp;
+    }
+    res.json(payload);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

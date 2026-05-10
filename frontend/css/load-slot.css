@@ -1,7 +1,7 @@
 .load-slot-container {
             min-height: 100vh;
             background: transparent;
-            padding: 100px 20px 40px;
+            padding: 70px 20px 40px;
         }
 
         .new-game-btn {
@@ -21,9 +21,10 @@
         }
 
         .new-game-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            background: linear-gradient(135deg, #ffaa00, #ffd700);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            background: linear-gradient(135deg, #ffdb4d, #ffc700);
+            letter-spacing: 2px;
         }
 
         .slots-wrapper {
@@ -35,7 +36,7 @@
         }
 
         .load-slot-card {
-            background: #15324e;
+            background: linear-gradient(145deg, #15324e 0%, #0d2337 100%);
             border: 3px solid #040f4b;
             border-radius: 20px;
             padding: 25px;
@@ -43,11 +44,14 @@
             flex: 1;
             min-width: 280px;
             max-width: 350px;
+            backdrop-filter: blur(5px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .load-slot-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.25);
+            border-color: #ffd700;
         }
 
         .slot-header {
@@ -55,6 +59,18 @@
             padding-bottom: 15px;
             margin-bottom: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        .slot-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            opacity: 0.6;
         }
 
         .slot-number {
@@ -64,6 +80,11 @@
             text-shadow: 2px 2px 0 #ff6600;
             display: block;
             margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .load-slot-card:hover .slot-number {
+            text-shadow: 2px 2px 0 #ff6600, 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .slot-status {
@@ -75,13 +96,27 @@
         }
 
         .slot-status.occupied {
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
             color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .slot-status.occupied:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
         }
 
         .slot-status.empty {
-            background: #6c757d;
+            background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
             color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+        }
+
+        .slot-status.empty:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
         }
 
         .slot-details {
@@ -92,12 +127,20 @@
         }
 
         .detail-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            padding: 10px 14px;
             border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-item:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 215, 0, 0.05) 100%);
+            transform: translateX(3px);
+            border-color: rgba(255, 215, 0, 0.2);
         }
 
         .detail-label {
@@ -116,10 +159,10 @@
         }
 
         .load-btn {
-            background: #238ec0;
-            color: #15324e;
+            background: linear-gradient(135deg, #238ec0 0%, #1a7ab0 100%);
+            color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-family: 'Pixelify Sans', monospace;
             font-size: 1.1rem;
             font-weight: bold;
@@ -127,12 +170,14 @@
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .load-btn:hover:not(:disabled) {
             background: #ffaa00;
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
         }
 
         .load-btn:disabled {
@@ -142,19 +187,23 @@
         }
 
         .delete-btn {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             border: none;
-            padding: 5px 15px;
+            padding: 8px 15px;
             font-family: 'Pixelify Sans', monospace;
             font-size: 0.8rem;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-top: 10px;
             width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .delete-btn:hover {
             background: #c82333;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
         }
 
         @media (max-width: 768px) {

@@ -1,11 +1,7 @@
-/**
- * Updated typewriter to support HTML tags and a callback for images
- */
 function runTypewriter(text, elementId, callback) {
     const container = document.getElementById(elementId);
     if (!container) return;
     
-    // Clear any existing typewriter timeout
     if (container._typewriterTimeout) {
         clearTimeout(container._typewriterTimeout);
         container._typewriterTimeout = null;
@@ -26,7 +22,7 @@ function runTypewriter(text, elementId, callback) {
             }
 
             container.innerHTML = text.substring(0, index);
-            container._typewriterTimeout = setTimeout(type, 22); 
+            container._typewriterTimeout = setTimeout(type, 15); 
         } else {
             container._typewriterTimeout = null;
             if (callback) callback();
@@ -160,16 +156,16 @@ function openInstructionsModal() {
     }
 
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div style="background-color: #15324e; padding: 30px; color: white; border: 4px solid #333; text-align: center; max-height: 90vh; overflow-y: auto;">
-            <h2 class="pixel-font mb-4 text-warning">${levelTitles[gameState.currentLevel]}</h2>
+        <div style="background-color: #15324e; padding: 30px; color: white; border: 4px solid #333; text-align: center; max-height: 90vh; overflow-y: auto; border-radius: 20px;">
+            <h2 class="mb-4 text-warning" style="font-family: 'Silkscreen', sans-serif;">${levelTitles[gameState.currentLevel]}</h2>
             <div id="instrCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
                 <div class="carousel-inner pixel-font fs-3">
                     ${carouselItemsHTML}
                 </div>
                 <div class="mt-4">
-                    <button class="btn btn-dark" data-bs-target="#instrCarousel" data-bs-slide="prev">PREV</button>
-                    <span class="text-white mx-3" id="slideCounter">1 / ${totalSlides}</span>
-                    <button class="btn btn-dark" data-bs-target="#instrCarousel" data-bs-slide="next">NEXT</button>
+                    <button class="btn btn-dark" data-bs-target="#instrCarousel" data-bs-slide="prev" style="font-family: 'Silkscreen', sans-serif;">PREV</button>
+                    <span class="text-white mx-3" id="slideCounter" style="font-family: 'Silkscreen', sans-serif;">1 / ${totalSlides}</span>
+                    <button class="btn btn-dark" data-bs-target="#instrCarousel" data-bs-slide="next" style="font-family: 'Silkscreen', sans-serif;">NEXT</button>
                 </div>
             </div>
             <button class="btn btn-success mt-5 pixel-font w-100" id="start-btn-text" style="background-color: #020722; border: #ffffff" data-bs-dismiss="modal"></button>
@@ -195,7 +191,6 @@ function openInstructionsModal() {
                 overflow-y: auto;
             }
         </style>`;
-
     const modalEl = document.getElementById('gameModal');
     const carouselEl = document.getElementById('instrCarousel');
 

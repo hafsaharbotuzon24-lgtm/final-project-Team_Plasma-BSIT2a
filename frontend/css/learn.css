@@ -347,7 +347,7 @@
     }
     
     .card-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.0rem;
     }
     
     .card-divider {
@@ -1013,6 +1013,159 @@
         max-height: 350px;
     }
 }
+/* =============================================
+   HTML MODULES INTRO SECTION
+   ============================================= */
+.html-modules-intro {
+    background: linear-gradient(135deg, #1a2d45 0%, #0d1b30 100%);
+    border: 2px solid #ffc107;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.html-modules-intro p {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.modules-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 25px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    color: #ffc107;
+    font-weight: bold;
+    text-shadow: 2px 2px #000;
+}
+
+.stat-label {
+    color: #8aa0b8;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.start-modules-btn {
+    background: linear-gradient(135deg, #ffc107 0%, #ff6b6b 100%);
+    border: 3px solid #000;
+    color: #000;
+    padding: 15px 40px;
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.start-modules-btn:hover {
+    background: linear-gradient(135deg, #ffd966 0%, #ff8585 100%);
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
+}
+
+@media (max-width: 768px) {
+    .modules-stats {
+        gap: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .start-modules-btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
+}
+
+/* =============================================
+   LEARN DROPDOWN STYLES
+   ============================================= */
+.learn-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Hover effect for Learn dropdown */
+.learn-dropdown-container:hover .learn-dropdown {
+    display: block;
+}
+
+.learn-dropdown-container:hover .learn-btn svg {
+    transform: rotate(0deg);
+}
+
+.learn-btn svg {
+    vertical-align: middle;
+    margin-left: 4px;
+    margin-top: -2px;
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);
+}
+
+.learn-dropdown-container.show .learn-btn svg {
+    transform: rotate(0deg);
+}
+
+.learn-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #0d1b30;
+    border: 2px solid #1a3350;
+    border-radius: 8px;
+    min-width: 180px;
+    z-index: 1000;
+    margin-top: 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Keep dropdown visible when hovering over it */
+.learn-dropdown:hover {
+    display: block;
+}
+
+.learn-dropdown.show {
+    display: block;
+}
+
+.learn-dropdown .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 0.95rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.learn-dropdown .dropdown-item:hover {
+    background: #1a2d45;
+    color: #ffc107;
+}
+
 /* Warning Modal */
 .warning-modal-box {
     border-color: #2a4a6e !important;
@@ -1033,4 +1186,325 @@
 .warning-close-btn:hover {
     background: #2a4a6e !important;
     color: white !important;
+}
+
+/* =============================================
+   VISUAL EFFECTS & ANIMATIONS
+   ============================================= */
+
+/* --- Animated Glowing Border on Main Container --- */
+.learn-container-main {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.learn-container-main::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: -3px; right: -3px; bottom: -3px;
+    border-radius: 22px;
+    background: linear-gradient(45deg, #1c3554, #2c4a70, #ffc107, #2c4a70, #1c3554);
+    background-size: 400% 400%;
+    z-index: -2;
+    animation: learnBorderGlow 8s ease infinite;
+    opacity: 0.6;
+}
+
+.learn-container-main::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 20px;
+    background: #0d1b30;
+    z-index: -1;
+}
+
+@keyframes learnBorderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- Glitch Header --- */
+.learn-header-title {
+    position: relative;
+    animation: headerFlicker 4s infinite;
+}
+
+.learn-header-title::before {
+    content: 'GAME MECHANICS';
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    text-align: center;
+    color: #ff6b6b;
+    clip-path: inset(0 0 55% 0);
+    animation: glitchTop 3s infinite linear alternate-reverse;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.learn-header-title::after {
+    content: 'GAME MECHANICS';
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    text-align: center;
+    color: #6ab0e0;
+    clip-path: inset(55% 0 0 0);
+    animation: glitchBottom 2.5s infinite linear alternate-reverse;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+@keyframes headerFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.85; text-shadow: 0 0 20px rgba(255,193,7,0.5); }
+}
+
+@keyframes glitchTop {
+    0% { transform: translateX(-2px); }
+    20% { transform: translateX(2px); }
+    40% { transform: translateX(-1px); }
+    60% { transform: translateX(1px); }
+    80% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes glitchBottom {
+    0% { transform: translateX(2px); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(1px); }
+    60% { transform: translateX(-1px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+}
+
+/* --- Staggered Card Entrance --- */
+.learn-card {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: cardFadeUp 0.6s ease forwards;
+}
+
+.learn-card:nth-child(1) { animation-delay: 0.15s; }
+.learn-card:nth-child(2) { animation-delay: 0.3s; }
+.learn-card:nth-child(3) { animation-delay: 0.45s; }
+.learn-card:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes cardFadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Card Hover Glow + Lift --- */
+.learn-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.learn-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(255, 193, 7, 0.2);
+}
+
+.learn-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.06), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.learn-card:hover::before {
+    left: 100%;
+}
+
+/* --- Animated Card Divider --- */
+.card-divider {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, transparent, #ffc107, transparent);
+    animation: dividerPulse 3s ease-in-out infinite;
+}
+
+@keyframes dividerPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* --- Mechanic Item Hover Sweep --- */
+.mechanic-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+
+.mechanic-item::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.1), transparent);
+    transition: left 0.5s ease;
+    pointer-events: none;
+}
+
+.mechanic-item:hover::after {
+    left: 100%;
+}
+
+.mechanic-item:hover {
+    transform: scale(1.02);
+    border-color: rgba(255, 193, 7, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Icon Bounce on Hover --- */
+.mechanic-item:hover .mini-pixel-icon {
+    animation: iconBounce 0.5s ease;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+    60% { transform: translateY(-3px); }
+}
+
+/* --- Mechanic Desc Hover Glow --- */
+.mechanic-desc {
+    transition: all 0.25s ease;
+}
+
+.mechanic-desc:hover {
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.01);
+}
+
+/* --- Reward Item Hover Glow --- */
+.reward-item {
+    transition: all 0.25s ease;
+}
+
+.reward-item:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.3);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+/* --- VS Text Pulse --- */
+.vs-text, .vs-text-mini {
+    animation: vsPulse 2s ease-in-out infinite;
+}
+
+@keyframes vsPulse {
+    0%, 100% { text-shadow: 0 0 5px rgba(255, 193, 7, 0.3); }
+    50% { text-shadow: 0 0 15px rgba(255, 193, 7, 0.6); }
+}
+
+/* --- Floating Particles --- */
+.learn-container-main .learn-particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.learn-particles .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: rgba(255, 193, 7, 0.35);
+    border-radius: 50%;
+    animation: particleFloat linear infinite;
+}
+
+.learn-particles .particle:nth-child(1) { left: 8%; top: 100%; animation-duration: 9s; animation-delay: 0s; }
+.learn-particles .particle:nth-child(2) { left: 22%; top: 100%; animation-duration: 11s; animation-delay: 1.5s; width: 2px; height: 2px; }
+.learn-particles .particle:nth-child(3) { left: 38%; top: 100%; animation-duration: 8s; animation-delay: 0.8s; }
+.learn-particles .particle:nth-child(4) { left: 52%; top: 100%; animation-duration: 10s; animation-delay: 2.5s; width: 4px; height: 4px; background: rgba(106, 176, 224, 0.3); }
+.learn-particles .particle:nth-child(5) { left: 66%; top: 100%; animation-duration: 12s; animation-delay: 0.3s; }
+.learn-particles .particle:nth-child(6) { left: 80%; top: 100%; animation-duration: 9s; animation-delay: 2s; width: 2px; height: 2px; }
+.learn-particles .particle:nth-child(7) { left: 14%; top: 100%; animation-duration: 13s; animation-delay: 3s; background: rgba(106, 176, 224, 0.3); }
+.learn-particles .particle:nth-child(8) { left: 58%; top: 100%; animation-duration: 7s; animation-delay: 1.2s; }
+
+@keyframes particleFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-900px) scale(0.5); opacity: 0; }
+}
+
+/* --- Topic Dropdown Glow --- */
+.topic-dropdown-btn:hover {
+    box-shadow: 0 0 15px rgba(74, 138, 190, 0.3);
+}
+
+.topic-dropdown-btn:hover .topic-arrow {
+    transform: rotate(180deg) scale(1.2);
+    color: #ffc107;
+}
+
+/* --- Code Block Glow --- */
+.code-example {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.code-example:hover {
+    border-color: rgba(255, 193, 7, 0.4);
+    box-shadow: 0 0 15px rgba(106, 176, 224, 0.15);
+}
+
+/* --- Quiz Submit Button Glow --- */
+.quiz-submit-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-submit-btn:hover {
+    box-shadow: 0 0 20px rgba(46, 190, 82, 0.4);
+}
+
+/* --- Modal Pop-In --- */
+.quiz-modal-overlay:not(.hidden) .quiz-modal-box {
+    animation: modalPopLearn 0.35s ease-out;
+}
+
+@keyframes modalPopLearn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- Stat Number Glow --- */
+.stat-number {
+    animation: statGlow 3s ease-in-out infinite;
+}
+
+@keyframes statGlow {
+    0%, 100% { text-shadow: 2px 2px #000; }
+    50% { text-shadow: 2px 2px #000, 0 0 12px rgba(255, 193, 7, 0.5); }
+}
+
+/* --- Start Modules Button Pulse --- */
+.start-modules-btn {
+    animation: btnPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+    50% { box-shadow: 0 0 20px 4px rgba(255, 193, 7, 0.2); }
+}
+
+/* --- Responsive Effects --- */
+@media (max-width: 768px) {
+    .learn-header-title::before, .learn-header-title::after {
+        display: none;
+    }
+    .learn-particles .particle {
+        display: none;
+    }
+    .start-modules-btn {
+        animation: none;
+    }
 }

@@ -45,7 +45,7 @@
 .slab-textfield {
     background-color: #1c3554;
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px;
     border: 2px solid #000;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
@@ -58,6 +58,12 @@
     box-sizing: border-box;
     width: 100%;
     height: auto;
+}
+
+/* Bio & Stats Headers - Silkscreen */
+.bioLabel,
+.stats-label {
+    font-family: 'Silkscreen', sans-serif;
 }
 
 /* =============================================
@@ -146,58 +152,45 @@
     width: 100%;
 }
 
- .scroll-btn-enter {
-    background: #1a2744;
-    border: 2px solid #000;
-    outline: none;
+/* =============================================
+   ENTER BUTTON - MATCHES INFO-CONTAINER DESIGN (REDUCED SIZE)
+   ============================================= */
+.scroll-btn-enter {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    border-radius: 15px;
+    padding: 10px 30px;
     cursor: pointer;
-    padding: 15px 40px;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 1.2rem;
-    color: #ffffff;
+    transition: all 0.3s ease;
+    border: 3px solid #b68d06;
     text-align: center;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    margin: 20px auto 0;
-    display: block;
-    text-transform: uppercase;
+}
+
+.scroll-btn-enter span {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1a1a2e;;
     letter-spacing: 2px;
-    text-decoration: none;
 }
 
 .scroll-btn-enter:hover {
-    background: #1f3058;
-    border-color: #17213a;
-    transform: scale(1.05);
+    background-color: #2a4a6e;
+    transform: translateY(-2px);
+    border-color: #FFD700;
+}
+
+.scroll-btn-enter:hover span {
+    color: #1a1a2e;
 }
 
 .scroll-btn-enter:active {
-    transform: scale(0.98);
-    background: #152040;
-}
-
-/* Small Desktop / Tablet - 769px to 991px */
-@media (min-width: 769px) and (max-width: 991px) {
-    .scroll-btn-enter {
-        padding: 12px 35px;
-        font-size: 1.1rem;
-        margin: 20px auto 0;
-    }
-}
-
-/* Mobile - 768px and below */
-@media (max-width: 768px) {
-    .scroll-btn-enter {
-        padding: 12px 30px;
-        font-size: 1rem;
-        margin: 15px auto 0;
-        width: auto;
-        min-width: 150px;
-    }
+    transform: translateY(2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* =============================================
-   BOTTOM NAVIGATION
+   BOTTOM NAVIGATION (mobile only)
    ============================================= */
 .bottom-nav {
     position: fixed;
@@ -209,23 +202,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* =============================================
-   LOAD SLOTS (if used)
-   ============================================= */
-.lb-row {
-    grid-template-columns: 0.8fr 1.8fr 1fr;
-    gap: 6px;
-    padding: 10px 0;
-}
-
-.load-column {
-    padding: 18px 12px;
-}
-
-.slab-load-slot {
-    padding: 12px;
 }
 
 /* =============================================
@@ -304,15 +280,29 @@
         justify-content: center;
         align-items: center;
         padding: 0;
+        gap: 25px;
     }
     
     .info-container.slab-textfield {
         margin: 0;
-        padding: 35px 40px;
+        padding: 20px 25px;
         font-size: 1.1rem;
         min-height: 450px;
         width: 100%;
         max-width: 580px;
+    }
+    
+    /* Enter button below info container */
+    #charCarousel .carousel-item .col-md-7 .scroll-btn-enter {
+        position: relative;
+        width: auto;
+        min-width: 180px;
+        margin: 0 auto;
+        display: inline-block;
+    }
+    
+    .scroll-btn-enter span {
+        font-size: 1.6rem;
     }
     
     /* Arrows */
@@ -331,6 +321,7 @@
     
     /* Text sizing */
     .bioLabel {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.6rem;
         margin-bottom: 12px;
     }
@@ -346,6 +337,7 @@
     }
     
     .stats-label {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.6rem;
         margin-bottom: 15px;
     }
@@ -359,13 +351,9 @@
         width: 24px;
     }
     
-    /* Bottom nav */
+    /* Hide bottom-nav on desktop */
     .bottom-nav {
-        bottom: 25px;
-    }
-    
-    .scroll-btn-enter img {
-        width: 300px;
+        display: none !important;
     }
 }
 
@@ -445,15 +433,29 @@
         justify-content: center;
         align-items: center;
         padding: 0;
+        gap: 20px;
     }
     
     .info-container.slab-textfield {
         margin: 0;
-        padding: 30px 35px;
+        padding: 18px 22px;
         font-size: 1rem;
         min-height: 400px;
         width: 100%;
         max-width: 480px;
+    }
+    
+    /* Enter button below info container */
+    #charCarousel .carousel-item .col-md-7 .scroll-btn-enter {
+        position: relative;
+        width: auto;
+        min-width: 160px;
+        margin: 0 auto;
+        display: inline-block;
+    }
+    
+    .scroll-btn-enter span {
+        font-size: 1.4rem;
     }
     
     /* Arrows */
@@ -472,6 +474,7 @@
     
     /* Text sizing */
     .bioLabel {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.4rem;
         margin-bottom: 10px;
     }
@@ -487,6 +490,7 @@
     }
     
     .stats-label {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.4rem;
         margin-bottom: 12px;
     }
@@ -500,18 +504,14 @@
         width: 22px;
     }
     
-    /* Bottom nav - centered */
+    /* Hide bottom-nav on desktop */
     .bottom-nav {
-        bottom: 20px;
-    }
-    
-    .scroll-btn-enter img {
-        width: 260px;
+        display: none !important;
     }
 }
 
 /* =============================================
-   SMALL DESKTOP / TABLET - 769px to 991px
+   SMALL DESKTOP / TABLET LANDSCAPE - 769px to 991px
    ============================================= */
 @media (min-width: 769px) and (max-width: 991px) {
     .character-display {
@@ -540,8 +540,11 @@
     #charCarousel .carousel-item .col-md-7 {
         width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
         padding: 0;
+        gap: 15px;
     }
     
     .char-role {
@@ -560,11 +563,28 @@
     
     .info-container.slab-textfield {
         margin: 0;
-        padding: 20px;
+        padding: 15px;
         font-size: 0.95rem;
         min-height: auto;
         max-width: 500px;
         width: 100%;
+    }
+    
+    /* Enter button below info container */
+    #charCarousel .carousel-item .col-md-7 .scroll-btn-enter {
+        position: relative;
+        width: auto;
+        min-width: 150px;
+        margin: 0 auto;
+        display: inline-block;
+    }
+    
+    .scroll-btn-enter {
+        padding: 8px 25px;
+    }
+    
+    .scroll-btn-enter span {
+        font-size: 1.2rem;
     }
     
     /* Arrows */
@@ -581,13 +601,9 @@
         width: 50px;
     }
     
-    /* Bottom nav */
+    /* Hide bottom-nav on desktop/tablet */
     .bottom-nav {
-        bottom: 20px;
-    }
-    
-    .scroll-btn-enter img {
-        width: 240px;
+        display: none !important;
     }
 }
 
@@ -645,8 +661,15 @@
     #charCarousel .carousel-item .col-md-7 {
         width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
         padding: 0;
+    }
+    
+    /* Hide the button inside col-md-7 on mobile */
+    #charCarousel .carousel-item .col-md-7 .scroll-btn-enter {
+        display: none !important;
     }
 
     /* Role banner */
@@ -669,7 +692,7 @@
     /* Info container */
     .info-container.slab-textfield {
         margin: 0 auto;
-        padding: 15px;
+        padding: 12px;
         font-size: 0.9rem;
         min-height: auto;
         height: auto;
@@ -684,6 +707,7 @@
     }
 
     .bioLabel {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.1rem;
         margin-bottom: 5px;
     }
@@ -703,6 +727,7 @@
     }
 
     .stats-label {
+        font-family: 'Silkscreen', sans-serif;
         font-size: 1.1rem;
         margin-bottom: 8px;
     }
@@ -738,13 +763,18 @@
         width: 40px;
     }
 
-    /* Bottom nav */
+    /* Bottom nav (visible on mobile only) */
     .bottom-nav {
+        display: flex !important;
         bottom: 15px;
     }
-
-    .scroll-btn-enter img {
-        width: 220px;
+    
+    .scroll-btn-enter {
+        padding: 8px 20px;
+    }
+    
+    .scroll-btn-enter span {
+        font-size: 1rem;
     }
 }
 
@@ -757,7 +787,15 @@
     }
     
     .info-container.slab-textfield {
-        padding: 12px;
+        padding: 10px;
+    }
+    
+    .bioLabel {
+        font-family: 'Silkscreen', sans-serif;
+    }
+    
+    .stats-label {
+        font-family: 'Silkscreen', sans-serif;
     }
     
     .bioText {
@@ -766,10 +804,6 @@
     
     .stat-row {
         font-size: 0.8rem;
-    }
-    
-    .scroll-btn-enter img {
-        width: 180px;
     }
     
     #role-scroll {
@@ -788,5 +822,13 @@
     
     .bottom-nav {
         bottom: 10px;
+    }
+    
+    .scroll-btn-enter {
+        padding: 6px 18px;
+    }
+    
+    .scroll-btn-enter span {
+        font-size: 0.9rem;
     }
 }

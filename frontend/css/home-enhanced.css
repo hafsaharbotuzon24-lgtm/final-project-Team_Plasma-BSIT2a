@@ -1,0 +1,227 @@
+/* Particle Background */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    font-family: 'Pixelify Sans', monospace;
+    font-size: 14px;
+    color: rgba(100, 200, 255, 0.3);
+    animation: float-particle 15s infinite linear;
+    user-select: none;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Typing cursor effect */
+#typing-text::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: #ffcc00;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Combat Preview Title Underline Effect */
+.cp-row-title {
+    position: relative;
+    display: inline-block;
+}
+
+.cp-row-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ffcc00, transparent);
+    transition: width 0.4s ease;
+}
+
+.cp-row:hover .cp-row-title::after {
+    width: 100%;
+}
+
+/* =============================================
+   HOME PAGE VISUAL EFFECTS
+   ============================================= */
+
+/* --- Logo Glow Pulse --- */
+.logo-png {
+    animation: logoGlowPulse 3s ease-in-out infinite, floatEffect 4s ease-in-out infinite;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 204, 0, 0.15));
+}
+
+@keyframes logoGlowPulse {
+    0%, 100% { filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6)) drop-shadow(0 0 15px rgba(255,204,0,0.1)); }
+    50% { filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6)) drop-shadow(0 0 30px rgba(255,204,0,0.25)); }
+}
+
+/* --- Play Button Pulsing Ring --- */
+.scroll-btn-play {
+    position: relative;
+    animation: btnRingPulse 2.5s ease-out infinite;
+}
+
+@keyframes btnRingPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 204, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
+}
+
+.scroll-btn-play:hover {
+    animation: none;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+}
+
+/* --- MOTD Text Shimmer --- */
+.motd-text {
+    position: relative;
+    animation: motdGlow 3s ease-in-out infinite;
+}
+
+@keyframes motdGlow {
+    0%, 100% { text-shadow: 0 0 5px rgba(255, 204, 0, 0.2); }
+    50% { text-shadow: 0 0 15px rgba(255, 204, 0, 0.4), 0 0 30px rgba(255, 204, 0, 0.1); }
+}
+
+/* --- Combat Preview Section Title Glitch --- */
+.combat-preview-section .cp-desc-text {
+    position: relative;
+    animation: headerFlickerHome 4s infinite;
+}
+
+.combat-preview-section .cp-desc-text::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    text-align: center;
+    color: #ff6b6b;
+    clip-path: inset(0 0 55% 0);
+    animation: glitchTopHome 3s infinite linear alternate-reverse;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.combat-preview-section .cp-desc-text::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    text-align: center;
+    color: #6ab0e0;
+    clip-path: inset(55% 0 0 0);
+    animation: glitchBottomHome 2.5s infinite linear alternate-reverse;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+@keyframes headerFlickerHome {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.85; text-shadow: 0 0 20px rgba(255,204,0,0.3); }
+}
+
+@keyframes glitchTopHome {
+    0% { transform: translateX(-2px); }
+    20% { transform: translateX(2px); }
+    40% { transform: translateX(-1px); }
+    60% { transform: translateX(1px); }
+    80% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes glitchBottomHome {
+    0% { transform: translateX(2px); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(1px); }
+    60% { transform: translateX(-1px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+}
+
+/* --- Combat Preview Row Slide-In on Scroll --- */
+.cp-row {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.cp-row.cp-row-reverse {
+    transform: translateX(40px);
+}
+
+.cp-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* --- Image Hover Zoom + Glow --- */
+.cp-img {
+    transition: all 0.4s ease;
+    border-radius: 8px;
+}
+
+.cp-img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(255, 204, 0, 0.2);
+}
+
+/* --- Row Title Glow on Hover --- */
+.cp-row-title {
+    transition: text-shadow 0.3s ease;
+}
+
+.cp-row:hover .cp-row-title {
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* --- Enhanced Particle Colors --- */
+.particle:nth-child(odd) {
+    color: rgba(255, 204, 0, 0.35) !important;
+}
+
+.particle:nth-child(even) {
+    color: rgba(100, 200, 255, 0.35) !important;
+}
+
+/* --- Responsive Effects --- */
+@media (max-width: 768px) {
+    .combat-preview-section .cp-desc-text::before,
+    .combat-preview-section .cp-desc-text::after {
+        display: none;
+    }
+    .cp-row {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .cp-row.cp-row-reverse {
+        transform: none;
+    }
+}

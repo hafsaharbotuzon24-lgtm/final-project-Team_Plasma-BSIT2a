@@ -4,42 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Combat Coders - Profile</title>
+    <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/learn.css">
     <link rel="stylesheet" href="css/profile.css">
+     
 </head>
 <body class="profile-body">
     <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
             <div class="navbar-brand d-flex align-items-center m-0">
-                <button class="nav-btn-logo" onclick="navigate('home')">
-                <span>Combat Coders</span></button>
+                <button class="nav-btn-logo">
+                <span>Combat Coders</span>
+                </button>
             </div>
 
             <div class="d-flex align-items-center gap-3 nav-links-wrap">
-                <button class="home-btn" onclick="navigate('home')">Home</button>
-                <button class="play-btn" onclick="navigate('play')">Play</button> 
-                <button class="leaderboard-btn" onclick="navigate('leaderboard')">Leaderboard</button>
-                <button class="learn-btn" onclick="navigate('learn')">Learn</button>
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); window.location.href='play-modes.html'">Play</button>
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <div class="learn-dropdown-container">
+                    <button class="learn-btn" id="learnDropdownTrigger">Learn <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.83317 6.6665H4.1665V8.33317H5.83317V9.99984H7.49984V11.6665H9.1665V13.3332H10.8332V11.6665H12.4998V9.99984H14.1665V8.33317H15.8332V6.6665H14.1665V8.33317H12.4998V9.99984H10.8332V11.6665H9.1665V9.99984H7.49984V8.33317H5.83317V6.6665Z" fill="currentColor"/></svg></button>
+                    <div class="learn-dropdown" id="learnDropdown">
+                        <button class="dropdown-item" onclick="playSFX('sound-fx/click.mp3'); window.location.href='learn.html'">Mechanics</button>
+                        <button class="dropdown-item" onclick="playSFX('sound-fx/click.mp3'); window.location.href='modules.html'">HTML Modules</button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Profile trigger with circular avatar -->
             <div class="profile-trigger-container" id="profileContainer">
                 <button class="prof-icon" id="profTrigger" type="button">
                     <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
                 </button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-item" onclick="window.location.href='profile.html'">Account</button>
-                    <button class="dropdown-item" onclick="switchTheme()">Switch Theme</button>
-                    <button class="dropdown-item" onclick="navigateToSettings()">Settings</button>
-                    <button class="dropdown-item" onclick="signOut()">Sign out</button>
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.5007 1.66699H7.50065V3.33361H5.83419V8.33361H7.50085V3.33366H12.5007V1.66699ZM12.5007 8.33366H7.50065V10.0003H12.5007V8.33366ZM12.5009 3.33361H14.1675V8.33361H12.5009V3.33361ZM3.33398 13.3336H5.00065V11.667H15.0007V13.3337H5.00065V16.667H15.0008V13.3336H16.6675V18.3336H16.6673V18.3337H3.33398V18.3336V16.667V13.3336Z" fill="#64748B"/></svg>Account</button>
+                    <button class="dropdown-item" onclick="navigateToSettings()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.33366 3.3335H8.33366V5.8335H18.3337V7.50016H8.33366V10.0002H3.33366V7.50016H1.66699V5.8335H3.33366V3.3335ZM5.00033 5.00016V8.3335H6.66699V5.00016H5.00033ZM11.667 10.0002H16.667V12.5002H18.3337V14.1668H16.667V16.6668H11.667V14.1668H1.66699V12.5002H11.667V10.0002ZM13.3337 11.6668V15.0002H15.0003V11.6668H13.3337Z" fill="#64748B"/></svg>Settings</button>
+                    <button class="dropdown-item" onclick="signOut()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.16667 0.5H13.8333H15.5V2.16667V3.83333H13.8333V2.16667H2.16667V13.8333H13.8333V12.1667H15.5V13.8333V15.5H13.8333H2.16667H0.5V13.8333V2.16667V0.5H2.16667ZM15.5 7.16667H13.8333V5.5H12.1667V3.83333H10.5V5.5H12.1667V7.16667H3.83333V8.83333L12.1667 8.83333V10.5H10.5V12.1667H12.1667V10.5H13.8333V8.83333L15.5 8.83333V7.16667Z" fill="#64748B"/></svg>Sign out</button>
                 </div>
             </div>
 
             <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
-                <span>MENU</span>
+                <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
+                <span>Team Plasma</span>
             </button>
         </div>
     </nav>
@@ -47,16 +59,30 @@
     <div class="profile-main-wrapper">
         <!-- Main Profile Container -->
         <div class="profile-container" id="profileContainerPanel">
-            <button class="edit-profile-btn" id="editProfileBtn" onclick="toggleEditMode()">Edit Profile</button>
+            <div class="profile-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
             <h1 class="profile-header">PROFILE</h1>
             
             <div class="profile-content">
                 <div class="avatar-section">
+                    <!-- Rank Badge Container - Positioned above avatar -->
+                    <div class="rank-badge-container" id="rankBadgeContainer" style="display: none;">
+                        <img id="profileRankIcon" class="rank-badge-icon" alt="rank">
+                        <span id="profileRankNumber" class="rank-number"></span>
+                    </div>
                     <div class="avatar-circle" id="avatarCircle">
                         <img id="profileAvatar" src="img/player-profile.png" alt="avatar">
                     </div>
                     <button class="change-avatar-btn" id="changeAvatarBtn" onclick="openAvatarEditor()">Change Picture</button>
-                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatarTemp(event)">
+                    <button class="edit-profile-btn" id="editProfileBtn" onclick="toggleEditMode()">Edit Profile</button>
                 </div>
                 
                 <div class="info-section">
@@ -70,6 +96,13 @@
                         <span class="info-label">Level:</span>
                         <span class="info-value" id="displayLevel">1</span>
                     </div>
+                    <div class="info-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                        <span class="info-label" style="min-width: auto;">XP:</span>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar-fill" id="xpBarFill"></div>
+                        </div>
+                        <span class="xp-bar-label" id="xpBarLabel">0 / 100 XP</span>
+                    </div>
                     <div class="info-row">
                         <span class="info-label">Email:</span>
                         <span class="info-value" id="displayUserEmail">player@plasma.com</span>
@@ -78,7 +111,10 @@
             </div>
             
             <div class="achievements-section">
-                <h3 class="achievements-title">ACHIEVEMENTS</h3>
+                <div class="achievements-header">
+                    <h3 class="achievements-title">ACHIEVEMENTS</h3>
+                    <button class="see-more-btn" onclick="openAllAchievementsModal()">See more</button>
+                </div>
                 
                 <div class="achievements-row">
                     <div class="achievement-item">
@@ -152,6 +188,19 @@
         </div>
     </div>
 
+    <!-- All Achievements Modal -->
+    <div class="all-achievements-modal" id="allAchievementsModal">
+        <div class="all-achievements-box">
+            <div class="all-achievements-header">
+                <h2>ALL ACHIEVEMENTS</h2>
+                <button class="close-modal-btn" onclick="closeAllAchievementsModal()">CLOSE</button>
+            </div>
+            <div class="achievements-grid" id="allAchievementsGrid">
+                <!-- Achievements will be populated here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <!-- Avatar Editor Modal -->
     <div class="avatar-editor-overlay" id="avatarEditorModal">
         <div class="avatar-editor-box">
@@ -179,7 +228,7 @@
                 </div>
             </div>
             
-            <!-- Preset Avatars -->
+             
             <div class="avatar-presets-section">
                 <h4 class="avatar-presets-title">PRESET AVATARS</h4>
                 <div class="avatar-presets-row">
@@ -267,6 +316,7 @@
         // Avatar saves ONLY on Update Profile click
         // Settings panel integration
         // Avatar Editor Modal with presets
+        // RANK DISPLAY FROM LEADERBOARD
         // =============================================
         
         let isEditing = false;
@@ -291,6 +341,35 @@
             'img/avatar-koala.png',
             'img/avatar-cat.png'
         ];
+        
+        // Full achievements list (26 achievements)
+        const allAchievements = [
+            { name: "HTML Beginner", desc: "Quest: Simple HTML Page", medalImg: "img/badge1.png", questKey: "quest1Completed" },
+            { name: "Navigator", desc: "Quest: Navigation Example", medalImg: "img/badge2.png", questKey: "quest2Completed" },
+            { name: "Footer First", desc: "Quest: Basic Footer Example", medalImg: "img/badge3.png", questKey: "quest3Completed" },
+            { name: "Student Info", desc: "Quest: Student Profile", medalImg: "img/badge4.png", questKey: "quest4Completed" },
+            { name: "Details Master", desc: "Quest: Details with Button", medalImg: "img/badge5.png", questKey: "quest5Completed" },
+            { name: "Subject Picker", desc: "Quest: Favorite Subject", medalImg: "img/badge6.png", questKey: "quest6Completed" },
+            { name: "Web Builder", desc: "Quest: Simple Web Page", medalImg: "img/badge7.png", questKey: "quest7Completed" },
+            { name: "Layout Artist", desc: "Quest: Simple Layout Page", medalImg: "img/badge8.png", questKey: "quest8Completed" },
+            { name: "List Maker", desc: "Quest: Details List Example", medalImg: "img/badge9.png", questKey: "quest9Completed" },
+            { name: "Tag Expert", desc: "Quest: HTML Tags Example", medalImg: "img/badge10.png", questKey: "quest10Completed" },
+            { name: "Card Designer", desc: "Quest: Profile Card with Hover", medalImg: "img/badge11.png", questKey: "quest11Completed" },
+            { name: "Nav Builder", desc: "Quest: Responsive Navigation Bar", medalImg: "img/badge12.png", questKey: "quest12Completed" },
+            { name: "Dark Mode Creator", desc: "Quest: Dark Mode Toggle", medalImg: "img/badge13.png", questKey: "quest13Completed" },
+            { name: "Animator", desc: "Quest: Simple Animated Loader", medalImg: "img/badge14.png", questKey: "quest14Completed" },
+            { name: "Overlay Designer", desc: "Quest: Image Overlay Card", medalImg: "img/badge15.png", questKey: "quest15Completed" },
+            { name: "Counter Coder", desc: "Quest: Counter App", medalImg: "img/badge16.png", questKey: "quest16Completed" },
+            { name: "Color Wizard", desc: "Quest: Random Color Generator", medalImg: "img/badge17.png", questKey: "quest17Completed" },
+            { name: "Todo Maker", desc: "Quest: To-Do List", medalImg: "img/badge18.png", questKey: "quest18Completed" },
+            { name: "Slider Creator", desc: "Quest: Simple Image Slider", medalImg: "img/badge19.png", questKey: "quest19Completed" },
+            { name: "Password Pro", desc: "Quest: Password Visibility Toggle", medalImg: "img/badge20.png", questKey: "quest20Completed" },
+            { name: "Clock Maker", desc: "Quest: Live Digital Clock", medalImg: "img/badge21.png", questKey: "quest21Completed" },
+            { name: "Toggle Master", desc: "Quest: Show/Hide Toggle", medalImg: "img/badge22.png", questKey: "quest22Completed" },
+            { name: "Note Taker", desc: "Quest: Local Storage Note App", medalImg: "img/badge23.png", questKey: "quest23Completed" },
+            { name: "Counter Keeper", desc: "Quest: Character Counter", medalImg: "img/badge24.png", questKey: "quest24Completed" },
+            { name: "Quote Master", desc: "Quest: Random Quote Generator", medalImg: "img/badge25.png", questKey: "quest25Completed" }
+        ]; 
         
         // Get random preset avatar
         function getRandomPresetAvatar() {
@@ -329,6 +408,7 @@
                 history.pushState("", document.title, window.location.pathname);
             }
             loadProfileData();
+            fetchAndDisplayPlayerRank(); // Refresh rank data when closing settings
         }
         
         // Apply the current transforms to the preview image
@@ -338,14 +418,33 @@
             const frameWidth = frame.clientWidth;
             const frameHeight = frame.clientHeight;
             
-            // Set image size based on size slider
-            const baseSize = Math.min(frameWidth, frameHeight) * (avatarSize / 100);
-            preview.style.width = baseSize + 'px';
-            preview.style.height = baseSize + 'px';
+            // Get the image's natural dimensions
+            const imgNaturalWidth = preview.naturalWidth;
+            const imgNaturalHeight = preview.naturalHeight;
             
-            // Center the image, then apply offset and scale
-            const translateX = (frameWidth - baseSize) / 2 + avatarOffsetX;
-            const translateY = (frameHeight - baseSize) / 2 + avatarOffsetY;
+            // Calculate base size based on size slider (percentage of frame)
+            const baseSizePercent = avatarSize / 100;
+            let baseWidth, baseHeight;
+            
+            // Maintain aspect ratio based on image's natural dimensions
+            if (imgNaturalWidth > imgNaturalHeight) {
+                baseWidth = frameWidth * baseSizePercent;
+                baseHeight = (imgNaturalHeight / imgNaturalWidth) * baseWidth;
+            } else {
+                baseHeight = frameHeight * baseSizePercent;
+                baseWidth = (imgNaturalWidth / imgNaturalHeight) * baseHeight;
+            }
+            
+            // Apply width and height
+            preview.style.width = baseWidth + 'px';
+            preview.style.height = baseHeight + 'px';
+            
+            // Calculate centered position, then apply offset
+            const startX = (frameWidth - baseWidth) / 2;
+            const startY = (frameHeight - baseHeight) / 2;
+            
+            const translateX = startX + avatarOffsetX;
+            const translateY = startY + avatarOffsetY;
             
             preview.style.position = 'absolute';
             preview.style.left = '0px';
@@ -500,6 +599,7 @@
             const previewImg = document.getElementById('avatarEditorPreview');
             previewImg.src = avatarPath;
             
+            // Reset all values
             avatarZoom = 100;
             avatarSize = 100;
             avatarOffsetX = 0;
@@ -509,13 +609,16 @@
             document.getElementById('zoomValue').textContent = '100%';
             document.getElementById('sizeValue').textContent = '100%';
             
+            // Wait for image to load before updating preview
             previewImg.onload = function() {
                 updateAvatarPreview();
             };
-            updateAvatarPreview();
+            // If already loaded, update immediately
+            if (previewImg.complete) {
+                updateAvatarPreview();
+            }
         }
         
-        // Capture the exact preview as a data URL using canvas
         function captureAvatarPreview() {
             const preview = document.getElementById('avatarEditorPreview');
             const frame = document.getElementById('avatarEditorFrame');
@@ -539,41 +642,45 @@
             ctx.arc(frameWidth / 2, frameHeight / 2, frameWidth / 2, 0, Math.PI * 2);
             ctx.clip();
             
-            // Get the image's computed transform
-            const style = window.getComputedStyle(preview);
-            const transform = style.transform;
+            // Get the image element and its computed styles
+            const img = preview;
             
-            // Parse the transform matrix
+            // Get the transform values from the inline styles
+            const transform = img.style.transform;
+            
+            // Parse transform: translate(Xpx, Ypx) scale(Z)
             let translateX = 0, translateY = 0, scaleVal = 1;
             
-            if (transform && transform !== 'none') {
-                const translateMatch = transform.match(/translate\(([^)]+)\)/);
+            if (transform) {
+                const translateMatch = transform.match(/translate\(([^,]+),([^)]+)\)/);
                 const scaleMatch = transform.match(/scale\(([^)]+)\)/);
                 
                 if (translateMatch) {
-                    const parts = translateMatch[1].split(',').map(s => parseFloat(s.trim()));
-                    translateX = parts[0] || 0;
-                    translateY = parts[1] || 0;
+                    translateX = parseFloat(translateMatch[1]);
+                    translateY = parseFloat(translateMatch[2]);
                 }
                 if (scaleMatch) {
                     scaleVal = parseFloat(scaleMatch[1]);
                 }
             }
             
-            // Get the display dimensions
-            const displayWidth = parseFloat(preview.style.width) || preview.offsetWidth;
-            const displayHeight = parseFloat(preview.style.height) || preview.offsetHeight;
+            // Get the base dimensions from the image's natural size or current display size
+            const imgNaturalWidth = img.naturalWidth;
+            const imgNaturalHeight = img.naturalHeight;
+            const displayWidth = parseFloat(img.style.width) || img.offsetWidth;
+            const displayHeight = parseFloat(img.style.height) || img.offsetHeight;
             
-            // Calculate the centered starting position
-            const startX = (frameWidth - displayWidth) / 2;
-            const startY = (frameHeight - displayHeight) / 2;
+            // Calculate the scale factor between natural size and display size
+            const displayScaleX = displayWidth / imgNaturalWidth;
+            const displayScaleY = displayHeight / imgNaturalHeight;
             
-            // Apply the same transform as the CSS
+            // Apply transforms in correct order: translate then scale
             ctx.translate(translateX, translateY);
             ctx.scale(scaleVal, scaleVal);
+            ctx.scale(displayScaleX, displayScaleY);
             
-            // Draw the image at the base position
-            ctx.drawImage(preview, startX / scaleVal, startY / scaleVal, displayWidth / scaleVal, displayHeight / scaleVal);
+            // Draw the image at the calculated position
+            ctx.drawImage(img, 0, 0, imgNaturalWidth, imgNaturalHeight);
             
             ctx.restore();
             
@@ -582,21 +689,159 @@
         }
         
         function applyAvatarChanges() {
-            // Capture the exact preview with all transforms
-            const capturedAvatar = captureAvatarPreview();
-            tempAvatarPreview = capturedAvatar;
+            // Wait a tiny bit for any pending transforms to settle
+            setTimeout(() => {
+                // Capture the exact preview with all transforms
+                const capturedAvatar = captureAvatarPreview();
+                tempAvatarPreview = capturedAvatar;
+                
+                // Show preview in profile circle
+                const profileImg = document.getElementById('profileAvatar');
+                profileImg.src = capturedAvatar;
+                profileImg.style.objectFit = 'cover';
+                profileImg.style.objectPosition = 'center';
+                profileImg.style.width = '100%';
+                profileImg.style.height = '100%';
+                document.getElementById('avatarCircle').classList.add('temp-preview');
+                
+                // Close the editor modal
+                document.getElementById('avatarEditorModal').classList.remove('show');
+                removeDragListeners();
+                removeFrameScrollZoom();
+            }, 50);
+        }
+        
+        // =============================================
+        // RANK FETCHING FROM LEADERBOARD
+        // =============================================
+        
+        async function fetchAndDisplayPlayerRank() {
+            const rankBadgeContainer = document.getElementById('rankBadgeContainer');
+            const rankIcon = document.getElementById('profileRankIcon');
+            const rankNumberSpan = document.getElementById('profileRankNumber');
             
-            // Show preview in profile circle but DO NOT save to localStorage yet
-            document.getElementById('profileAvatar').src = capturedAvatar;
-            document.getElementById('profileAvatar').style.objectFit = 'none';
-            document.getElementById('profileAvatar').style.width = '100%';
-            document.getElementById('profileAvatar').style.height = '100%';
-            document.getElementById('avatarCircle').classList.add('temp-preview');
+            const token = localStorage.getItem('authToken');
+            const currentPlayerId = localStorage.getItem('playerId');
             
-            // Close the editor modal (preview stays visible)
-            document.getElementById('avatarEditorModal').classList.remove('show');
-            removeDragListeners();
-            removeFrameScrollZoom();
+            if (!token || !currentPlayerId) {
+                rankBadgeContainer.style.display = 'none';
+                return;
+            }
+            
+            try {
+                const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+                const response = await fetch(`${API_BASE}/api/leaderboard`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: 'include'
+                });
+                
+                const board = await response.json();
+                if (!response.ok) throw new Error(board.message || 'Unable to fetch leaderboard');
+                
+                // Sort by time (lower is better)
+                const players = (Array.isArray(board) ? board : [])
+                    .map((entry) => ({
+                        name: entry.player_id?.username || entry.username || 'Unknown Player',
+                        time: Number(entry.time_seconds) || Number(entry.score) || 999999,
+                        playerId: entry.player_id?._id || entry.player_id?.id || entry.player_id
+                    }))
+                    .filter(p => p.time > 0 && p.time < 999999);
+                
+                players.sort((a, b) => a.time - b.time);
+                
+                // Find current player's rank
+                const playerIndex = players.findIndex(p => String(p.playerId) === String(currentPlayerId));
+                
+                if (playerIndex !== -1) {
+                    // Player has completed the game and is ranked
+                    const rank = playerIndex + 1;
+                    let rankIconSrc = '';
+                    
+                    if (rank === 1) rankIconSrc = 'img/rank1.png';
+                    else if (rank === 2) rankIconSrc = 'img/rank2.png';
+                    else if (rank === 3) rankIconSrc = 'img/rank3.png';
+                    else rankIconSrc = 'img/standardRank.png';
+                    
+                    rankIcon.src = rankIconSrc;
+                    rankNumberSpan.textContent = `#${rank}`;
+                    rankBadgeContainer.style.display = 'flex';
+                } else {
+                    // Player hasn't completed the game yet - Show Unranked
+                    rankIcon.src = 'img/unranked.png';
+                    rankNumberSpan.textContent = 'Unranked';
+                    rankBadgeContainer.style.display = 'flex';
+                }
+                
+            } catch (err) {
+                console.error('Error fetching rank:', err);
+                // Show error state
+                rankIcon.src = 'img/unranked.png';
+                rankNumberSpan.textContent = 'Unranked';
+                rankBadgeContainer.style.display = 'flex';
+            }
+        }
+        
+        // =============================================
+        // ACHIEVEMENTS FUNCTIONS
+        // =============================================
+        
+        function loadMedals() {
+            const level1Completed = localStorage.getItem('level1Completed') === 'true';
+            const level2Completed = localStorage.getItem('level2Completed') === 'true';
+            const level3Completed = localStorage.getItem('level3Completed') === 'true';
+            const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
+            const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
+            const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
+            
+            if (level1Completed || boss1Defeated) {
+                document.getElementById('medal1').innerHTML = '<img src="img/medal-1.png" alt="Medal 1" onerror="this.src=\'img/bronze-medal.png\'">';
+            }
+            if (level2Completed || boss2Defeated) {
+                document.getElementById('medal2').innerHTML = '<img src="img/medal-2.png" alt="Medal 2" onerror="this.src=\'img/silver-medal.png\'">';
+            }
+            if (level3Completed || boss3Defeated) {
+                document.getElementById('medal3').innerHTML = '<img src="img/medal-3.png" alt="Medal 3" onerror="this.src=\'img/gold-medal.png\'">';
+            }
+        }
+        
+        function checkAchievementStatus(achievement) {
+            if (achievement.questKey) {
+                return localStorage.getItem(achievement.questKey) === 'true';
+            }
+            if (achievement.levelKey) {
+                return localStorage.getItem(achievement.levelKey) === 'true' || localStorage.getItem(achievement.bossKey) === 'true';
+            }
+            return achievement.unlocked || false;
+        }
+        
+        function openAllAchievementsModal() {
+            const grid = document.getElementById('allAchievementsGrid');
+            grid.innerHTML = '';
+            
+            allAchievements.forEach(achievement => {
+                const isUnlocked = checkAchievementStatus(achievement);
+                const item = document.createElement('div');
+                item.className = `all-achievement-item ${!isUnlocked ? 'locked' : ''}`;
+                
+                item.innerHTML = `
+                    <div class="medal-slot">
+                        ${isUnlocked ? `<img src="${achievement.medalImg}" alt="${achievement.name}">` : '<div class="medal-placeholder" style="width:48px;height:48px;border:2px dashed #2a4a6e;border-radius:50%;"></div>'}
+                    </div>
+                    <div class="all-achievement-info">
+                        <div class="all-achievement-name">${achievement.name}</div>
+                        <div class="all-achievement-desc">${achievement.desc}</div>
+                        ${!isUnlocked ? '<span class="locked-badge">🔒 LOCKED</span>' : '<span class="locked-badge" style="color:#4caf50;">✓ UNLOCKED</span>'}
+                    </div>
+                `;
+                
+                grid.appendChild(item);
+            });
+            
+            document.getElementById('allAchievementsModal').classList.add('show');
+        }
+        
+        function closeAllAchievementsModal() {
+            document.getElementById('allAchievementsModal').classList.remove('show');
         }
         
         // Audio Settings Initialization (from audio-manager.js)
@@ -717,6 +962,28 @@
             document.getElementById('displayLevel').innerText = savedLevel;
             
             loadMedals();
+            
+            // Fetch and display player rank
+            fetchAndDisplayPlayerRank();
+            
+            // Animate XP bar
+            animateXPBar();
+        }
+        
+        function animateXPBar() {
+            const currentLevel = parseInt(localStorage.getItem('currentLevel') || '1');
+            const completedQuests = allAchievements.filter(a => localStorage.getItem(a.questKey) === 'true').length;
+            const xpNeeded = currentLevel * 100;
+            const currentXP = (completedQuests % 5) * 20 + Math.floor(Math.random() * 15);
+            const displayXP = Math.min(currentXP, xpNeeded);
+            const percentage = (displayXP / xpNeeded) * 100;
+            
+            document.getElementById('xpBarLabel').textContent = displayXP + ' / ' + xpNeeded + ' XP';
+            
+            setTimeout(() => {
+                const bar = document.getElementById('xpBarFill');
+                if (bar) bar.style.width = percentage + '%';
+            }, 600);
         }
         
         function updateNavbarProfileIcon(avatarSrc) {
@@ -733,25 +1000,6 @@
                 navProfileIcon.style.objectFit = 'none';
                 navProfileIcon.style.imageRendering = 'auto';
                 navProfileIcon.style.backgroundColor = '#1a2d45';
-            }
-        }
-        
-        function loadMedals() {
-            const level1Completed = localStorage.getItem('level1Completed') === 'true';
-            const level2Completed = localStorage.getItem('level2Completed') === 'true';
-            const level3Completed = localStorage.getItem('level3Completed') === 'true';
-            const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
-            const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
-            const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
-            
-            if (level1Completed || boss1Defeated) {
-                document.getElementById('medal1').innerHTML = '<img src="img/medal-1.png" alt="Medal 1" onerror="this.src=\'img/bronze-medal.png\'">';
-            }
-            if (level2Completed || boss2Defeated) {
-                document.getElementById('medal2').innerHTML = '<img src="img/medal-2.png" alt="Medal 2" onerror="this.src=\'img/silver-medal.png\'">';
-            }
-            if (level3Completed || boss3Defeated) {
-                document.getElementById('medal3').innerHTML = '<img src="img/medal-3.png" alt="Medal 3" onerror="this.src=\'img/gold-medal.png\'">';
             }
         }
         
@@ -839,12 +1087,17 @@
             editNameInput.classList.remove('visible');
             avatarCircle.onclick = null;
             
-            const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
-            document.getElementById('profileAvatar').src = savedAvatar;
-            document.getElementById('profileAvatar').style.objectFit = 'none';
-            document.getElementById('profileAvatar').style.width = '100%';
-            document.getElementById('profileAvatar').style.height = '100%';
-            tempAvatarPreview = null;
+            // Only reset to saved avatar if there's NO temp preview pending
+            if (!tempAvatarPreview) {
+                const savedAvatar = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
+                const profileImg = document.getElementById('profileAvatar');
+                profileImg.src = savedAvatar;
+                profileImg.style.objectFit = 'cover';
+                profileImg.style.objectPosition = 'center';
+                profileImg.style.width = '100%';
+                profileImg.style.height = '100%';
+            }
+            // If tempAvatarPreview exists, keep showing it (user hasn't saved yet)
             document.getElementById('avatarInput').value = '';
         }
         
@@ -872,16 +1125,37 @@
                 avatarCircle.onclick = function() { openAvatarEditor(); };
                 
                 const currentStored = localStorage.getItem('playerAvatar') || getRandomPresetAvatar();
-                document.getElementById('profileAvatar').src = currentStored;
-                document.getElementById('profileAvatar').style.objectFit = 'none';
-                document.getElementById('profileAvatar').style.width = '100%';
-                document.getElementById('profileAvatar').style.height = '100%';
+                const profileImg = document.getElementById('profileAvatar');
+                profileImg.src = currentStored;
+                profileImg.style.objectFit = 'cover';
+                profileImg.style.objectPosition = 'center';
+                profileImg.style.width = '100%';
+                profileImg.style.height = '100%';
                 tempAvatarPreview = null;
             } else {
                 saveProfileUpdates();
             }
         }
-        
+                function loadMedals() {
+            const level1Completed = localStorage.getItem('level1Completed') === 'true';
+            const level2Completed = localStorage.getItem('level2Completed') === 'true';
+            const level3Completed = localStorage.getItem('level3Completed') === 'true';
+            const boss1Defeated = localStorage.getItem('boss1Defeated') === 'true';
+            const boss2Defeated = localStorage.getItem('boss2Defeated') === 'true';
+            const boss3Defeated = localStorage.getItem('boss3Defeated') === 'true';
+            
+            console.log('Achievement Check - L1:', level1Completed || boss1Defeated, 'L2:', level2Completed || boss2Defeated, 'L3:', level3Completed || boss3Defeated);
+            
+            if (level1Completed || boss1Defeated) {
+                document.getElementById('medal1').innerHTML = '<img src="img/medal1.png" alt="Medal 1" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\';">';
+            }
+            if (level2Completed || boss2Defeated) {
+                document.getElementById('medal2').innerHTML = '<img src="img/medal2.png" alt="Medal 2" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\';">';
+            }
+            if (level3Completed || boss3Defeated) {
+                document.getElementById('medal3').innerHTML = '<img src="img/medal3.png" alt="Medal 3" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\';">';
+            }
+        }
         function openCustomNameModal() {
             if (!isEditing) {
                 alert("Enter edit mode to change name.");
@@ -1037,6 +1311,7 @@
                 if (document.getElementById('changePasswordModal').classList.contains('show')) closeChangePasswordModal();
                 if (document.getElementById('customNameModal').classList.contains('show')) closeCustomNameModal();
                 if (document.getElementById('avatarEditorModal').classList.contains('show')) closeAvatarEditor();
+                if (document.getElementById('allAchievementsModal').classList.contains('show')) closeAllAchievementsModal();
             }
         });
         
@@ -1052,6 +1327,9 @@
         document.getElementById('avatarEditorModal').addEventListener('click', function(e) {
             if (e.target === this) closeAvatarEditor();
         });
+        document.getElementById('allAchievementsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAllAchievementsModal();
+        });
         
         // Enter key for custom name modal
         document.getElementById('customNameInput').addEventListener('keypress', function(e) {
@@ -1060,6 +1338,15 @@
                 confirmNameChange();
             }
         });
+        
+        // Hide file input and handle upload click
+        const hiddenFileInput = document.createElement('input');
+        hiddenFileInput.type = 'file';
+        hiddenFileInput.accept = 'image/*';
+        hiddenFileInput.style.display = 'none';
+        hiddenFileInput.id = 'avatarInput';
+        hiddenFileInput.addEventListener('change', previewAvatarTemp);
+        document.body.appendChild(hiddenFileInput);
         
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
@@ -1070,6 +1357,14 @@
                 setTimeout(() => {
                     openSettingsPanel();
                 }, 100);
+            }
+        });
+        
+        // Refresh rank when page becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && document.getElementById('profileContainerPanel') && 
+                !document.getElementById('profileContainerPanel').classList.contains('hidden')) {
+                fetchAndDisplayPlayerRank();
             }
         });
         

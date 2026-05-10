@@ -17,38 +17,35 @@ function openBattleModal(isBoss) {
     const introDialogue = isBoss ? [BOSS_DIAL[Math.floor(Math.random() * BOSS_DIAL.length)], PLAYER_DIAL[Math.floor(Math.random() * PLAYER_DIAL.length)]] : [ENEMY_DIAL[Math.floor(Math.random() * ENEMY_DIAL.length)], PLAYER_DIAL[Math.floor(Math.random() * PLAYER_DIAL.length)]];
 
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div class="battle-container border border-4 border-white bg-black position-relative overflow-hidden" style="font-family: 'Pixelify Sans', sans-serif; color: white;">
+        <div class="battle-container border border-3 border-white bg-black position-relative overflow-hidden" style="font-family: 'Pixelify Sans', sans-serif; color: white; border-radius: 15px;">
             <style>
-                .blank-input { background: #222; border: none; border-bottom: 2px solid #fff; color: #00ff00; font-family: 'Pixelify Sans', monospace; padding: 0 5px; margin: 2px; }
+                .blank-input { background: #222; border: none; border-bottom: 2px solid #00ff00; color: #00ff00; font-family: 'Pixelify Sans', monospace; padding: 0 5px; margin: 2px; font-size: 18px; }
                 .blank-input:focus { outline: none; background: #333; border-bottom: 2px solid #00ff00; }
-                .input-with-indicator {
-                    display: inline-block;
-                    position: relative;
-                    margin: 0 2px;
+                .boss-sprite {
+                    animation: boss-sway 3s ease-in-out infinite;
+                    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
                 }
-                .input-indicator {
-                    width: 100%;
-                    height: 4px;
-                    background: #00ff00;
-                    border-radius: 0 0 2px 2px;
-                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3);
-                    animation: pulse-indicator 1.5s ease-in-out infinite;
+                @keyframes boss-sway {
+                    0%, 100% { transform: translateX(0px) rotate(0deg); }
+                    25% { transform: translateX(-10px) rotate(-2deg); }
+                    75% { transform: translateX(10px) rotate(2deg); }
                 }
-                @keyframes pulse-indicator {
-                    0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.3); }
-                    50% { opacity: 1; box-shadow: 0 0 15px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.5); }
-                }
+                pre { font-family: 'Pixelify Sans', sans-serif; font-size: 16px; color: white; }
+                .battle-question-text { font-family: 'Pixelify Sans', sans-serif; font-size: 20px; color: white; }
             </style>
             <div id="heartLossBox" class="position-absolute top-0 start-50 translate-middle-x mt-2 d-none" style="z-index: 6000;"><div class="bg-danger border border-white p-3 text-white pixel-font shadow-lg"><h3 class="mb-0 text-uppercase">-1 Heart: System Corruption!</h3></div></div>
             <div id="errorFeedbackBox" class="position-absolute top-50 start-50 translate-middle mt-2 d-none" style="z-index: 6000; width: 90%;"><div class="bg-warning border border-white p-3 text-dark pixel-font shadow-lg"><p id="errorFeedbackText" class="mb-0"></p></div></div>
             <div class="hint-trigger position-absolute p-3" onclick="event.stopPropagation(); triggerBattleHint();" style="z-index: 5000; cursor:pointer; top:0; left:0;"><img src="img/icon-hint.png" width="50" style="filter: drop-shadow(0 0 5px gold);"><span id="modalHintCount" class="text-white fs-4">${gameState.hints}</span></div>
-            <div class="battle-screen d-flex justify-content-around align-items-end p-4" style="height:350px; background: url('${randomBG}') center/cover no-repeat;">
-                <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model" style="height:260px; object-fit:contain;">
+            <div class="battle-screen d-flex justify-content-around align-items-end p-4" style="height:350px; background: url('${randomBG}') center/cover no-repeat; border-radius: 15px 15px 0 0;">
+                <img src="img/${gameState.character}-model.png" class="game-model" style="height:130px; object-fit:contain;"><img src="img/${enemy}" class="game-model ${isBoss ? 'boss-sprite' : ''}" style="height:260px; object-fit:contain;">
             </div>
-            <div id="dialogueBox" class="p-4 bg-dark text-white border-top border-4 border-white" style="min-height: 200px; cursor: pointer;">
+            <div id="dialogueBox" class="p-4 bg-dark text-white border-top border-3 border-white" style="min-height: 200px; cursor: pointer; border-radius: 0 0 15px 15px;">
                 <p id="battleText" class="pixel-font fs-4 mb-0" style="line-height: 1.4; white-space: pre-wrap;"></p>
                 <br>
-                <div id="quizArea" class="d-none mt-3">
+                <div id="quizArea" class="d-none mt-0">
+                    <p class="pixel-font mb-2" style="color: #fff; font-family: 'Pixelify Sans', sans-serif; font-size: 24px;">Question <span id="battleQuestionCounter"></span>:</p>
+                    <div id="battleQuestionContent" class="battle-question-text" style="font-family: 'Pixelify Sans', sans-serif; font-size: 20px;"></div>
+                    <br>
                     <button class="btn btn-warning w-100 pixel-font fw-bold" onclick="checkBattleAnswer(${isBoss})">SUBMIT DATA</button>
                 </div>
             </div>
@@ -57,11 +54,13 @@ function openBattleModal(isBoss) {
     new bootstrap.Modal(document.getElementById('gameModal')).show();
     
     setTimeout(() => { 
-        document.addEventListener('keydown', battleEnterHandler); 
+        document.addEventListener('keydown', battleEnterHandler);
+        document.addEventListener('keydown', battleArrowKeyHandler); 
     }, 100);
     
     startSequence(introDialogue, () => {
         document.getElementById('quizArea').classList.remove('d-none');
+        document.getElementById('battleText').style.display = 'none';
         loadQuestion();
     });
 }
@@ -110,48 +109,48 @@ const BOSS_DIAL = [
 
 const QUESTIONS = {
     1: [
-        { q: "Add the correct closing tag:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;p&gt;Hello world<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</p>", h: "Like the first <p> but has an extra slash." },
-        { q: "Add the correct closing tag:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;h1&gt;My Title<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</h1>", h: "The opening and closing tags must use the same header level." },
-        { q: "Fix the code with a missing &lt;body&gt; closing tag:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;html&gt;\n  &lt;body&gt;\n    &lt;p&gt;Hello!&lt;/p&gt;\n<input type='text' id='fillBlank' class='blank-input'>\n&lt;/html&gt;</pre>", a: "</body>", h: "Add the missing closing tag for the body element before the html tag ends." }
+        { q: "Add the correct closing tag:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;p&gt;Hello world<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</p>", h: "Like the first <p> but has an extra slash." },
+        { q: "Add the correct closing tag:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;h1&gt;My Title<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</h1>", h: "The opening and closing tags must use the same header level." },
+        { q: "Fix the code with a missing &lt;body&gt; closing tag:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;html&gt;\n  &lt;body&gt;\n    &lt;p&gt;Hello!&lt;/p&gt;\n<input type='text' id='fillBlank' class='blank-input'>\n&lt;/html&gt;</pre>", a: "</body>", h: "Add the missing closing tag for the body element before the html tag ends." }
     ],
     2: [
-        { q: "Change the title to 'My First Web Page':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome!&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "My First Web Page", h: "Replace the text inside the title tags with the new page title." },
-        { q: "Fix the missing &lt;html&gt; closing tag:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;html&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome&lt;/p&gt;\n  &lt;/body&gt;\n<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</html>", h: "Every opening <html> tag needs a corresponding </html> tag at the end." },
-        { q: "Replace the missing tag:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;html&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n    &lt;title&gt;This is the Title.&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome!&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "<head>", h: "The head section contains meta-information like the title." }
+        { q: "Change the title to 'My First Web Page':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome!&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "My First Web Page", h: "Replace the text inside the title tags with the new page title." },
+        { q: "Fix the missing &lt;html&gt; closing tag:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;html&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome&lt;/p&gt;\n  &lt;/body&gt;\n<input type='text' id='fillBlank' class='blank-input'></pre>", a: "</html>", h: "Every opening <html> tag needs a corresponding </html> tag at the end." },
+        { q: "Replace the missing tag:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;html&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n    &lt;title&gt;This is the Title.&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;p&gt;Welcome!&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "<head>", h: "The head section contains meta-information like the title." }
     ],
     3: [
-        { q: "Add a button called 'Button 2':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;body&gt;\n  &lt;button&gt;Click Me!&lt;/button&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n&lt;/body&gt;</pre>", a: "<button>Button 2</button>", h: "Add a second button element after the existing one." },
-        { q: "Add a paragraph with the message 'Hello':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;body&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n  &lt;button&gt;Click Me!&lt;/button&gt;\n&lt;/body&gt;</pre>", a: "<p>Hello</p>", h: "Insert a new paragraph element before the button." },
-        { q: "What is the missing root container tag?<br><pre style='color:white; font-family:\"Pixelify Sans\"'>\n<input type='text' id='fillBlank' class='blank-input'>\n  &lt;body&gt;\n    &lt;h1&gt;My Page&lt;/h1&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "<html>", h: "This tag surrounds all other content in an HTML document." }
+        { q: "Add a button called 'Button 2':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;body&gt;\n  &lt;button&gt;Click Me!&lt;/button&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n&lt;/body&gt;</pre>", a: "<button>Button 2</button>", h: "Add a second button element after the existing one." },
+        { q: "Add a paragraph with the message 'Hello':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;body&gt;\n  <input type='text' id='fillBlank' class='blank-input'>\n  &lt;button&gt;Click Me!&lt;/button&gt;\n&lt;/body&gt;</pre>", a: "<p>Hello</p>", h: "Insert a new paragraph element before the button." },
+        { q: "What is the missing root container tag?<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>\n<input type='text' id='fillBlank' class='blank-input'>\n  &lt;body&gt;\n    &lt;h1&gt;My Page&lt;/h1&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", a: "<html>", h: "This tag surrounds all other content in an HTML document." }
     ],
     4: [
-        { q: "Add'Submit' to the button tags:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;button&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/button&gt;</pre>", a: "Submit", h: "Replace only the text between the button tags." },
-        { q: "Change heading from 'My First Heading' to 'Welcome to My Site':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;h1&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/h1&gt;</pre>", a: "Welcome to My Site", h: "Update the content inside the h1 tags." },
-        { q: "Change paragraph from 'This is a simple paragraph' to 'Hello, I am learning HTML!':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;p&gt;This is a simple paragraph<input type='text' id='fillBlank' class='blank-input'>!&lt;/p&gt;</pre>", a: "Hello, I am learning HTML!", h: "Replace the phrase inside the tag with the given." }
+        { q: "Add'Submit' to the button tags:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;button&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/button&gt;</pre>", a: "Submit", h: "Replace only the text between the button tags." },
+        { q: "Change heading from 'My First Heading' to 'Welcome to My Site':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;h1&gt;<input type='text' id='fillBlank' class='blank-input'>&lt;/h1&gt;</pre>", a: "Welcome to My Site", h: "Update the content inside the h1 tags." },
+        { q: "Add 'Hello, I am learning HTML!' to 'This is a simple paragraph':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;p&gt;This is a simple paragraph<input type='text' id='fillBlank' class='blank-input'>!&lt;/p&gt;</pre>", a: "Hello, I am learning HTML!", h: "Replace the phrase inside the tag with the given." }
     ],
     5: [
         {
-            q: "Boss Q1. Create a simple HTML webpage that includes the following elements: a title displayed on the browser tab as 'My First Webpage', a main header on the page that says 'Welcome to My Website', and a paragraph below the header that reads 'This is my first HTML page.':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;head&gt;\n    &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank2' class='blank-input' style='width:150px;'>&lt;/title&gt;\n&lt;/<input type='text' id='fillBlank3' class='blank-input' style='width:60px;'>&gt;\n&lt;<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n    &lt;h1&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;\n&lt;/body&gt;\n&lt;/html&gt;</pre>", 
+            q: "Boss Q1. Create a simple HTML webpage that includes the following elements: a title displayed on the browser tab as 'My First Webpage', a main header on the page that says 'Welcome to My Website', and a paragraph below the header that reads 'This is my first HTML page.':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;!DOCTYPE html&gt;\n&lt;head&gt;\n    &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank2' class='blank-input' style='width:150px;'>&lt;/title&gt;\n&lt;/<input type='text' id='fillBlank3' class='blank-input' style='width:60px;'>&gt;\n&lt;<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n    &lt;h1&gt;<input type='text' id='fillBlank5' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;\n&lt;/body&gt;\n&lt;/html&gt;</pre>", 
             a: ["title", "My First Webpage", "head", "body", "Welcome to My Website", "h1", "p", "This is my first HTML page.", "p"], 
             h: "Standard structure: Title, Header, and Paragraph."
         },
         {
-            q: "Boss Q2. Create an HTML webpage with a title 'The Button, a heading that says 'Press the button', and a button labeled 'Press Here!':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank6' class='blank-input' style='width:150px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
+            q: "Boss Q2. Create an HTML webpage with a title 'The Button', a heading that says 'Press the button', and a button labeled 'Press Here!':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank6' class='blank-input' style='width:150px;'>&lt;/h1&gt;\n    &lt;<input type='text' id='fillBlank7' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank8' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
             a: ["head", "title", "The Button", "body", "h1", "Press the button", "button", "Press Here!"], 
             h: "Follow the prompt: Title 'The Button', Heading 'Press the button', Button 'Press Here!'."
         },
         {
-            q: "Boss Q3. Create an HTML webpage with the title 'Double Content'. Inside the body, add a first heading that says 'First Heading' followed by a paragraph 'First paragraph' Then add a second heading that says 'Second Heading' followed by another paragraph 'Second paragraph':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n  &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;\n    &lt;title&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:60px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:60px;'>&gt;\n    &lt;h1&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank11' class='blank-input' style='width:30px;'>&gt;\n    &lt;<input type='text' id='fillBlank12' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank14' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank15' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank16' class='blank-input' style='width:150px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
+            q: "Boss Q3. Create an HTML webpage with the title 'Double Content'. Inside the body, add a first heading that says 'First Heading' followed by a paragraph 'First paragraph' Then add a second heading that says 'Second Heading' followed by another paragraph 'Second paragraph':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n  &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;\n    &lt;title&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/<input type='text' id='fillBlank5' class='blank-input' style='width:60px;'>&gt;\n  &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:60px;'>&gt;\n    &lt;h1&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank9' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank10' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank11' class='blank-input' style='width:30px;'>&gt;\n    &lt;<input type='text' id='fillBlank12' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank13' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank14' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank15' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank16' class='blank-input' style='width:150px;'>&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
             a: ["html", "head", "Double Content", "title", "head", "body", "First Heading", "h1", "p", "First paragraph", "p", "h1", "Second Heading", "h1", "p", "Second paragraph"], 
             h: "Stack your headers and paragraphs sequentially."
         },
         {
-            q: "Boss Q4. Create an HTML webpage with the title 'Two Buttons'. Inside the body, add a heading that says 'Click a Button' and include two buttons labeled 'Button 1' and 'Button 2'.:<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:120px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/head&gt;\n  &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;\n    &lt;button&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:100px;'>&lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:80px;'>&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
+            q: "Boss Q4. Create an HTML webpage with the title 'Two Buttons'. Inside the body, add a heading that says 'Click a Button' and include two buttons labeled 'Button 1' and 'Button 2'.:<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;!DOCTYPE html&gt;\n&lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n  &lt;head&gt;\n    &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:120px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/head&gt;\n  &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:60px;'>&gt;\n    &lt;<input type='text' id='fillBlank6' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank7' class='blank-input' style='width:150px;'>&lt;/<input type='text' id='fillBlank8' class='blank-input' style='width:40px;'>&gt;\n    &lt;button&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:100px;'>&lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:80px;'>&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
             a: ["html", "title", "Two Buttons", "title", "body", "h1", "Click a Button", "h1", "Button 1", "button", "button", "Button 2"], 
             h: "Add a heading and two buttons inside the body."
         },
         {
-            q: "Boss Q5. Create an HTML webpage with the title 'My Page'. Inside the body, add a heading that says 'My First Heading', a paragraph with the text 'This is a simple paragraph', and a button labeled 'Click Me!':<br><pre style='color:white; font-family:\"Pixelify Sans\"'>&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n   &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank6' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:250px;'>&lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:30px;'>&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
+            q: "Boss Q5. Create an HTML webpage with the title 'My Page'. Inside the body, add a heading that says 'My First Heading', a paragraph with the text 'This is a simple paragraph', and a button labeled 'Click Me!':<br><pre style='color:white; font-family:'Pixelify Sans', sans-serif; font-size: 16px;'>&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;<input type='text' id='fillBlank' class='blank-input' style='width:60px;'>&gt;\n   &lt;<input type='text' id='fillBlank2' class='blank-input' style='width:60px;'>&gt;<input type='text' id='fillBlank3' class='blank-input' style='width:100px;'>&lt;/<input type='text' id='fillBlank4' class='blank-input' style='width:60px;'>&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;<input type='text' id='fillBlank5' class='blank-input' style='width:40px;'>&gt;<input type='text' id='fillBlank6' class='blank-input' style='width:180px;'>&lt;/<input type='text' id='fillBlank7' class='blank-input' style='width:40px;'>&gt;\n    &lt;<input type='text' id='fillBlank8' class='blank-input' style='width:30px;'>&gt;<input type='text' id='fillBlank9' class='blank-input' style='width:250px;'>&lt;/<input type='text' id='fillBlank10' class='blank-input' style='width:30px;'>&gt;\n    &lt;<input type='text' id='fillBlank11' class='blank-input' style='width:80px;'>&gt;<input type='text' id='fillBlank12' class='blank-input' style='width:100px;'>&lt;/button&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</pre>", 
             a: ["head", "title", "My Page", "title", "h1", "My First Heading", "h1", "p", "This is a simple paragraph", "p", "button", "Click Me!"], 
             h: "Combine all elements: title, h1, p, and button."
         }
@@ -171,28 +170,51 @@ function battleEnterHandler(e) {
     }
 }
 
+function battleArrowKeyHandler(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const quizArea = document.getElementById('quizArea');
+        if (quizArea && !quizArea.classList.contains('d-none')) {
+            e.preventDefault();
+            const inputs = document.querySelectorAll('.blank-input');
+            if (inputs.length === 0) return;
+            const currentFocus = document.activeElement;
+            let currentIndex = -1;
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i] === currentFocus) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+            if (currentIndex === -1) {
+                inputs[0].focus();
+                return;
+            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                const nextIndex = (currentIndex + 1) % inputs.length;
+                inputs[nextIndex].focus();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                const prevIndex = (currentIndex - 1 + inputs.length) % inputs.length;
+                inputs[prevIndex].focus();
+            }
+        }
+    }
+}
+
 function loadQuestion() {
     const qData = QUESTIONS[gameState.currentSite][battleQIndex];
-    document.getElementById('battleText').innerHTML = qData.q;
+    const totalQuestions = (gameState.currentSite === 5) ? 5 : 3;
     
-    // Wrap all inputs with green indicator
+    const questionCounter = document.getElementById('battleQuestionCounter');
+    if (questionCounter) {
+        questionCounter.innerText = (battleQIndex + 1) + '/' + totalQuestions;
+    }
+    
+    const questionContent = document.getElementById('battleQuestionContent');
+    if (questionContent) {
+        questionContent.innerHTML = qData.q;
+    }
+    
     const inputs = document.querySelectorAll('.blank-input');
-    inputs.forEach((input) => {
-        if (!input.parentElement.classList.contains('input-with-indicator')) {
-            const wrapper = document.createElement('span');
-            wrapper.className = 'input-with-indicator';
-            wrapper.style.display = 'inline-block';
-            wrapper.style.margin = '0 2px';
-            
-            const indicator = document.createElement('div');
-            indicator.className = 'input-indicator';
-            
-            input.parentNode.insertBefore(wrapper, input);
-            wrapper.appendChild(input);
-            wrapper.appendChild(indicator);
-        }
-    });
-    
     if (inputs.length > 0) inputs[0].focus();
 }
 
@@ -284,7 +306,7 @@ function checkBattleAnswer(isBoss) {
                     input.style.borderBottom = '2px solid #ff0000';
                     input.style.backgroundColor = '#330000';
                     setTimeout(() => {
-                        input.style.borderBottom = '2px solid #fff';
+                        input.style.borderBottom = '2px solid #00ff00';
                         input.style.backgroundColor = '#222';
                     }, 2500);
                 }
@@ -295,7 +317,7 @@ function checkBattleAnswer(isBoss) {
                 inputs[0].style.borderBottom = '2px solid #ff0000';
                 inputs[0].style.backgroundColor = '#330000';
                 setTimeout(() => {
-                    inputs[0].style.borderBottom = '2px solid #fff';
+                    inputs[0].style.borderBottom = '2px solid #00ff00';
                     inputs[0].style.backgroundColor = '#222';
                 }, 2500);
             }
@@ -323,9 +345,13 @@ function startSequence(lines, callback) {
 
 function showBattleResult(won, isBoss) {
     document.removeEventListener('keydown', battleEnterHandler);
+    document.removeEventListener('keydown', battleArrowKeyHandler);
     
     const quizArea = document.getElementById('quizArea');
     if (quizArea) quizArea.classList.add('d-none');
+    
+    const battleText = document.getElementById('battleText');
+    if (battleText) battleText.style.display = 'block';
     
     console.log('BEFORE REWARD - Hearts:', gameState.hearts, 'Hints:', gameState.hints, 'isBoss:', isBoss, 'won:', won);
     
@@ -338,6 +364,9 @@ function showBattleResult(won, isBoss) {
         if (heartCountEl) heartCountEl.innerText = gameState.hearts;
         if (hintCountEl) hintCountEl.innerText = gameState.hints;
         
+     localStorage.setItem('boss1Defeated', 'true');
+    localStorage.setItem('level1Completed', 'true');
+    
         console.log('AFTER REWARD - Hearts:', gameState.hearts, 'Hints:', gameState.hints);
     }
     
@@ -359,26 +388,41 @@ function renderVictoryModal(isBoss) {
     let rewardsHTML = '';
     if (isBoss) {
         rewardsHTML = `
-            <div class="bg-dark d-inline-block px-4 py-3 rounded mb-4" style="border: 2px solid #FFD700;">
-                <p class="text-warning fs-5 mb-2">BOSS REWARDS:</p>
-                <p class="text-white mb-1">+1 Heart (Total: ${gameState.hearts})</p>
-                <p class="text-white mb-0">+1 Hint (Total: ${gameState.hints})</p>
+            <div class="bg-dark px-4 py-3 rounded mb-4" style="border: 3px solid #FFD700; min-width: 250px;">
+                <h3 class="text-warning mb-3">REWARDS EARNED</h3>
+                <div class="d-flex justify-content-center gap-5">
+                    <div class="text-center">
+                        <span class="text-white fs-5">+1 Heart</span><br>
+                        <small class="text-white">Total: ${gameState.hearts}</small>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-white fs-5">+1 Hint</span><br>
+                        <small class="text-white">Total: ${gameState.hints}</small>
+                    </div>
+                </div>
             </div>`;
     }
     
+    // FIXED: Use proceed() for regular battles, advanceToNextLevel() only for boss fights
+    const continueFunction = isBoss ? 'advanceToNextLevel()' : 'proceed()';
+    const buttonText = isBoss ? 'CONTINUE TO LEVEL 2' : 'CONTINUE';
+    
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
+        <div class="bg-success p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif; display: flex; flex-direction: column; align-items: center; border-radius: 20px; overflow: hidden;">
             <img src="img/icon-victory.png" height="100" class="mb-3" onerror="this.style.display='none'">
             <h1 class="text-white mb-3">${isBoss ? 'BOSS DEFEATED!' : 'SUCCESS'}</h1>
             <p class="text-white fs-4 mb-4">"${VICTORY_DIAL[Math.floor(Math.random() * VICTORY_DIAL.length)]}"</p>
-            ${rewardsHTML}
-            <button class="btn btn-light pixel-font fs-4 px-4" onclick="proceed()">${isBoss ? 'CONTINUE TO LEVEL 2' : 'CONTINUE'}</button>
+            <div style="width: 100%; display: flex; justify-content: center;">
+                ${rewardsHTML}
+            </div>
+            <button class="btn btn-light pixel-font fs-4 px-4 mt-2" onclick="${continueFunction}">${buttonText}</button>
         </div>`;
 }
+
 function renderDefeatModal() {
     const DEFEAT_DIAL = ["The forest dims... everything fades...", "I was not strong enough to cleanse this place.", "My code... corrupted... system shutting down...", "The insects... were too many... too fast...", "I feel the shell cracking... the light fading..."];
     document.getElementById('modalContentWrapper').innerHTML = `
-        <div class="bg-danger p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif;">
+     <div class="bg-danger p-5 text-center border border-4 border-white shadow-lg" style="font-family: 'Pixelify Sans', sans-serif; border-radius: 20px;">
             <h1 class="text-white mb-2">YOU DIED</h1>
             <p class="text-white fs-5 mb-4">"${DEFEAT_DIAL[Math.floor(Math.random() * DEFEAT_DIAL.length)]}"</p>
             <div class="d-flex flex-column gap-2">

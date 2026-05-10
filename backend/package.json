@@ -25,6 +25,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.4.1",
+    "nodemailer": "^7.0.13",
     "nodemon": "^3.1.14",
     "response-time": "^2.3.4",
     "xss": "^1.0.15"

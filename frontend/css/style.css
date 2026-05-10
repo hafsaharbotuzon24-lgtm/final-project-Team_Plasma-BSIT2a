@@ -217,13 +217,13 @@ body {
 }
 
 .combat-preview-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .cp-title {
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 2.8rem;
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 3.2rem;
     color: #ffffff;
     text-align: center;
     text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
@@ -255,7 +255,7 @@ body {
 
 .cp-desc-text {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #c0c0c0;
     line-height: 1.7;
     margin: 0;
@@ -266,7 +266,7 @@ body {
 .cp-row {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 60px;
     margin-bottom: 60px;
 }
 
@@ -279,8 +279,8 @@ body {
 }
 
 .cp-row-image {
-    flex: 0 0 300px;
-    min-width: 200px;
+    flex: 0 0 420px;
+    min-width: 280px;
 }
 
 .cp-img {
@@ -297,8 +297,8 @@ body {
 }
 
 .cp-row-title {
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 1.4rem;
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 1.8rem;
     color: #ffcc00;
     margin-bottom: 12px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -306,7 +306,7 @@ body {
 
 .cp-row-desc {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     color: #d0d0d0;
     line-height: 1.6;
     margin: 0;
@@ -316,14 +316,14 @@ body {
 .cp-icons-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
     padding: 20px 0 50px;
 }
 
 .cp-icon {
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
     image-rendering: pixelated;
     border: 2px solid #1a2d45;
     border-radius: 6px;
@@ -344,33 +344,37 @@ body {
     }
     
     .cp-title {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
     }
     
     .cp-row,
     .cp-row-reverse {
         flex-direction: column;
-        gap: 20px;
+        gap: 30px;
         margin-bottom: 40px;
     }
     
     .cp-row-image {
         flex: 0 0 auto;
         width: 100%;
-        max-width: 450px;
+        max-width: 520px;
     }
     
     .cp-row-title {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
     
     .cp-row-desc {
-        font-size: 0.9rem;
+        font-size: 1.05rem;
+    }
+    
+    .cp-desc-text {
+        font-size: 1.1rem;
     }
     
     .cp-icon {
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
     }
 }
 
@@ -381,7 +385,7 @@ body {
     }
     
     .cp-title {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     
     .cp-description {
@@ -389,7 +393,7 @@ body {
     }
     
     .cp-desc-text {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
     
     .cp-row-image {
@@ -397,40 +401,129 @@ body {
     }
     
     .cp-row-title {
-        font-size: 1.1rem;
+        font-size: 1.35rem;
     }
     
     .cp-row-desc {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
     }
     
     .cp-icons-row {
-        gap: 10px;
+        gap: 14px;
     }
     
     .cp-icon {
-        width: 40px;
-        height: 40px;
+        width: 52px;
+        height: 52px;
     }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
     .cp-title {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
     
     .cp-row-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     
     .cp-row-desc {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .cp-desc-text {
+        font-size: 0.9rem;
     }
     
     .cp-icon {
-        width: 35px;
-        height: 35px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+#combat-preview.combat-preview-section {
+    background-color: #0c1a3d; 
+    padding: 80px 0; 
+    color: #ffffff !important; 
+    font-family: 'Pixelify Sans', sans-serif;
+    position: relative;
+    z-index: 1; 
+    width: 100%;
+}
+
+#combat-preview .cp-content-text,
+#combat-preview h1, 
+#combat-preview h2, 
+#combat-preview p {
+    color: #ffffff !important;
+}
+
+#combat-preview .combat-preview-container {
+    max-width: 1300px; 
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+#combat-preview .cp-placeholder-image-wrapper {
+    background-color: #ffffff; 
+    border: 4px solid #000000; 
+    width: 100%;               
+    max-width: 100px; 
+    margin: 0 auto 30px auto;  
+    aspect-ratio: 16 / 9; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden; 
+    position: relative; 
+}
+
+#combat-preview .cp-image {
+    --img-scale: 1.0; 
+    --img-pos-x: 50%; 
+    --img-pos-y: 50%; 
+    width: 100%;
+    height: 100%;
+    transform: scale(var(--img-scale));
+    object-position: var(--img-pos-x) var(--img-pos-y);
+    object-fit: cover; 
+    display: block;
+}
+
+#combat-preview .cp-col-text .cp-content-text {
+    font-size: 2.0rem; 
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center;
+    color: #ffffff !important;
+}
+
+.cp-row-desc {
+    text-align: justify;
+}
+
+/* For Desktop Devices (>= 768px) */
+@media (min-width: 768px) {
+    #combat-preview .col-md-7 {
+        flex: 0 0 58.33333%;
+        max-width: 58.33333%;
+    }
+    
+    #combat-preview .col-md-5 {
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+   
+    #combat-preview .cp-placeholder-image-wrapper {
+        margin-bottom: 0;
+    }
+    
+    #combat-preview .cp-row {
+        margin-bottom: 100px;
     }
 }
 
@@ -486,7 +579,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5rem;
     transition: all 0.1s ease;
@@ -508,7 +601,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 2.0rem;
     transition: all 0.2s ease;
@@ -520,7 +613,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5rem;
     transition: all 0.1s ease;
@@ -543,7 +636,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5rem;
     transition: all 0.2s ease;
@@ -555,7 +648,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5rem;
     transition: all 0.1s ease;
@@ -577,7 +670,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5;
     transition: all 0.2s ease;
@@ -589,7 +682,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff; 
     font-size: 1.5rem;
     transition: all 0.1s ease;
@@ -611,7 +704,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff;
     font-size: 1.5rem;
     transition: all 0.2s ease;
@@ -623,7 +716,7 @@ label[onclick]:active, [data-clickable="true"]:active,
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff;
     font-size: 1.5rem;
     transition: all 0.1s ease;
@@ -679,6 +772,11 @@ label[onclick]:active, [data-clickable="true"]:active,
     align-items: center;
     justify-content: center;
     overflow: visible; 
+
+}
+
+.nav-btn-logo span {
+    font-family: 'Silkscreen', sans-serif;
 }
 .main-menu-container {
     display: flex;
@@ -1436,12 +1534,13 @@ body {
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: rgba(2, 7, 34, 0.85);
+    background-color: #0d1b30;
     min-width: 160px;
     padding: 8px 0;
     z-index: 99999;
     border-radius: 6px;
-    border: 1px solid rgba(19, 42, 65, 0.5);
+    border: 1px solid #1a3350;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .profile-dropdown.show {
@@ -1632,7 +1731,7 @@ body {
 /* --- ISOLATION SETTINGS --- */
 
 .nav-btn-logo span {
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Silkscreen', sans-serif;
     color: #ffffff;
     font-size: 1.5rem;
     text-shadow: 2px 2px #000000;
@@ -1834,3 +1933,4 @@ body {
     background: #ff8800 !important;
     color: #000000 !important;
 }
+

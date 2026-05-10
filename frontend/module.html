@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Coders - Module</title>
+    <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/learn.css">
+    <link rel="stylesheet" href="css/modules.css">
+</head>
+<body class="modules-body">
+   <nav class="navbar navbar-expand-lg plasma-navbar fixed-top p-0">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <div class="navbar-brand d-flex align-items-center m-0">
+                <button class="nav-btn-logo">
+                <span>Combat Coders</span>
+                </button>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 nav-links-wrap">
+                <button class="home-btn" onclick="playSFX('sound-fx/click.mp3');navigate('home')">Home</button>
+                <button class="play-btn" onclick="playSFX('sound-fx/click.mp3'); window.location.href='play-modes.html'">Play</button>
+                <button class="leaderboard-btn" onclick="playSFX('sound-fx/click.mp3');navigate('leaderboard')">Leaderboard</button>
+                <div class="learn-dropdown-container">
+                    <button class="learn-btn" id="learnDropdownTrigger">Learn <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.83317 6.6665H4.1665V8.33317H5.83317V9.99984H7.49984V11.6665H9.1665V13.3332H10.8332V11.6665H12.4998V9.99984H14.1665V8.33317H15.8332V6.6665H14.1665V8.33317H12.4998V9.99984H10.8332V11.6665H9.1665V9.99984H7.49984V8.33317H5.83317V6.6665Z" fill="currentColor"/></svg></button>
+                    <div class="learn-dropdown" id="learnDropdown">
+                        <button class="dropdown-item" onclick="playSFX('sound-fx/click.mp3'); window.location.href='learn.html'">Mechanics</button>
+                        <button class="dropdown-item" onclick="playSFX('sound-fx/click.mp3'); window.location.href='modules.html'">HTML Modules</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile trigger with circular avatar -->
+            <div class="profile-trigger-container" id="profileContainer">
+                <button class="prof-icon" id="profTrigger" type="button">
+                    <img src="img/icon-prof.png" alt="Profile" id="navProfileIcon">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.5007 1.66699H7.50065V3.33361H5.83419V8.33361H7.50085V3.33366H12.5007V1.66699ZM12.5007 8.33366H7.50065V10.0003H12.5007V8.33366ZM12.5009 3.33361H14.1675V8.33361H12.5009V3.33361ZM3.33398 13.3336H5.00065V11.667H15.0007V13.3337H5.00065V16.667H15.0008V13.3336H16.6675V18.3336H16.6673V18.3337H3.33398V18.3336V16.667V13.3336Z" fill="#64748B"/></svg>Account</button>
+                    <button class="dropdown-item" onclick="navigateToSettings()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.33366 3.3335H8.33366V5.8335H18.3337V7.50016H8.33366V10.0002H3.33366V7.50016H1.66699V5.8335H3.33366V3.3335ZM5.00033 5.00016V8.3335H6.66699V5.00016H5.00033ZM11.667 10.0002H16.667V12.5002H18.3337V14.1668H16.667V16.6668H11.667V14.1668H1.66699V12.5002H11.667V10.0002ZM13.3337 11.6668V15.0002H15.0003V11.6668H13.3337Z" fill="#64748B"/></svg>Settings</button>
+                    <button class="dropdown-item" onclick="signOut()"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.16667 0.5H13.8333H15.5V2.16667V3.83333H13.8333V2.16667H2.16667V13.8333H13.8333V12.1667H15.5V13.8333V15.5H13.8333H2.16667H0.5V13.8333V2.16667V0.5H2.16667ZM15.5 7.16667H13.8333V5.5H12.1667V3.83333H10.5V5.5H12.1667V7.16667H3.83333V8.83333L12.1667 8.83333V10.5H10.5V12.1667H12.1667V10.5H13.8333V8.83333L15.5 8.83333V7.16667Z" fill="#64748B"/></svg>Sign out</button>
+                </div>
+            </div>
+
+            <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+                <img src="img/plasma-logo.png" alt="Team Plasma Menu" class="brainrot-logo">
+                <span>Team Plasma</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="modules-main-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="modules-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-icon">📚</div>
+                <h2>HTML</h2>
+                <div class="progress-summary">
+                    <span id="completedCount">0</span> of 15 modules complete
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="overallProgress"></div>
+                </div>
+            </div>
+            
+            <div class="module-nav-list" id="moduleNavList">
+                <!-- Modules populated by JS -->
+            </div>
+            
+            <div class="sidebar-footer">
+                <button class="back-to-modules-btn" onclick="playSFX('sound-fx/click.mp3'); window.location.href='modules.html'">
+                    ← All Modules
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="modules-content-area module-detail-view">
+            <div class="module-detail-container" id="moduleDetail">
+                <!-- Module content populated by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Warning Modal for Incomplete Quiz -->
+    <div class="quiz-modal-overlay hidden" id="warningModal">
+        <div class="quiz-modal-box warning-modal-box">
+            <h3 id="warningModalTitle">⚠️ INCOMPLETE QUIZ</h3>
+            <p id="warningModalMessage" style="color: #ffffff; font-size: 1rem; line-height: 1.6; text-align: center; white-space: pre-line;"></p>
+            <button class="quiz-modal-close-btn warning-close-btn" onclick="closeWarningModal()">OK, I'LL ANSWER ALL</button>
+        </div>
+    </div>
+
+    <!-- Quiz Results Modal -->
+    <div class="quiz-modal-overlay hidden" id="quizModal">
+        <div class="quiz-modal-box">
+            <h3 id="quizModalTitle">QUIZ RESULTS</h3>
+            <div id="quizModalContent"></div>
+            <button class="quiz-modal-close-btn" onclick="closeQuizModal()">CLOSE</button>
+        </div>
+    </div>
+
+    <script src="js/api-connection.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/audio-manager.js"></script>
+    <script src="js/modules.js"></script>
+    <script>
+        function updateNavbarAvatar() {
+            const savedAvatar = localStorage.getItem('playerAvatar') || 'img/icon-prof.png';
+            const navProfileIcon = document.getElementById('navProfileIcon');
+            
+            if (navProfileIcon) {
+                navProfileIcon.src = savedAvatar;
+                navProfileIcon.style.width = '40px';
+                navProfileIcon.style.height = '40px';
+                navProfileIcon.style.borderRadius = '50%';
+                navProfileIcon.style.objectFit = 'none';
+                navProfileIcon.style.border = '2px solid #FFD700';
+                navProfileIcon.style.backgroundColor = '#1a2d45';
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateNavbarAvatar);
+        } else {
+            updateNavbarAvatar();
+        }
+        
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'playerAvatar') {
+                updateNavbarAvatar();
+            }
+        });
+        
+        function navigateToSettings() {
+            window.location.href = 'profile.html#settings';
+        }
+
+        // Load module content on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadModuleContent();
+        });
+    </script>
+</body>
+</html>

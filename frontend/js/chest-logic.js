@@ -29,7 +29,7 @@ function renderReward(type, text, reward, color) {
 
     document.getElementById('modalContentWrapper').innerHTML = `
         <div class="reward-container p-5 text-center border border-5 border-dark shadow-lg" 
-             style="background: url('${bgImage}') no-repeat center center; background-size: cover; min-height: 400px; position: relative;">
+             style="background: url('${bgImage}') no-repeat center center; background-size: cover; min-height: 400px; position: relative; border-radius: 20px;">
             
             <div style="background: rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 10px; display: inline-block; width: 100%;">
                 <img src="img/icon-${type}.png" height="120" class="mb-4">

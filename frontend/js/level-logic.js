@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateUI() {
+    // Cap hearts at 3 maximum, but don't set a minimum
     if (gameState.hearts > 3) gameState.hearts = 3;
     
     const heartCountEl = document.getElementById('heartCount');
@@ -214,8 +215,6 @@ function proceed() {
                 if (gameState.currentSite > 5) {
                     // Check if this is Level 3 completion (should not happen from regular proceed)
                     if (gameState.currentLevel === 3) {
-                        // This shouldn't normally be reached from regular proceed,
-                        // but just in case, call the game complete modal
                         showGameCompleteModal();
                     } else {
                         showLevelCompleteModal();
@@ -284,6 +283,9 @@ function showLevelCompleteModal() {
     const nextLevelName = levelNames[nextLevel] || "COMPLETE";
     const isGameComplete = gameState.currentLevel >= 3;
     
+    // SAVE LEVEL COMPLETION TO LOCAL STORAGE (fallback if battle logic didn't save)
+    localStorage.setItem('level' + gameState.currentLevel + 'Completed', 'true');
+    
     // For Level 3, use the game complete modal with timer
     if (isGameComplete) {
         showGameCompleteModal();
@@ -351,37 +353,82 @@ function showGameCompleteModal() {
 
 function advanceToNextLevel() {
     const modalEl = document.getElementById('gameModal');
+    
+    // Force remove any lingering backdrops first
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+        backdrop.remove();
+    });
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    
     if (modalEl) {
         const modalInstance = bootstrap.Modal.getInstance(modalEl);
         if (modalInstance) {
             modalEl.addEventListener('hidden.bs.modal', function handler() {
                 modalEl.removeEventListener('hidden.bs.modal', handler);
                 
+                // Remove backdrops again after modal hides
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                    backdrop.remove();
+                });
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                
                 gameState.currentLevel++;
                 gameState.currentSite = 1;
                 gameState.lastChoice = null;
+                gameState.currentQuestionIndex = 0;
                 
+                // Keep hearts and hints as they are - they carry over to next level
                 updateUI();
+                
                 if (typeof openInstructionsModal === 'function') {
-                    setTimeout(openInstructionsModal, 500);
+                    setTimeout(openInstructionsModal, 800);
                 }
             }, { once: true });
             
             modalInstance.hide();
+            
+            // Also force hide the modal immediately as backup
+            setTimeout(() => {
+                modalEl.classList.remove('show');
+                modalEl.style.display = 'none';
+                modalEl.setAttribute('aria-hidden', 'true');
+                modalEl.removeAttribute('aria-modal');
+                modalEl.removeAttribute('role');
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                    backdrop.remove();
+                });
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            }, 300);
+            
             return;
         }
     }
     
     // Fallback
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+        backdrop.remove();
+    });
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    
     gameState.currentLevel++;
     gameState.currentSite = 1;
     gameState.lastChoice = null;
+    gameState.currentQuestionIndex = 0;
+    
     setTimeout(() => {
         updateUI();
         if (typeof openInstructionsModal === 'function') {
-            setTimeout(openInstructionsModal, 500);
+            setTimeout(openInstructionsModal, 800);
         }
-    }, 300);
+    }, 500);
 }
 
 document.addEventListener('DOMContentLoaded', function() {

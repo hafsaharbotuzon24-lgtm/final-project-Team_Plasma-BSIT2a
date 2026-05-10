@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CodeQuest Academy</title>
+    <link rel="icon" href="img/CC-logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-dashboard-body">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Admin Dashboard</h1>
+            </div>
+            <div class="admin-user-info">
+                <span class="admin-welcome">Welcome, <span id="adminUsername">Admin</span></span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Main Content -->
+    <div class="admin-main-wrapper">
+        <!-- Admin Sidebar -->
+        <nav class="admin-sidebar">
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item active" data-section="overview">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Overview</span>
+                </li>
+                <li class="admin-nav-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>Players</span>
+                </li>
+                <li class="admin-nav-item" data-section="leaderboard">
+                    <i class="fas fa-trophy"></i>
+                    <span>Leaderboard</span>
+                </li>
+                <li class="admin-nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Admin Content Area -->
+        <main class="admin-content-area">
+            <!-- Overview Section -->
+            <section id="overview" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-dashboard"></i> Dashboard Overview</h2>
+                    <p>System statistics and quick insights</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Players</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completedProgress">0</h3>
+                            <p>Completed Quests</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgLevel">0</h3>
+                            <p>Average Level</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalProgress">0</h3>
+                            <p>Total Attempts</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="playersQuestStat">0</h3>
+                            <p>Quest mode (players)</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="playersModulesStat">0</h3>
+                            <p>HTML modules (players)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-charts analytics-charts-row">
+                    <div class="chart-container">
+                        <h3><i class="fas fa-book"></i> HTML modules — avg score %</h3>
+                        <canvas id="chartModules" height="200"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3><i class="fas fa-flag-checkered"></i> Quest mode — completions per level</h3>
+                        <canvas id="chartQuest" height="200"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3><i class="fas fa-user-plus"></i> New players (7 days)</h3>
+                        <canvas id="chartSignups" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Level Distribution -->
+                <div class="level-distribution-container">
+                    <h3><i class="fas fa-layer-group"></i> Players per Level</h3>
+                    <div id="levelDistribution" class="level-bars"></div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                    <div id="activityList" class="activity-list">
+                        <p>Loading activity...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Player Management</h2>
+                    <p>View, search, and manage registered players</p>
+                </div>
+
+                <div class="users-toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Search by username or email...">
+                    </div>
+                    <div class="toolbar-info">
+                        <span id="userCount">0 players</span>
+                    </div>
+                </div>
+                
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Level</th>
+                                <th><i class="fas fa-heart"></i> Hearts</th>
+                                <th><i class="fas fa-lightbulb"></i> Hints</th>
+                                <th>Path</th>
+                                <th>Registered</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">Loading player data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container" id="paginationContainer"></div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-trophy"></i> Leaderboard</h2>
+                    <p>Top players ranked by score</p>
+                </div>
+                
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Level</th>
+                                <th>Score</th>
+                                <th>Time (s)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardTableBody">
+                            <tr>
+                                <td colspan="6" class="no-data">Loading leaderboard...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> Admin Settings</h2>
+                    <p>Configure system settings and preferences</p>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="setting-group">
+                        <h3>System Configuration</h3>
+                        <div class="setting-item">
+                            <label for="siteTitle">Site Title</label>
+                            <input type="text" id="siteTitle" value="CodeQuest Academy">
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxUsers">Max Users</label>
+                            <input type="number" id="maxUsers" value="1000">
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Learning Settings</h3>
+                        <div class="setting-item">
+                            <label for="passingScore">Passing Score (%)</label>
+                            <input type="number" id="passingScore" value="70" min="0" max="100">
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxAttempts">Max Quiz Attempts</label>
+                            <input type="number" id="maxAttempts" value="3" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="save-settings-btn">
+                            <i class="fas fa-save"></i>
+                            Save Settings
+                        </button>
+                        <button class="reset-settings-btn">
+                            <i class="fas fa-undo"></i>
+                            Reset to Default
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div id="userDetailModal" class="admin-modal-overlay" style="display:none;">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3><i class="fas fa-user"></i> Player Details</h3>
+                <button class="admin-modal-close" onclick="closeUserDetailModal()">&times;</button>
+            </div>
+            <div class="admin-modal-body" id="userDetailBody">
+                <p>Loading...</p>
+            </div>
+            <div class="admin-modal-footer">
+                <button class="admin-btn admin-btn-edit" id="editPlayerBtn">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="admin-btn admin-btn-danger" id="deletePlayerBtn">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="admin-btn admin-btn-secondary" onclick="closeUserDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Player Modal -->
+    <div id="editPlayerModal" class="admin-modal-overlay" style="display:none;">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Player</h3>
+                <button class="admin-modal-close" onclick="closeEditPlayerModal()">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <input type="hidden" id="editPlayerId">
+                <div class="edit-field">
+                    <label>Username</label>
+                    <input type="text" id="editUsername">
+                </div>
+                <div class="edit-field">
+                    <label>Email</label>
+                    <input type="email" id="editEmail">
+                </div>
+                <div class="edit-field">
+                    <label>Level</label>
+                    <input type="number" id="editLevel" min="0">
+                </div>
+                <div class="edit-field">
+                    <label>Hearts</label>
+                    <input type="number" id="editHearts" min="0">
+                </div>
+                <div class="edit-field">
+                    <label>Hints</label>
+                    <input type="number" id="editHints" min="0">
+                </div>
+                <div class="edit-field">
+                    <label>Quest levels completed (comma-separated, e.g. 1,2,3)</label>
+                    <input type="text" id="editQuestLevels" placeholder="1, 2, 3 …" autocomplete="off">
+                </div>
+            </div>
+            <div class="admin-modal-footer">
+                <button class="admin-btn admin-btn-save" onclick="savePlayerEdit()">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button class="admin-btn admin-btn-secondary" onclick="closeEditPlayerModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="admin-modal-overlay" style="display:none;">
+        <div class="admin-modal-box admin-modal-danger">
+            <div class="admin-modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h3>
+                <button class="admin-modal-close" onclick="closeDeleteConfirmModal()">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <p>Are you sure you want to delete player <strong id="deletePlayerName"></strong>?</p>
+                <p class="delete-warning">This will permanently remove the player and all their progress, leaderboard entries, and related data. This action cannot be undone.</p>
+            </div>
+            <div class="admin-modal-footer">
+                <button class="admin-btn admin-btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete Permanently
+                </button>
+                <button class="admin-btn admin-btn-secondary" onclick="closeDeleteConfirmModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="js/api-connection.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
