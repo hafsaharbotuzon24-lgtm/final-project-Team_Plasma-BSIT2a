@@ -84,11 +84,11 @@
 
 ## 🤝 Contributors
 
-* **Sophia Mae Alodia J. Balmaceda** — 🌸
-* **Dwayne Lester O. Diaz** — 🛡️
-* **Joshua Cedric B. Velitario** — ⚔️
-* **Kian Carlo O. Matutina** — 🌲
-* **Hafsah A. Tuzon** — ✨
+* **Sophia Mae Alodia J. Balmaceda** — 🐶
+* **Dwayne Lester O. Diaz** — 🦝
+* **Joshua Cedric B. Velitario** — 🧀
+* **Kian Carlo O. Matutina** — 🍂
+* **Hafsah A. Tuzon** — ❤️‍🔥
 
 ---
 
