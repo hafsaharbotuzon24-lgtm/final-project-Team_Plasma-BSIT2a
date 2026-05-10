@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/e5b0f093-d17f-4d55-bb6e-69d476668552" alt="Team Plasma Logo" height="28px" align="center"> Team Plasma-FullStackWebApp
+<h1 align="center"> <img src="https://github.com/user-attachments/assets/e5b0f093-d17f-4d55-bb6e-69d476668552" alt="Team Plasma Logo" height="28px" align="center"> Team Plasma-FullStackWebApp </h1>
 
 
 <p align="center">
@@ -11,6 +11,20 @@
 
 ---
 
+<div align="center">
+
+[![LIVE DEMO](https://img.shields.io/badge/LIVE%20DEMO-passing?style=for-the-badge&logo=RENDER&logoColor=white)](https://combat-coders-team-plasma-frontend.onrender.com/home.html) [![VERSION](https://img.shields.io/badge/VERSION-1.0-passing?style=for-the-badge&logoColor=white&color=81b29a)](https://combat-coders-team-plasma-frontend.onrender.com/home.html)
+
+</div>
+
+<div align="center">
+
+![HTML5](https://img.shields.io/badge/HTML5-passing?style=flat&logo=html5&logoColor=white&color=orange) ![CSS3](https://img.shields.io/badge/CSS3-passing?style=flat&logo=css&logoColor=white&color=blue) ![JavaScript](https://img.shields.io/badge/JavaScript-passing?style=flat&logo=javascript&logoColor=yellow&color=gray) ![Express.js](https://img.shields.io/badge/Express.js-passing?style=flat&logo=express&logoColor=blue&color=gray) ![Bootstrap](https://img.shields.io/badge/Bootstrap-passing?style=flat&logo=bootstrap&logoColor=white&color=8A2BE2) ![Node.js](https://img.shields.io/badge/Node.js-passing?style=flat&logo=node.js&logoColor=white&color=green) ![MongoDB](https://img.shields.io/badge/MongoDB-passing?style=flat&logo=mongodb&logoColor=white&color=4DB33D)  ![Render](https://img.shields.io/badge/Render-passing?style=flat&logo=render&logoColor=white&color=black) ![Brevo](https://img.shields.io/badge/Brevo-passing?style=flat&logo=Brevo&logoColor=white&color=0F5132) ![OAuth2](https://img.shields.io/badge/OAuth2-passing?style=flat&logo=google&logoColor=red&color=white) 
+
+</div>
+
+--- 
+
 ## 🌟 Description
 
 **Combat Coders** is an interactive, game-based learning system that is designed to improve player’s coding skills while also enhancing strategic and decision-making abilities. The game incorporates elements of adventure, card and path-based exploration, situational problem-solving, that creates an interactive and engaging environment where players progress by solving coding challenges. By incorporating programming and developing into a game, Combat Coders aims to make learning more enjoyable, immersive, and effective for students, beginners, and enthusiasts in coding.
@@ -18,9 +32,9 @@
 ---
 
 ## 🔴 Live demo link 
-
-…
-
+```
+https://combat-coders-team-plasma-frontend.onrender.com/
+```
 ---
 
 ## 🔑 Key Features
@@ -73,14 +87,31 @@
 
 ## 🛠️ Technologies Used
 
-* **Frontend:**
-* **Backend:**
-* **Database:** 
-* **Styling:**
+* **Frontend:** VS Code, HTML5, CSS3, JavaScript, Bootstrap, Render
+* **Backend:** VS Code, Node.js, Express.js, Mongoose, JWT Authentication, bcrypt, Google OAuth2, Brevo, Render
+* **Database:** MongoDB
+* **Styling:** Bootstrap, Google Fonts, Piskel, Krita  
+
 
 ## 📥 Installation instructions
 
-…
+**Clone Repository:**
+```
+git clone https://github.com/hafsaharbotuzon24-lgtm/final-project-Team_Plasma-BSIT2a.git
+cd final-project-Team_Plasma-BSIT2a
+```
+
+**Install Backend Dependencies:**
+```
+cd backend
+npm install
+```
+
+**Install Frontend Dependencies:**
+```
+cd ../frontend
+npm install
+```
 
 ## 🤝 Contributors
 
