@@ -113,6 +113,19 @@ cd ../frontend
 npm install
 ```
 
+**Configure environment variables:**
+```
+cd backend
+cp .env.example .env
+# Edit .env with own configuration
+```
+
+**Start Servers:**
+```
+cd backend
+npm run dev / npm start
+```
+
 ## 🤝 Contributors
 
 * **Sophia Mae Alodia J. Balmaceda** — 🐶
