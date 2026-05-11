@@ -11,6 +11,9 @@ const playerSchema = new mongoose.Schema({
   hints: { type: Number, default: 1 },
   level: { type: Number, default: 0 },
 
+  /** Profile avatar — preset path or base64 data URI */
+  avatar: { type: String, default: '' },
+
   /** Quest Mode (HTML levels 1–25): completed level ids */
   questCompletedLevels: { type: [Number], default: [] },
   /** Learn → HTML Modules quiz attempts (best score per module kept server-side) */

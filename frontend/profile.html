@@ -1036,7 +1036,7 @@
                 localStorage.setItem('playerUserName', newName);
                 document.getElementById('displayUserName').innerText = newName;
             }
-            
+
             if (tempAvatarPreview) {
                 localStorage.setItem('playerAvatar', tempAvatarPreview);
                 updateNavbarProfileIcon(tempAvatarPreview);
@@ -1044,10 +1044,26 @@
                 document.getElementById('profileAvatar').style.objectFit = 'none';
                 document.getElementById('profileAvatar').style.width = '100%';
                 document.getElementById('profileAvatar').style.height = '100%';
+
+                // Persist avatar to backend so it survives logout/login
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+                    fetch(`${API_BASE}/api/players/me/avatar`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ avatar: tempAvatarPreview })
+                    }).catch(e => console.warn('Avatar save to server failed:', e));
+                }
+
                 tempAvatarPreview = null;
                 document.getElementById('avatarCircle').classList.remove('temp-preview');
             }
-            
+
             exitEditMode();
         }
         

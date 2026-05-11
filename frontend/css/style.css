@@ -1944,3 +1944,63 @@ body {
     color: #000000 !important;
 }
 
+/* =============================================
+   GLOBAL SMOOTH UI TRANSITIONS
+   ============================================= */
+
+/* Page fade-in on load */
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+    animation: pageFadeIn 0.35s ease-out;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, select, textarea, [onclick] {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* Button press effect */
+button:active:not(:disabled), a:active {
+    transform: scale(0.97);
+}
+
+/* Card/panel hover lift */
+.card, .panel, .lb-row:not(.lb-header), .quest-card, .module-card, .music-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Modal smooth open */
+.admin-modal-overlay, .modal-overlay {
+    transition: opacity 0.2s ease;
+}
+
+/* Smooth scroll areas */
+.lb-scroll-area, .scroll-area {
+    scroll-behavior: smooth;
+}
+
+/* Notification slide-in */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.notification, .undo-notification {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Dropdown smooth */
+.profile-dropdown, .learn-dropdown {
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Focus ring for accessibility */
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #ffc107;
+    outline-offset: 2px;
+    transition: outline 0.15s ease;
+}

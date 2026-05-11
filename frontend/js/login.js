@@ -56,6 +56,31 @@ function setAuthSession(token, player) {
     localStorage.setItem('playerId', safePlayer.id);
     localStorage.setItem('playerUserName', safePlayer.username);
     localStorage.setItem('playerEmail', safePlayer.email);
+
+    // Restore avatar from backend if available
+    if (safePlayer.avatar) {
+        localStorage.setItem('playerAvatar', safePlayer.avatar);
+    }
+
+    // Also fetch full profile to ensure avatar is up to date
+    fetchAvatarFromServer(token);
+}
+
+async function fetchAvatarFromServer(token) {
+    try {
+        const res = await fetch(`${API_BASE}/api/players/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.avatar) {
+                localStorage.setItem('playerAvatar', data.avatar);
+            }
+        }
+    } catch (e) {
+        // Non-critical — avatar will use localStorage fallback
+    }
 }
 
 // Get current user

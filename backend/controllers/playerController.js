@@ -236,3 +236,36 @@ exports.deletePlayer = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.updateMyAvatar = async (req, res) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { avatar } = req.body || {};
+    if (typeof avatar !== 'string' || avatar.length === 0) {
+      return res.status(400).json({ message: 'avatar string is required' });
+    }
+
+    // Limit avatar size to ~2 MB when base64-encoded
+    if (avatar.length > 2.7e6) {
+      return res.status(400).json({ message: 'Avatar image too large (max ~2 MB)' });
+    }
+
+    const player = await Player.findByIdAndUpdate(
+      playerId,
+      { avatar },
+      { returnDocument: 'after', runValidators: true }
+    ).select('-password').lean();
+
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    return res.json({ avatar: player.avatar });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
