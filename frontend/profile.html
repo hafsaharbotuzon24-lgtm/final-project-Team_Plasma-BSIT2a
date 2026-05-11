@@ -942,6 +942,7 @@
             const storedEmail = localStorage.getItem('playerEmail') || 'player@plasma.com';
             document.getElementById('displayUserEmail').innerText = storedEmail;
             
+            // Show avatar from localStorage immediately, then sync from server
             let finalAvatar = localStorage.getItem('playerAvatar');
             if (!finalAvatar || finalAvatar === 'img/player-profile.png' || finalAvatar === '') {
                 finalAvatar = getRandomPresetAvatar();
@@ -953,6 +954,28 @@
             document.getElementById('profileAvatar').style.height = '100%';
             
             updateNavbarProfileIcon(finalAvatar);
+
+            // Fetch avatar from server to stay in sync (custom avatars persist there)
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+                fetch(`${API_BASE}/api/players/me`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: 'include'
+                }).then(r => r.ok ? r.json() : null).then(data => {
+                    if (data) {
+                        if (data.avatar) {
+                            localStorage.setItem('playerAvatar', data.avatar);
+                            document.getElementById('profileAvatar').src = data.avatar;
+                            updateNavbarProfileIcon(data.avatar);
+                        }
+                        if (data.username) {
+                            localStorage.setItem('playerUserName', data.username);
+                            document.getElementById('displayUserName').innerText = data.username;
+                        }
+                    }
+                }).catch(() => {});
+            }
             
             const savedLevel = localStorage.getItem('currentLevel') || '1';
             document.getElementById('displayLevel').innerText = savedLevel;

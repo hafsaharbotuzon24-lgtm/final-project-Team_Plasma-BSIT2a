@@ -41,16 +41,14 @@ function normalizePlayer(player) {
     return {
         id: player._id || player.id || '',
         username: player.username || '',
-        email: player.email || ''
+        email: player.email || '',
+        avatar: player.avatar || ''
     };
 }
 
 function setAuthSession(token, player) {
     const safePlayer = normalizePlayer(player);
     if (!token || !safePlayer) return;
-
-    // Clear previous account data to prevent cross-account leakage
-    localStorage.removeItem('playerAvatar');
 
     localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(safePlayer));
@@ -79,6 +77,16 @@ async function fetchAvatarFromServer(token) {
             const data = await res.json();
             if (data.avatar) {
                 localStorage.setItem('playerAvatar', data.avatar);
+                // Update navbar icon on current page if it exists
+                const navIcon = document.getElementById('navProfileIcon');
+                if (navIcon) {
+                    navIcon.src = data.avatar;
+                }
+            } else {
+                // No custom avatar on server — clear any leftover from previous account
+                localStorage.removeItem('playerAvatar');
+                const navIcon = document.getElementById('navProfileIcon');
+                if (navIcon) navIcon.src = 'img/player-profile.png';
             }
             // Also restore username from backend (may have been updated from another session)
             if (data.username) {

@@ -445,14 +445,52 @@ function confirmCcLogout() {
     }
 
     const existingAvatar = localStorage.getItem('playerAvatar');
-    
-    // Only set a random avatar if none exists (first-time player)
-    if (!existingAvatar || existingAvatar === 'img/player-profile.png' || existingAvatar === '') {
-        const randomAvatar = getRandomPreset();
-        localStorage.setItem('playerAvatar', randomAvatar);
-        navProfileIcon.src = randomAvatar;
+
+    // If user is logged in, always fetch avatar from server to stay in sync
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+        fetch(`${API_BASE}/api/players/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: 'include'
+        }).then(r => r.ok ? r.json() : null).then(data => {
+            if (data && data.avatar) {
+                localStorage.setItem('playerAvatar', data.avatar);
+                navProfileIcon.src = data.avatar;
+            } else if (data) {
+                // Logged in but no custom avatar — use a preset
+                const preset = existingAvatar && existingAvatar !== 'img/player-profile.png' && existingAvatar !== ''
+                    ? existingAvatar
+                    : getRandomPreset();
+                localStorage.setItem('playerAvatar', preset);
+                navProfileIcon.src = preset;
+            }
+        }).catch(() => {
+            // Fetch failed — use localStorage value or preset
+            if (existingAvatar && existingAvatar !== 'img/player-profile.png' && existingAvatar !== '') {
+                navProfileIcon.src = existingAvatar;
+            } else {
+                const preset = getRandomPreset();
+                localStorage.setItem('playerAvatar', preset);
+                navProfileIcon.src = preset;
+            }
+        });
     } else {
+        // Not logged in — use existing or random preset
+        if (!existingAvatar || existingAvatar === 'img/player-profile.png' || existingAvatar === '') {
+            const randomAvatar = getRandomPreset();
+            localStorage.setItem('playerAvatar', randomAvatar);
+            navProfileIcon.src = randomAvatar;
+        } else {
+            navProfileIcon.src = existingAvatar;
+        }
+    }
+
+    // Show a temporary image while fetching
+    if (existingAvatar && existingAvatar !== 'img/player-profile.png' && existingAvatar !== '') {
         navProfileIcon.src = existingAvatar;
+    } else {
+        navProfileIcon.src = 'img/player-profile.png';
     }
 
     applyAvatarStyles();
