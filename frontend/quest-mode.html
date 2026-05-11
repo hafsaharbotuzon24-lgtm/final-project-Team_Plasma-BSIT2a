@@ -59,6 +59,9 @@
     <div class="game-container" id="gameScreen" style="display: flex;">
         <!-- Centered Title Bar -->
         <div class="title-bar" id="titleBar">
+            <button class="hint-btn" id="hintBtn" onclick="showHint()" title="Get a hint">
+                <i class="fas fa-lightbulb"></i> Hint
+            </button>
             <span class="difficulty-badge" id="difficultyBadge">EASY</span>
             <span id="questName">Level 1: Simple HTML Page</span>
         </div>
@@ -116,6 +119,20 @@
                 </button>
                 <button class="action-btn btn-skip" onclick="confirmSkip()" style="background: #ffc107; color: #000;">
                     <i class="fas fa-forward"></i> Skip
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hint Modal -->
+    <div class="result-modal" id="hintModal">
+        <div class="result-content" style="border-color: #ffc107;">
+            <i class="fas fa-lightbulb result-icon" style="color: #ffc107;"></i>
+            <h3 class="result-title" style="color: #ffc107;">Hint</h3>
+            <p id="hintText" style="font-size: 1rem; line-height: 1.6;"></p>
+            <div class="result-actions">
+                <button class="action-btn btn-submit" onclick="closeHint()">
+                    <i class="fas fa-check"></i> Got it
                 </button>
             </div>
         </div>
@@ -356,6 +373,81 @@
 
         const API_BASE_Q = window.API_BASE_URL || 'http://localhost:5000';
 
+        // Hint data for each level
+        const levelHints = {
+            1: "Use basic HTML tags: <h1> for the header, <p> for the paragraph, and <button> for the button. Don't forget <!DOCTYPE html>, <html>, <head>, and <body>.",
+            2: "Use <header> for the top section, <nav> for the navigation links with <a> tags, and <main> for the page content.",
+            3: "Add a <footer> tag at the bottom of the <body> containing a <p> with the copyright text.",
+            4: "Use the <details> tag with a <summary> child for the clickable section. Put the info paragraphs inside <details> after the <summary>.",
+            5: "Combine <details>/<summary> with a <button> inside. Wrap the page with a <footer> at the bottom.",
+            6: "Use a <label> for the prompt text and a <select> with multiple <option> tags for the dropdown choices.",
+            7: "Use <nav> with <a> links at the top, then <h1> and <p> for content, and <footer> at the bottom.",
+            8: "Use <header> at the top, then <main> with two <section> blocks. Each section has an <h2> and a <ul> with <li> items.",
+            9: "Wrap a <ul> list inside a <details> tag. The <summary> is the clickable label.",
+            10: "Combine <nav>, <select>, <details>/<summary>, and <footer> all in one page. Each section serves a different purpose.",
+            11: "Use inline styles with display:flex, border-radius:50% for the avatar circle, and onmouseover/onmouseout for the hover effect.",
+            12: "Use a <nav> with display:flex and justify-content:space-between. Put the logo in a <div> and links in a <ul> with list-style:none.",
+            13: "Use an onclick handler on a toggle div. Swap body background and text colors, and move the inner circle div's left position.",
+            14: "Create three small <div> circles with border-radius:50%. Use @keyframes with translateY and opacity changes for the bounce effect.",
+            15: "Use a container div with onmouseover/onmouseout to toggle the overlay's transform. The overlay uses translateY(100%) to hide and translateY(0) to show.",
+            16: "Use onclick handlers on buttons. Get the count element by ID and use parseInt() to read/modify its textContent.",
+            17: "Generate a random hex color with Math.floor(Math.random()*16777215).toString(16). Apply it to document.body.style.background.",
+            18: "Use an <input> and a button to add <li> items to a <ul>. Each item gets an X button that removes its parentElement.",
+            19: "Store the current slide index in a data attribute. Use modulo arithmetic to cycle through slides, updating textContent and background color.",
+            20: "Toggle the input's type between 'password' and 'text' using an onclick handler on the eye icon span.",
+            21: "Use setInterval to call a tick() function every 1000ms. Format hours, minutes, seconds with padStart(2,'0') and update textContent.",
+            22: "Toggle a div's display between 'none' and 'block' using a button's onclick handler.",
+            23: "Use localStorage.setItem/getItem to persist notes. Create note elements dynamically and add delete buttons that remove the element and update storage.",
+            24: "Use a textarea's oninput event to count characters. Update a counter display and change colors based on percentage used (70% warning, 90% danger).",
+            25: "Store quotes in an array of objects. Pick a random quote with Math.random(), update the quote and author text elements."
+        };
+
+        function showHint() {
+            const hint = levelHints[currentLevel] || "Try breaking down the target into smaller HTML pieces. Look at what tags are used and recreate them one by one.";
+            document.getElementById('hintText').textContent = hint;
+            document.getElementById('hintModal').style.display = 'flex';
+            if (typeof playSFX === 'function') playSFX('sound-fx/click.mp3');
+        }
+
+        function closeHint() {
+            document.getElementById('hintModal').style.display = 'none';
+        }
+
+        // Auto-save current level to localStorage and backend
+        function saveCurrentLevel(levelId) {
+            localStorage.setItem('questCurrentLevel', levelId);
+            // Also save to backend so it persists across devices
+            var token = localStorage.getItem('authToken');
+            if (!token) return;
+            var API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+            fetch(API_BASE + '/api/players/me/resources', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                },
+                credentials: 'include',
+                body: JSON.stringify({ level: levelId })
+            }).catch(function(e) {
+                console.warn('Current level save failed:', e);
+            });
+        }
+
+        // Load current level from localStorage (backend merge happens in mergeQuestFromServer)
+        function loadCurrentLevel() {
+            var saved = parseInt(localStorage.getItem('questCurrentLevel'), 10);
+            if (saved >= 1 && saved <= levels.length) {
+                return saved;
+            }
+            // Default: first uncompleted level
+            for (var i = 1; i <= levels.length; i++) {
+                if (!completedLevels.includes(i)) {
+                    return i;
+                }
+            }
+            return 1;
+        }
+
         async function mergeQuestFromServer() {
             var token = localStorage.getItem('authToken');
             if (!token) return;
@@ -373,6 +465,10 @@
                 completedLevels.forEach(function(lid) {
                     localStorage.setItem('quest' + lid + 'Completed', 'true');
                 });
+                // Restore current level from backend if available
+                if (p.level && p.level >= 1 && p.level <= levels.length) {
+                    localStorage.setItem('questCurrentLevel', p.level);
+                }
             } catch (e) {
                 console.warn('Quest progress merge failed:', e);
             }
@@ -399,7 +495,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             mergeQuestFromServer().then(function() {
-                startLevel(1);
+                startLevel(loadCurrentLevel());
                 setupDropdowns();
             });
         });
@@ -436,6 +532,7 @@
 
         function startLevel(levelId) {
             currentLevel = levelId;
+            saveCurrentLevel(levelId);
             const level = levels.find(l => l.id === levelId);
             
             document.getElementById('gameScreen').style.display = 'flex';
@@ -540,6 +637,10 @@
                     pushQuestToServer();
                 }
                 showResult(true, `Great job! You completed Level ${currentLevel}: ${level.name}`);
+                // Auto-proceed to next level after short delay
+                setTimeout(function() {
+                    nextLevel();
+                }, 1500);
             } else {
                 showResult(false, 'Your code doesn\'t match the target. Keep trying!');
             }
