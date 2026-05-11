@@ -200,7 +200,7 @@ html, body {
 }
 
 .login-option-btn:hover {
-    background-color: #c4c4c4;
+    background-color: #19ac8c;
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }

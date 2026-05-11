@@ -1,17 +1,6 @@
   .profile-dropdown.show {
-    position: fixed !important;
-    top: 60px !important;
-    right: 20px !important;
-    left: auto !important;
-    bottom: auto !important;
-}
-
-@media (max-width: 480px) {
-    .profile-dropdown.show {
-        top: 48px !important;
-        right: 12px !important;
-    }
-}
+    display: block;
+  }
 /* SCROLL BUTTONS */
 .scroll-btn-play {
     display: flex;
@@ -1628,11 +1617,6 @@ body {
     
     .profile-dropdown.show {
         display: block !important;
-        visibility: visible !important;
-      
-        position: fixed !important;
-        top: 60px !important;
-        right: 20px !important;
     }
 }
 @media (max-width: 768px) {
@@ -1648,8 +1632,6 @@ body {
     }
     
     .profile-dropdown {
-        top: 58px !important;
-        right: 25px !important;
         display: none;
     }
     
@@ -1671,8 +1653,7 @@ body {
     }
     
     .profile-dropdown {
-        top: 52px !important;
-        right: 20px !important;
+        min-width: 150px;
     }
 }
 
@@ -1689,8 +1670,6 @@ body {
     }
     
     .profile-dropdown {
-        top: 48px !important;
-        right: 18px !important;
         min-width: 140px;
     }
     
@@ -1710,9 +1689,6 @@ body {
     }
     #profileContainer .profile-dropdown.show {
         display: block !important;
-        position: fixed !important;
-        top: 60px !important;
-        right: 20px !important;
     }
 }
 .nav-links-wrap {

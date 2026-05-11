@@ -386,6 +386,7 @@ function confirmCCLogout() {
     localStorage.removeItem('playerId');
     localStorage.removeItem('playerUserName');
     localStorage.removeItem('playerEmail');
+    localStorage.removeItem('playerAvatar');
     window.location.href = 'login.html';
 }
 

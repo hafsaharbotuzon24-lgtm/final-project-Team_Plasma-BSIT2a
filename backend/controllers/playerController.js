@@ -237,6 +237,41 @@ exports.deletePlayer = async (req, res) => {
   }
 };
 
+exports.updateMyUsername = async (req, res) => {
+  try {
+    const playerId = req.player?.id;
+    if (!playerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { username } = req.body || {};
+    if (typeof username !== 'string' || username.trim().length < 3) {
+      return res.status(400).json({ message: 'Username must be at least 3 characters' });
+    }
+
+    if (!/^[a-zA-Z0-9_]+$/.test(username.trim())) {
+      return res.status(400).json({ message: 'Username can only contain letters, numbers, and underscores' });
+    }
+
+    const player = await Player.findByIdAndUpdate(
+      playerId,
+      { username: username.trim() },
+      { returnDocument: 'after', runValidators: true }
+    ).select('-password').lean();
+
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    return res.json(player);
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Username already taken' });
+    }
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 exports.updateMyAvatar = async (req, res) => {
   try {
     const playerId = req.player?.id;

@@ -112,12 +112,22 @@ exports.submitLeaderboardEntry = async (req, res) => {
 
     const score = Number.isFinite(rawScore) ? rawScore : rawTime;
 
+    // Only update if the new time is better (lower) than existing, or no entry yet
+    const existing = await Leaderboard.findOne({ player_id: playerId });
+    if (existing && existing.time_seconds <= rawTime) {
+      // Existing time is already better — no update needed
+      const populated = await Leaderboard.findById(existing._id)
+        .populate('player_id', 'username email level avatar')
+        .lean();
+      return res.json({ message: 'Existing time is better — no update', entry: populated });
+    }
+
     const entry = await Leaderboard.findOneAndUpdate(
       { player_id: playerId },
       { player_id: playerId, time_seconds: rawTime, score },
       { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
     )
-      .populate('player_id', 'username email level')
+      .populate('player_id', 'username email level avatar')
       .lean();
 
     return res.status(201).json({ message: 'Leaderboard entry saved', entry });

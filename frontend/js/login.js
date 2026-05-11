@@ -49,6 +49,9 @@ function setAuthSession(token, player) {
     const safePlayer = normalizePlayer(player);
     if (!token || !safePlayer) return;
 
+    // Clear previous account data to prevent cross-account leakage
+    localStorage.removeItem('playerAvatar');
+
     localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(safePlayer));
 
@@ -76,6 +79,13 @@ async function fetchAvatarFromServer(token) {
             const data = await res.json();
             if (data.avatar) {
                 localStorage.setItem('playerAvatar', data.avatar);
+            }
+            // Also restore username from backend (may have been updated from another session)
+            if (data.username) {
+                localStorage.setItem('playerUserName', data.username);
+                const cur = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER) || '{}');
+                cur.username = data.username;
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(cur));
             }
         }
     } catch (e) {
@@ -116,6 +126,7 @@ function logout() {
     localStorage.removeItem('playerId');
     localStorage.removeItem('playerUserName');
     localStorage.removeItem('playerEmail');
+    localStorage.removeItem('playerAvatar');
     window.location.href = 'login.html';
 }
 
@@ -483,8 +494,7 @@ async function processPasswordRenewal() {
         }
 
         closeModal('renewPasswordModal');
-        alert('Password reset successfully! Please login with your new password.');
-        openModal('loginExistingModal');
+        openModal('resetSuccessModal');
     } catch (err) {
         showError('Network error. Please try again.');
     }
@@ -493,6 +503,10 @@ async function processPasswordRenewal() {
 // =============================================
 // DEV LOGIN - For development purposes
 // =============================================
+function closeResetSuccessModal() {
+    closeModal('resetSuccessModal');
+    openModal('loginExistingModal');
+}
 function devLogin(username = 'DevTester', email = 'dev@plasma.com') {
     const devUser = {
         id: 'dev_' + Date.now(),

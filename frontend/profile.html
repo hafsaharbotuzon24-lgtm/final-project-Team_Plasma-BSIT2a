@@ -280,12 +280,23 @@
         <div class="delete-modal-box">
             <h3>CHANGE PASSWORD</h3>
             <p>Enter your current password and new password below.</p>
-            <input type="password" id="oldPasswordInput" class="form-control mb-3 pixel-input" placeholder="Current Password" style="background: #333; color: #fff; border: 1px solid #666;">
-            <input type="password" id="newPasswordInput" class="form-control mb-3 pixel-input" placeholder="New Password (min 8 chars)" style="background: #333; color: #fff; border: 1px solid #666;">
-            <input type="password" id="confirmNewPasswordInput" class="form-control mb-3 pixel-input" placeholder="Confirm New Password" style="background: #333; color: #fff; border: 1px solid #666;">
+            <input type="password" id="oldPasswordInput" class="form-control mb-3 pixel-input" placeholder="Current Password" style="background: hsl(214, 32%, 49%); color: #fff; border: 1px solid #666;">
+            <input type="password" id="newPasswordInput" class="form-control mb-3 pixel-input" placeholder="New Password (min 8 chars)" style="background: hsl(214, 32%, 49%); color: #fff; border: 1px solid #666;">
+            <input type="password" id="confirmNewPasswordInput" class="form-control mb-3 pixel-input" placeholder="Confirm New Password" style="background: hsl(214, 32%, 49%); color: #fff; border: 1px solid #666;">
             <div class="modal-buttons">
                 <button class="modal-btn-delete" onclick="changePassword()" style="background: #4CAF50;">UPDATE</button>
                 <button class="modal-btn-cancel" onclick="closeChangePasswordModal()">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Change Success Modal -->
+    <div class="delete-modal-overlay" id="passwordSuccessModal">
+        <div class="delete-modal-box" style="border-color: #4CAF50;">
+            <h3 style="color: #4CAF50;">PASSWORD UPDATED!</h3>
+            <p>Your password has been changed successfully.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn-delete" onclick="closePasswordSuccessModal()" style="background: #4CAF50;">OK</button>
             </div>
         </div>
     </div>
@@ -1035,6 +1046,29 @@
             if (newName) {
                 localStorage.setItem('playerUserName', newName);
                 document.getElementById('displayUserName').innerText = newName;
+
+                // Persist username to backend so it survives logout/login
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
+                    fetch(`${API_BASE}/api/players/me/username`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ username: newName })
+                    }).then(r => {
+                        if (!r.ok) return r.json().then(d => { throw new Error(d.message || 'Username update failed'); });
+                        return r.json();
+                    }).then(updatedPlayer => {
+                        // Also update the stored current user object
+                        const cur = JSON.parse(localStorage.getItem('combatCoders_currentUser') || '{}');
+                        cur.username = newName;
+                        localStorage.setItem('combatCoders_currentUser', JSON.stringify(cur));
+                    }).catch(e => console.warn('Username save to server failed:', e));
+                }
             }
 
             if (tempAvatarPreview) {
@@ -1227,16 +1261,16 @@
         async function changePassword() {
             const API_BASE = window.API_BASE_URL || 'http://localhost:5000';
             const token = localStorage.getItem('authToken');
-            
+
             if (!token) {
                 alert('You must be logged in to change your password');
                 return;
             }
-            
+
             const oldPassword = document.getElementById('oldPasswordInput').value;
             const newPassword = document.getElementById('newPasswordInput').value;
             const confirmPassword = document.getElementById('confirmNewPasswordInput').value;
-            
+
             if (!oldPassword || !newPassword || !confirmPassword) {
                 alert('Please fill in all password fields');
                 return;
@@ -1249,7 +1283,7 @@
                 alert('New password must be at least 8 characters');
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_BASE}/api/players/me/password`, {
                     method: 'PATCH',
@@ -1260,18 +1294,22 @@
                     credentials: 'include',
                     body: JSON.stringify({ oldPassword, newPassword })
                 });
-                
+
                 if (!response.ok) {
                     const data = await response.json();
                     alert(data.message || 'Failed to change password');
                     return;
                 }
-                alert('Password changed successfully!');
                 closeChangePasswordModal();
+                document.getElementById('passwordSuccessModal').classList.add('show');
             } catch (err) {
                 console.error('Change password error:', err);
                 alert('Network error. Please try again.');
             }
+        }
+
+        function closePasswordSuccessModal() {
+            document.getElementById('passwordSuccessModal').classList.remove('show');
         }
         
         function navigate(destination) {
@@ -1307,6 +1345,7 @@
             if (e.key === 'Escape') {
                 if (document.getElementById('deleteModal').classList.contains('show')) closeDeleteModal();
                 if (document.getElementById('changePasswordModal').classList.contains('show')) closeChangePasswordModal();
+                if (document.getElementById('passwordSuccessModal').classList.contains('show')) closePasswordSuccessModal();
                 if (document.getElementById('customNameModal').classList.contains('show')) closeCustomNameModal();
                 if (document.getElementById('avatarEditorModal').classList.contains('show')) closeAvatarEditor();
                 if (document.getElementById('allAchievementsModal').classList.contains('show')) closeAllAchievementsModal();
@@ -1318,6 +1357,9 @@
         });
         document.getElementById('changePasswordModal').addEventListener('click', function(e) {
             if (e.target === this) closeChangePasswordModal();
+        });
+        document.getElementById('passwordSuccessModal').addEventListener('click', function(e) {
+            if (e.target === this) closePasswordSuccessModal();
         });
         document.getElementById('customNameModal').addEventListener('click', function(e) {
             if (e.target === this) closeCustomNameModal();
