@@ -2004,3 +2004,35 @@ input:focus, select:focus, textarea:focus {
     outline-offset: 2px;
     transition: outline 0.15s ease;
 }
+
+/* =============================================
+   GLOBAL THEMED SCROLLBARS
+   ============================================= */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #2a4a7a #0f1f35;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f1f35;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2a4a7a, #1a2d50);
+    border-radius: 4px;
+    border: 1px solid #0f1f35;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffc107, #ff9800);
+}
+
+::-webkit-scrollbar-corner {
+    background: #0f1f35;
+}

@@ -619,18 +619,52 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Custom scrollbar for mobile */
-        .code-editor::-webkit-scrollbar {
-            width: 4px;
+        /* Custom scrollbars — matching theme */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #3a5a8a #0f1f35;
         }
 
-        .code-editor::-webkit-scrollbar-track {
-            background: #1a1a28;
+        .code-editor::-webkit-scrollbar,
+        .line-numbers::-webkit-scrollbar,
+        .editor-wrapper::-webkit-scrollbar,
+        .preview-panel::-webkit-scrollbar,
+        .target-frame::-webkit-scrollbar,
+        .quest-body::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        .code-editor::-webkit-scrollbar-thumb {
-            background: #5a7a9a;
-            border-radius: 2px;
+        .code-editor::-webkit-scrollbar-track,
+        .line-numbers::-webkit-scrollbar-track,
+        .editor-wrapper::-webkit-scrollbar-track,
+        .preview-panel::-webkit-scrollbar-track,
+        .quest-body::-webkit-scrollbar-track {
+            background: #0f1f35;
+            border-radius: 4px;
+        }
+
+        .code-editor::-webkit-scrollbar-thumb,
+        .line-numbers::-webkit-scrollbar-thumb,
+        .editor-wrapper::-webkit-scrollbar-thumb,
+        .preview-panel::-webkit-scrollbar-thumb,
+        .quest-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #2a4a7a, #1a2d50);
+            border-radius: 4px;
+            border: 1px solid #0f1f35;
+        }
+
+        .code-editor::-webkit-scrollbar-thumb:hover,
+        .line-numbers::-webkit-scrollbar-thumb:hover,
+        .editor-wrapper::-webkit-scrollbar-thumb:hover,
+        .preview-panel::-webkit-scrollbar-thumb:hover,
+        .quest-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ffc107, #ff9800);
+        }
+
+        .code-editor::-webkit-scrollbar-corner,
+        .editor-wrapper::-webkit-scrollbar-corner {
+            background: #0f1f35;
         }
 
         /* Result modal responsive close */
